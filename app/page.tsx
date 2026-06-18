@@ -17,6 +17,8 @@ import ToolsPromo from "@/components/home/ToolsPromo";
 import HomeFaqs from "@/components/home/HomeFaqs";
 import ContactCTA from "@/components/home/ContactCTA";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = buildMetadata({
   title: "RealHubb — Real Estate Bangalore, Hyderabad & Chennai",
   // 135 chars ✅

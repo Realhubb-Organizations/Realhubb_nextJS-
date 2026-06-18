@@ -75,7 +75,7 @@ export async function generateStaticParams() {
   return Object.keys(segmentConfig).map((segment) => ({ segment }));
 }
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function BuySegmentPage({ params }: { params: Params }) {
   const { segment } = await params;

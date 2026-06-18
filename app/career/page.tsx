@@ -14,6 +14,8 @@ import {
   DollarSign, TrendingUp, GraduationCap, CalendarDays, Award, Coffee, Heart, MapPin,
 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export const metadata: Metadata = buildMetadata({

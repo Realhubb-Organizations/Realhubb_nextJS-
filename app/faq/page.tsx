@@ -5,6 +5,8 @@ import { getPublishedFaqs } from "@/lib/firestoreServerService";
 import { faqSchema, breadcrumbSchema } from "@/lib/structuredData";
 import FaqPageClient from "@/components/faq/FaqPageClient";
 
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
