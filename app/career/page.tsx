@@ -100,7 +100,7 @@ export default async function CareerPage() {
                   { label: "95% Employee Satisfaction", cls: "bg-gold/10 border-gold/20 text-gold" },
                   { label: "100% Growth Opportunity", cls: "bg-green-900/30 border-green-700/30 text-green-400" },
                 ].map((b) => (
-                  <span key={b.label} className={`inline-flex items-center px-4.5 py-2 rounded-full border text-xs font-normal transition-colors duration-300 ${b.cls}`}>
+                  <span key={b.label} className={`inline-flex items-center whitespace-nowrap px-6 py-2.5 rounded-full border text-xs font-normal transition-colors duration-300 ${b.cls}`}>
                     {b.label}
                   </span>
                 ))}
