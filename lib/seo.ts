@@ -72,6 +72,9 @@ export function buildMetadata(params: {
             "max-video-preview": -1,
           },
         },
+    verification: {
+      google: "oGsNb0RCjzrOrewBDOrbwa2ptrTzklvMKhn8sitGkIs",
+    },
     openGraph: {
       title: clampTitle(params.title),
       description,
