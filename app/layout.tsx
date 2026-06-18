@@ -52,6 +52,12 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  verification: {
+    google: "oGsNb0RCjzrOrewBDOrbwa2ptrTzklvMKhn8sitGkIs",
+  },
+  alternates: {
+    canonical: "./",
+  },
   other: {
     publisher: PUBLISHER,
     "geo.region": "IN-KA",

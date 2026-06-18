@@ -5,6 +5,8 @@ import { blogPosts as staticBlogPosts } from "@/data/blog";
 import { developers as staticDevs } from "@/data/developers";
 import { locations } from "@/data/locations";
 
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
