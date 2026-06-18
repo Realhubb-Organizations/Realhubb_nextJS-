@@ -173,8 +173,8 @@ export default async function CareerPage() {
         </section>
 
         {/* ── APPLICATION FORM ── */}
-        <section id="apply" className="pt-28 pb-12 bg-cream border-t border-gray-100">
-          <div className="page-padding max-w-4xl mx-auto">
+        <section id="apply" className="pt-28 pb-6 bg-cream border-t border-gray-100">
+          <div className="page-padding max-w-[1440px] mx-auto">
             <FadeInOnScroll direction="up">
               <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-3 text-center">
                 Apply Now
@@ -196,8 +196,8 @@ export default async function CareerPage() {
         </section>
 
         {/* ── FAQ ── */}
-        <section className="py-12 bg-cream">
-          <div className="page-padding max-w-5xl mx-auto">
+        <section className="py-6 bg-cream">
+          <div className="page-padding max-w-[1440px] mx-auto">
             <FadeInOnScroll direction="up">
               <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-3 text-center">
                 FAQ
@@ -223,8 +223,8 @@ export default async function CareerPage() {
         </section>
 
         {/* ── CTA ── */}
-        <section className="pt-12 pb-28 bg-cream">
-          <div className="page-padding max-w-5xl mx-auto">
+        <section className="pt-6 pb-28 bg-cream">
+          <div className="page-padding max-w-[1440px] mx-auto">
             <FadeInOnScroll direction="up">
               <div className="bg-[#00274D] border border-gold/30 rounded-[32px] p-10 md:p-16 shadow-2xl relative overflow-hidden text-white text-center">
                 {/* Subtle absolute glows */}

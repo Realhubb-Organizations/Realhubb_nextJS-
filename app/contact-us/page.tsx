@@ -3,7 +3,6 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { buildMetadata } from "@/lib/seo";
 import { breadcrumbSchema } from "@/lib/structuredData";
 import { company } from "@/data/company";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import ContactForm from "@/components/contact/ContactForm";
 import WhatsAppButton from "@/components/lead/WhatsAppButton";
 
@@ -39,14 +38,30 @@ export default function ContactPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
       />
       <div className="pt-20">
-        <div className="bg-navy py-14 page-padding">
-          <BreadcrumbNav items={breadcrumbs} dark />
-          <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
-            Contact Us
-          </h1>
-          <p className="text-white/60 text-base mt-3 max-w-lg">
-            Our advisors are available Mon–Sat, 9am–7pm. Get a free callback in 15 minutes.
-          </p>
+        <div className="bg-navy relative overflow-hidden py-16 page-padding">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
+              alt="Contact RealHubb"
+              className="w-full h-full object-cover opacity-35 filter brightness-95"
+            />
+            {/* Smooth linear top-to-bottom gradient overlay to maintain readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/55 to-navy" />
+          </div>
+
+          {/* Symmetrical branding glows */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10">
+            <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-0">
+              Contact Us
+            </h1>
+            <p className="text-white/60 text-base mt-3 max-w-lg">
+              Our advisors are available Mon–Sat, 9am–7pm. Get a free callback in 15 minutes.
+            </p>
+          </div>
         </div>
 
         <div className="page-padding py-14 grid grid-cols-1 lg:grid-cols-2 gap-12">
