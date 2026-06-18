@@ -6,8 +6,10 @@ import {
 } from "lucide-react";
 import {
   getFaqs, addFaq, updateFaq, deleteFaq,
+  getProperty, getBlogPost,
   AdminFaq,
 } from "@/lib/firestoreService";
+import { triggerRevalidate } from "@/admin/utils";
 
 interface InlineFaqManagerProps {
   page: "property" | "blog";
@@ -30,6 +32,41 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
   const [showForm, setShowForm] = useState(false);
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({});
   const [error, setError] = useState("");
+
+  const revalidateParent = async () => {
+    if (!referenceId) return;
+    try {
+      if (page === "property") {
+        const property = await getProperty(referenceId);
+        if (property?.slug) {
+          await triggerRevalidate([
+            "/",
+            `/property/${property.slug}`,
+            `/projects/ongoing/${property.city}`,
+            `/projects/upcoming/${property.city}`,
+            `/buy/2bhk-flats-${property.city}`,
+            `/buy/3bhk-flats-${property.city}`,
+            `/buy/luxury-apartments-${property.city}`,
+            `/buy/villas-${property.city}`,
+            `/buy/plots-${property.city}`,
+            `/real-estate/${property.city}`,
+            "/sitemap.xml",
+          ]);
+        }
+      } else if (page === "blog") {
+        const blog = await getBlogPost(referenceId);
+        if (blog?.slug) {
+          await triggerRevalidate([
+            "/blog",
+            `/blog/${blog.slug}`,
+            "/sitemap.xml",
+          ]);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to revalidate parent in InlineFaqManager:", err);
+    }
+  };
 
   const loadFaqs = async () => {
     try {
@@ -119,6 +156,9 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
         await addFaq(faqData);
       }
 
+      // Trigger background revalidation instantly
+      await revalidateParent();
+
       await loadFaqs();
       handleCloseForm();
     } catch (err: any) {
@@ -139,6 +179,10 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
     try {
       setError("");
       await deleteFaq(id);
+      
+      // Trigger background revalidation instantly
+      await revalidateParent();
+
       await loadFaqs();
     } catch (err: any) {
       console.error("Failed to delete FAQ:", err);
@@ -154,6 +198,10 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
     try {
       setError("");
       await updateFaq(faq.id, { ...faq, published: !faq.published });
+      
+      // Trigger background revalidation instantly
+      await revalidateParent();
+
       await loadFaqs();
     } catch (err: any) {
       console.error("Failed to toggle publish status:", err);
@@ -164,6 +212,7 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
       }
     }
   };
+
 
   if (loading) {
     return (

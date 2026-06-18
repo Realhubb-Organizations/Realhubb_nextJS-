@@ -9,6 +9,7 @@ import {
   getFaqs, addFaq, updateFaq, deleteFaq,
   AdminFaq,
 } from "@/lib/firestoreService";
+import { triggerRevalidate } from "@/admin/utils";
 
 const PAGES = [
   { value: "home", label: "Home Page" },
@@ -100,6 +101,10 @@ export default function FaqManager() {
         await addFaq(form);
         showToast("FAQ added");
       }
+      
+      // Trigger background revalidation instantly
+      await triggerRevalidate(["/", "/faq", "/about", "/career"]);
+
       await load();
       closeForm();
     } catch (err: any) {
@@ -114,6 +119,10 @@ export default function FaqManager() {
     try {
       await deleteFaq(id);
       showToast("FAQ deleted");
+      
+      // Trigger background revalidation instantly
+      await triggerRevalidate(["/", "/faq", "/about", "/career"]);
+
       await load();
     } catch {
       showToast("Delete failed", false);
@@ -125,11 +134,16 @@ export default function FaqManager() {
   const togglePublish = async (f: AdminFaq) => {
     try {
       await updateFaq(f.id, { ...f, published: !f.published });
+      
+      // Trigger background revalidation instantly
+      await triggerRevalidate(["/", "/faq", "/about", "/career"]);
+
       await load();
     } catch {
       showToast("Update failed", false);
     }
   };
+
 
   const toggleExpand = (id: string) => {
     setExpandedIds(prev => ({ ...prev, [id]: !prev[id] }));

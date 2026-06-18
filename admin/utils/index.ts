@@ -4,3 +4,5 @@
 
 export * from './seoScoring';
 export * from './helpers';
+export * from './revalidate';
+

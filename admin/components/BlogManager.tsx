@@ -10,6 +10,17 @@ import {
   saveBlogPost,
   deleteBlogPost,
 } from '@/lib/firestoreService';
+import { triggerRevalidate } from '@/admin/utils';
+
+// Helper to revalidate blog-related pages
+const revalidateBlogPages = async (slug: string) => {
+  const paths = [
+    '/blog',
+    `/blog/${slug}`,
+    '/sitemap.xml',
+  ];
+  await triggerRevalidate(paths);
+};
 
 export default function BlogManager() {
   const [posts, setPosts] = useState<AdminBlogPost[]>([]);
@@ -48,6 +59,9 @@ export default function BlogManager() {
       setError('');
       const id = await saveBlogPost(editing);
       
+      // Trigger background revalidation instantly
+      await revalidateBlogPages(editing.slug);
+      
       if ('id' in editing && editing.id) {
         setPosts((prev) =>
           prev.map((p) => (p.id === id ? editing : p))
@@ -67,14 +81,21 @@ export default function BlogManager() {
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this blog post?')) return;
 
+    const postToDelete = posts.find((p) => p.id === id);
+
     try {
       setError('');
       await deleteBlogPost(id);
       setPosts((prev) => prev.filter((p) => p.id !== id));
+
+      if (postToDelete) {
+        await revalidateBlogPages(postToDelete.slug);
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to delete blog post');
     }
   };
+
 
   if (loading) {
     return (

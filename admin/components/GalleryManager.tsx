@@ -10,6 +10,7 @@ import {
   getGalleryPosts, addGalleryPost, updateGalleryPost, deleteGalleryPost,
   AdminGalleryPost,
 } from "@/lib/firestoreService";
+import { triggerRevalidate } from "@/admin/utils";
 
 const CATEGORIES = ["Events", "Award & Recognition"];
 
@@ -64,6 +65,7 @@ export default function GalleryManager() {
         await addGalleryPost(form);
         showToast("Post added");
       }
+      await triggerRevalidate(["/gallery"]);
       await load();
       closeForm();
     } catch (err: any) {
@@ -81,6 +83,7 @@ export default function GalleryManager() {
     try {
       await deleteGalleryPost(id);
       showToast("Post deleted");
+      await triggerRevalidate(["/gallery"]);
       await load();
     } catch { showToast("Delete failed", false); }
     finally { setDelId(null); }
@@ -89,6 +92,7 @@ export default function GalleryManager() {
   const togglePublish = async (p: AdminGalleryPost) => {
     try {
       await updateGalleryPost(p.id, { ...p, published: !p.published });
+      await triggerRevalidate(["/gallery"]);
       await load();
     } catch { showToast("Update failed", false); }
   };

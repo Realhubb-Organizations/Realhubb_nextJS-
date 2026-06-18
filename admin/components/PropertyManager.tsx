@@ -11,6 +11,25 @@ import {
   deleteProperty,
   updateProperty,
 } from '@/lib/firestoreService';
+import { triggerRevalidate } from '@/admin/utils';
+
+// Helper to revalidate all property-related pages
+const revalidatePropertyPages = async (slug: string, city: string) => {
+  const paths = [
+    '/',
+    `/property/${slug}`,
+    `/projects/ongoing/${city}`,
+    `/projects/upcoming/${city}`,
+    `/buy/2bhk-flats-${city}`,
+    `/buy/3bhk-flats-${city}`,
+    `/buy/luxury-apartments-${city}`,
+    `/buy/villas-${city}`,
+    `/buy/plots-${city}`,
+    `/real-estate/${city}`,
+    '/sitemap.xml',
+  ];
+  await triggerRevalidate(paths);
+};
 
 export default function PropertyManager() {
   const [properties, setProperties] = useState<AdminProperty[]>([]);
@@ -55,6 +74,9 @@ export default function PropertyManager() {
       setError('');
       const id = await saveProperty(editing);
       
+      // Trigger background revalidation instantly
+      await revalidatePropertyPages(editing.slug, editing.city);
+      
       if ('id' in editing && editing.id) {
         setProperties((prev) =>
           prev.map((p) => (p.id === id ? editing : p))
@@ -74,14 +96,21 @@ export default function PropertyManager() {
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this property?')) return;
 
+    const propertyToDelete = properties.find((p) => p.id === id);
+
     try {
       setError('');
       await deleteProperty(id);
       setProperties((prev) => prev.filter((p) => p.id !== id));
+
+      if (propertyToDelete) {
+        await revalidatePropertyPages(propertyToDelete.slug, propertyToDelete.city);
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to delete property');
     }
   };
+
 
   if (loading) {
     return (

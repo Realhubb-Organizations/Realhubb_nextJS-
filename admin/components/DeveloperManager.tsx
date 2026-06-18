@@ -9,6 +9,17 @@ import {
   saveDeveloper,
   deleteDeveloper,
 } from '@/lib/firestoreService';
+import { triggerRevalidate } from '@/admin/utils';
+
+// Helper to revalidate developer-related pages
+const revalidateDeveloperPages = async (slug: string) => {
+  const paths = [
+    '/developers',
+    `/developers/${slug}`,
+    '/sitemap.xml',
+  ];
+  await triggerRevalidate(paths);
+};
 
 export default function DeveloperManager() {
   const [developers, setDevelopers] = useState<AdminDeveloper[]>([]);
@@ -47,6 +58,9 @@ export default function DeveloperManager() {
       setError('');
       const id = await saveDeveloper(editing);
       
+      // Trigger background revalidation instantly
+      await revalidateDeveloperPages(editing.slug);
+      
       if ('id' in editing && editing.id) {
         setDevelopers((prev) =>
           prev.map((d) => (d.id === id ? editing : d))
@@ -66,14 +80,21 @@ export default function DeveloperManager() {
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this developer?')) return;
 
+    const devToDelete = developers.find((d) => d.id === id);
+
     try {
       setError('');
       await deleteDeveloper(id);
       setDevelopers((prev) => prev.filter((d) => d.id !== id));
+
+      if (devToDelete) {
+        await revalidateDeveloperPages(devToDelete.slug);
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to delete developer');
     }
   };
+
 
   if (loading) {
     return (

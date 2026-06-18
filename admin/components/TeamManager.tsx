@@ -9,6 +9,7 @@ import {
   saveTeamMember,
   deleteTeamMember,
 } from '@/lib/firestoreService';
+import { triggerRevalidate } from '@/admin/utils';
 
 export default function TeamManager() {
   const [members, setMembers] = useState<AdminTeamMember[]>([]);
@@ -47,6 +48,9 @@ export default function TeamManager() {
       setError('');
       const id = await saveTeamMember(editing);
       
+      // Trigger background revalidation instantly
+      await triggerRevalidate(['/about', '/team']);
+      
       if ('id' in editing && editing.id) {
         setMembers((prev) =>
           prev.map((m) => (m.id === id ? editing : m))
@@ -70,10 +74,14 @@ export default function TeamManager() {
       setError('');
       await deleteTeamMember(id);
       setMembers((prev) => prev.filter((m) => m.id !== id));
+      
+      // Trigger background revalidation instantly
+      await triggerRevalidate(['/about', '/team']);
     } catch (err: any) {
       setError(err.message || 'Failed to delete team member');
     }
   };
+
 
   if (loading) {
     return (
