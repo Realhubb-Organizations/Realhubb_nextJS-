@@ -173,7 +173,7 @@ export default async function CareerPage() {
         </section>
 
         {/* ── APPLICATION FORM ── */}
-        <section id="apply" className="py-28 bg-cream border-t border-gray-100">
+        <section id="apply" className="pt-28 pb-12 bg-cream border-t border-gray-100">
           <div className="page-padding max-w-4xl mx-auto">
             <FadeInOnScroll direction="up">
               <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-3 text-center">
@@ -196,7 +196,7 @@ export default async function CareerPage() {
         </section>
 
         {/* ── FAQ ── */}
-        <section className="py-28 bg-cream border-t border-gray-100">
+        <section className="py-12 bg-cream">
           <div className="page-padding max-w-5xl mx-auto">
             <FadeInOnScroll direction="up">
               <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-3 text-center">
@@ -223,7 +223,7 @@ export default async function CareerPage() {
         </section>
 
         {/* ── CTA ── */}
-        <section className="py-28 bg-cream">
+        <section className="pt-12 pb-28 bg-cream">
           <div className="page-padding max-w-5xl mx-auto">
             <FadeInOnScroll direction="up">
               <div className="bg-[#00274D] border border-gold/30 rounded-[32px] p-10 md:p-16 shadow-2xl relative overflow-hidden text-white text-center">
