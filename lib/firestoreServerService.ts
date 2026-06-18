@@ -196,7 +196,7 @@ function normalizeDeveloper(raw: Record<string, unknown>): Developer {
     id: (raw.id as string) ?? "",
     name: (raw.name as string) ?? "",
     slug: (raw.slug as string) ?? "",
-    logo: (raw.logo as string) ?? "",
+    logo: (raw.logo as string) ?? (raw.logoUrl as string) ?? "",
     description: (raw.description as string) ?? "",
     established: (raw.established as string) ?? "",
     headquarters: (raw.headquarters as string) ?? "",
@@ -204,6 +204,7 @@ function normalizeDeveloper(raw: Record<string, unknown>): Developer {
     website: (raw.website as string) ?? "",
   };
 }
+
 
 export async function getAllDevelopers(): Promise<Developer[]> {
   try {
@@ -243,7 +244,7 @@ function normalizeTeamMember(raw: Record<string, unknown>): TeamMember {
     experience: (raw.experience as string) ?? "",
     languages: Array.isArray(raw.languages) ? (raw.languages as string[]) : [],
     achievements: Array.isArray(raw.achievements) ? (raw.achievements as string[]) : [],
-    photo: (raw.photo as string) ?? "",
+    photo: (raw.photo as string) ?? (raw.image as string) ?? "",
     bio: (raw.bio as string) ?? "",
     email: (raw.email as string) ?? "",
     phone: (raw.phone as string) ?? "",

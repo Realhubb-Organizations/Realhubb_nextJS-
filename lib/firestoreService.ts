@@ -114,21 +114,39 @@ export async function getDevelopers(): Promise<AdminDeveloper[]> {
   const snapshot = await getDocs(
     query(collection(db, "developers"), orderBy("name", "asc"))
   );
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as AdminDeveloper));
+  return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      logoUrl: data.logoUrl || data.logo || "",
+    } as AdminDeveloper;
+  });
 }
 
 export async function getDeveloper(id: string): Promise<AdminDeveloper | null> {
   const doc_ref = doc(db, "developers", id);
   const snapshot = await getDoc(doc_ref);
   if (!snapshot.exists()) return null;
-  return { id: snapshot.id, ...snapshot.data() } as AdminDeveloper;
+  const data = snapshot.data();
+  return {
+    id: snapshot.id,
+    ...data,
+    logoUrl: data.logoUrl || data.logo || "",
+  } as AdminDeveloper;
 }
 
 export async function saveDeveloper(
   developer: Omit<AdminDeveloper, "id"> | AdminDeveloper
 ): Promise<string> {
   const id = ("id" in developer && developer.id) ? developer.id : doc(collection(db, "developers")).id;
-  await setDoc(doc(db, "developers", id), { ...developer, id }, { merge: true });
+  const data = {
+    ...developer,
+    id,
+    logo: developer.logoUrl || "",
+    logoUrl: developer.logoUrl || "",
+  };
+  await setDoc(doc(db, "developers", id), data, { merge: true });
   return id;
 }
 
@@ -146,8 +164,14 @@ export async function getDeveloperBySlug(slug: string): Promise<AdminDeveloper |
   );
   if (snapshot.empty) return null;
   const doc_data = snapshot.docs[0];
-  return { id: doc_data.id, ...doc_data.data() } as AdminDeveloper;
+  const data = doc_data.data();
+  return {
+    id: doc_data.id,
+    ...data,
+    logoUrl: data.logoUrl || data.logo || "",
+  } as AdminDeveloper;
 }
+
 
 /* ============================================================================
    TEAM MEMBERS
@@ -157,23 +181,42 @@ export async function getTeamMembers(): Promise<AdminTeamMember[]> {
   const snapshot = await getDocs(
     query(collection(db, "team"), orderBy("name", "asc"))
   );
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as AdminTeamMember));
+  return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      image: data.image || data.photo || "",
+    } as AdminTeamMember;
+  });
 }
 
 export async function getTeamMember(id: string): Promise<AdminTeamMember | null> {
   const doc_ref = doc(db, "team", id);
   const snapshot = await getDoc(doc_ref);
   if (!snapshot.exists()) return null;
-  return { id: snapshot.id, ...snapshot.data() } as AdminTeamMember;
+  const data = snapshot.data();
+  return {
+    id: snapshot.id,
+    ...data,
+    image: data.image || data.photo || "",
+  } as AdminTeamMember;
 }
 
 export async function saveTeamMember(
   member: Omit<AdminTeamMember, "id"> | AdminTeamMember
 ): Promise<string> {
   const id = ("id" in member && member.id) ? member.id : doc(collection(db, "team")).id;
-  await setDoc(doc(db, "team", id), { ...member, id }, { merge: true });
+  const data = {
+    ...member,
+    id,
+    photo: member.image || "",
+    image: member.image || "",
+  };
+  await setDoc(doc(db, "team", id), data, { merge: true });
   return id;
 }
+
 
 export async function updateTeamMember(id: string, updates: Partial<AdminTeamMember>) {
   await updateDoc(doc(db, "team", id), updates);
