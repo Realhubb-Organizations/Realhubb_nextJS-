@@ -27,6 +27,8 @@ import FaqAccordion from "@/components/faq/FaqAccordion";
 import ContactCTA from "@/components/home/ContactCTA";
 import { buildMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export const metadata: Metadata = buildMetadata({

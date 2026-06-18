@@ -52,7 +52,7 @@ export async function generateStaticParams() {
   return all.map((slug) => ({ slug }));
 }
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;

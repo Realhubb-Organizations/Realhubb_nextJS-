@@ -14,7 +14,7 @@ export const metadata: Metadata = buildMetadata({
   canonical: `${SITE_URL}/blog`,
 });
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function BlogPage() {
   const firestorePosts = await getAllBlogPosts().catch(() => []);

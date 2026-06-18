@@ -7,6 +7,8 @@ import { personSchema, breadcrumbSchema } from "@/lib/structuredData";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 
+export const dynamic = "force-dynamic";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export const metadata: Metadata = buildMetadata({

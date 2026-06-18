@@ -18,7 +18,7 @@ export const metadata: Metadata = buildMetadata({
   canonical: `${SITE_URL}/developers`,
 });
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function DevelopersPage() {
   const firestoreDevs = await getAllDevelopers().catch(() => []);
