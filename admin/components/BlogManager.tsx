@@ -123,7 +123,7 @@ export default function BlogManager() {
             <input
               type="text"
               placeholder="Title*"
-              value={editing.title}
+              value={editing.title || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, title: e.target.value })
               }
@@ -133,7 +133,7 @@ export default function BlogManager() {
             <input
               type="text"
               placeholder="Slug (URL-friendly)*"
-              value={editing.slug}
+              value={editing.slug || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, slug: e.target.value })
               }
@@ -142,7 +142,7 @@ export default function BlogManager() {
 
             <textarea
               placeholder="Excerpt (short summary)*"
-              value={editing.excerpt}
+              value={editing.excerpt || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, excerpt: e.target.value })
               }
@@ -152,7 +152,7 @@ export default function BlogManager() {
 
             <textarea
               placeholder="Content (Full markdown)*"
-              value={editing.content}
+              value={editing.content || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, content: e.target.value })
               }
@@ -163,7 +163,7 @@ export default function BlogManager() {
             <input
               type="text"
               placeholder="Category"
-              value={editing.category}
+              value={editing.category || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, category: e.target.value })
               }
@@ -173,12 +173,13 @@ export default function BlogManager() {
             <input
               type="text"
               placeholder="Author Name"
-              value={editing.authorName}
+              value={editing.authorName || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, authorName: e.target.value })
               }
               className="w-full px-3 py-2 text-sm border border-input rounded-lg bg-background"
             />
+
 
             <div>
               <label className="text-xs font-normal text-muted-foreground uppercase tracking-wide mb-2 block">

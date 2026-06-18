@@ -109,7 +109,7 @@ export default function TeamManager() {
             <input
               type="text"
               placeholder="Name*"
-              value={editing.name}
+              value={editing.name || ""}
               onChange={(e) =>
                 setEditing((m) => m && { ...m, name: e.target.value })
               }
@@ -119,7 +119,7 @@ export default function TeamManager() {
             <input
               type="text"
               placeholder="Role/Position*"
-              value={editing.role}
+              value={editing.role || ""}
               onChange={(e) =>
                 setEditing((m) => m && { ...m, role: e.target.value })
               }
@@ -128,7 +128,7 @@ export default function TeamManager() {
 
             <textarea
               placeholder="Bio"
-              value={editing.bio}
+              value={editing.bio || ""}
               onChange={(e) =>
                 setEditing((m) => m && { ...m, bio: e.target.value })
               }
@@ -139,7 +139,7 @@ export default function TeamManager() {
             <input
               type="email"
               placeholder="Email"
-              value={editing.email}
+              value={editing.email || ""}
               onChange={(e) =>
                 setEditing((m) => m && { ...m, email: e.target.value })
               }
@@ -149,7 +149,7 @@ export default function TeamManager() {
             <input
               type="tel"
               placeholder="Phone"
-              value={editing.phone}
+              value={editing.phone || ""}
               onChange={(e) =>
                 setEditing((m) => m && { ...m, phone: e.target.value })
               }
@@ -159,12 +159,13 @@ export default function TeamManager() {
             <input
               type="url"
               placeholder="LinkedIn URL"
-              value={editing.linkedin}
+              value={editing.linkedin || ""}
               onChange={(e) =>
                 setEditing((m) => m && { ...m, linkedin: e.target.value })
               }
               className="w-full px-3 py-2 text-sm border border-input rounded-lg bg-background"
             />
+
 
             <div>
               <label className="text-xs font-normal text-muted-foreground uppercase tracking-wide mb-2 block">

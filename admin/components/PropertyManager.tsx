@@ -220,7 +220,7 @@ export default function PropertyManager() {
             <input
               type="text"
               placeholder="Price (e.g., '₹50 Lakhs - ₹1 Cr')*"
-              value={editing.price}
+              value={editing.price || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, price: e.target.value })
               }
@@ -230,7 +230,7 @@ export default function PropertyManager() {
             <input
               type="number"
               placeholder="Price Value (for sorting)*"
-              value={editing.priceValue}
+              value={editing.priceValue ?? 0}
               onChange={(e) =>
                 setEditing((p) =>
                   p && { ...p, priceValue: parseInt(e.target.value) || 0 }
@@ -242,7 +242,7 @@ export default function PropertyManager() {
             <input
               type="text"
               placeholder="Area (e.g., '2000 Sq.Ft')"
-              value={editing.area}
+              value={editing.area || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, area: e.target.value })
               }
@@ -252,7 +252,7 @@ export default function PropertyManager() {
             <input
               type="text"
               placeholder="Bedrooms"
-              value={editing.bedrooms}
+              value={editing.bedrooms || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, bedrooms: e.target.value })
               }
@@ -262,7 +262,7 @@ export default function PropertyManager() {
             <input
               type="text"
               placeholder="RERA Number"
-              value={editing.rera}
+              value={editing.rera || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, rera: e.target.value })
               }
@@ -272,7 +272,7 @@ export default function PropertyManager() {
             <input
               type="text"
               placeholder="Possession (e.g., 'Q4 2024')"
-              value={editing.possession}
+              value={editing.possession || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, possession: e.target.value })
               }
@@ -281,7 +281,7 @@ export default function PropertyManager() {
 
             <textarea
               placeholder="Description"
-              value={editing.description}
+              value={editing.description || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, description: e.target.value })
               }
@@ -292,12 +292,13 @@ export default function PropertyManager() {
             <input
               type="url"
               placeholder="Map Embed URL"
-              value={editing.mapEmbedUrl}
+              value={editing.mapEmbedUrl || ""}
               onChange={(e) =>
                 setEditing((p) => p && { ...p, mapEmbedUrl: e.target.value })
               }
               className="w-full px-3 py-2 text-sm border border-input rounded-lg bg-background"
             />
+
 
             <div>
               <label className="flex items-center gap-2 cursor-pointer">

@@ -122,7 +122,7 @@ export default function DeveloperManager() {
             <input
               type="text"
               placeholder="Developer Name*"
-              value={editing.name}
+              value={editing.name || ""}
               onChange={(e) =>
                 setEditing((d) => d && { ...d, name: e.target.value })
               }
@@ -132,7 +132,7 @@ export default function DeveloperManager() {
             <input
               type="text"
               placeholder="Slug (URL-friendly)*"
-              value={editing.slug}
+              value={editing.slug || ""}
               onChange={(e) =>
                 setEditing((d) => d && { ...d, slug: e.target.value })
               }
@@ -141,7 +141,7 @@ export default function DeveloperManager() {
 
             <textarea
               placeholder="Short Description"
-              value={editing.description}
+              value={editing.description || ""}
               onChange={(e) =>
                 setEditing((d) => d && { ...d, description: e.target.value })
               }
@@ -151,7 +151,7 @@ export default function DeveloperManager() {
 
             <textarea
               placeholder="About (Detailed)"
-              value={editing.about}
+              value={editing.about || ""}
               onChange={(e) =>
                 setEditing((d) => d && { ...d, about: e.target.value })
               }
@@ -162,7 +162,7 @@ export default function DeveloperManager() {
             <input
               type="url"
               placeholder="Website URL"
-              value={editing.websiteUrl}
+              value={editing.websiteUrl || ""}
               onChange={(e) =>
                 setEditing((d) => d && { ...d, websiteUrl: e.target.value })
               }
@@ -172,12 +172,13 @@ export default function DeveloperManager() {
             <input
               type="text"
               placeholder="Experience (e.g., '20+ years')"
-              value={editing.experience}
+              value={editing.experience || ""}
               onChange={(e) =>
                 setEditing((d) => d && { ...d, experience: e.target.value })
               }
               className="w-full px-3 py-2 text-sm border border-input rounded-lg bg-background"
             />
+
 
             <div>
               <label className="text-xs font-normal text-muted-foreground uppercase tracking-wide mb-2 block">
