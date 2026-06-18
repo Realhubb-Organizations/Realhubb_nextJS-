@@ -117,141 +117,171 @@ export default function ProjectsClient({
   const hasActiveFilters = filterType || priceRange || search;
 
   return (
-    <div className="page-padding py-10">
-      {/* Type tabs */}
-      <div className="flex gap-2 mb-6">
-        {typeTabs.map((t) => (
-          <button
-            key={t.value}
-            onClick={() => handleTypeChange(t.value)}
-            className={cn(
-              "px-5 py-2 rounded-full text-sm font-normal transition-all",
-              activeType === t.value
-                ? "bg-navy text-white shadow"
-                : "bg-white border border-gray-200 text-navy/60 hover:bg-navy/5"
-            )}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* City tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {cityTabs.map((c) => (
-          <button
-            key={c.value}
-            onClick={() => handleCityChange(c.value)}
-            className={cn(
-              "px-4 py-1.5 rounded-full text-sm font-normal transition-all",
-              activeCity === c.value
-                ? "bg-gold text-navy shadow"
-                : "bg-white border border-gray-200 text-navy/60 hover:bg-gold/10"
-            )}
-          >
-            {c.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Search + filter toggle */}
-      <div className="flex gap-3 mb-6">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by project, location or developer…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-xl pl-9 pr-4 py-2.5 text-sm text-navy focus:outline-none focus:border-gold"
-          />
-        </div>
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className={cn(
-            "flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm transition-all",
-            showFilters
-              ? "bg-navy text-white border-navy"
-              : "bg-white border-gray-200 text-navy/60 hover:border-navy"
-          )}
-        >
-          <SlidersHorizontal className="w-4 h-4" />
-          Filters
-        </button>
-        {hasActiveFilters && (
-          <button
-            onClick={clearFilters}
-            className="flex items-center gap-1 text-sm text-red-500 hover:text-red-700 transition-colors"
-          >
-            <X className="w-4 h-4" /> Clear
-          </button>
-        )}
-      </div>
-
-      {/* Expanded filters */}
-      {showFilters && (
-        <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs text-gray-400 mb-2">Property Type</label>
-            <div className="flex flex-wrap gap-2">
-              {propTypes.map((t) => (
+    <div className="bg-cream min-h-screen pb-24">
+      <div className="page-padding relative z-20 -mt-12 md:-mt-16">
+        {/* Floating Controls Bar */}
+        <div className="max-w-7xl mx-auto bg-white border border-gray-100 rounded-3xl p-6 shadow-xl space-y-6">
+          
+          {/* Top Row: Selectors and Search */}
+          <div className="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
+            
+            {/* Left side: Type controls (Ongoing/Upcoming sliding switcher) */}
+            <div className="flex bg-gray-100 p-1.5 rounded-xl self-start">
+              {typeTabs.map((t) => (
                 <button
                   key={t.value}
-                  onClick={() => setFilterType(t.value)}
+                  onClick={() => handleTypeChange(t.value)}
                   className={cn(
-                    "px-3 py-1.5 rounded-lg text-xs font-normal border transition-all",
-                    filterType === t.value
-                      ? "bg-navy text-white border-navy"
-                      : "border-gray-200 text-navy/60 hover:border-navy"
+                    "px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer",
+                    activeType === t.value
+                      ? "bg-navy text-white shadow-sm"
+                      : "text-navy/60 hover:text-navy"
                   )}
                 >
                   {t.label}
                 </button>
               ))}
             </div>
-          </div>
-          <div>
-            <label className="block text-xs text-gray-400 mb-2">Budget Range</label>
-            <div className="flex flex-wrap gap-2">
-              {priceRanges.map((r) => (
+
+            {/* Center: Search input */}
+            <div className="flex-1 max-w-2xl relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search by project, location or developer…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full bg-gray-50/50 border border-gray-200 focus:border-gold focus:ring-1 focus:ring-gold/30 rounded-xl pl-11 pr-4 py-3 text-sm text-navy focus:outline-none transition-all"
+              />
+            </div>
+
+            {/* Right side: Action buttons */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={cn(
+                  "flex items-center gap-2 px-5 py-3 rounded-xl border text-sm font-medium transition-all cursor-pointer shadow-sm",
+                  showFilters
+                    ? "bg-navy text-white border-navy"
+                    : "bg-white border-gray-200 text-navy/60 hover:border-gold hover:text-navy"
+                )}
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filters
+              </button>
+              {hasActiveFilters && (
                 <button
-                  key={r.value}
-                  onClick={() => setPriceRange(r.value)}
+                  onClick={clearFilters}
+                  className="flex items-center gap-1.5 px-4 py-3 rounded-xl border border-red-100 bg-red-50/50 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-all cursor-pointer"
+                >
+                  <X className="w-4 h-4" /> Clear
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Expanded filters */}
+          {showFilters && (
+            <div className="pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-6 animate-fadeIn">
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-gold font-medium mb-3">Property Type</label>
+                <div className="flex flex-wrap gap-2">
+                  {propTypes.map((t) => (
+                    <button
+                      key={t.value}
+                      onClick={() => setFilterType(t.value)}
+                      className={cn(
+                        "px-4 py-2 rounded-xl text-xs font-normal border transition-all cursor-pointer",
+                        filterType === t.value
+                          ? "bg-navy text-white border-navy shadow-sm"
+                          : "bg-white border-gray-200 text-navy/60 hover:border-navy hover:text-navy"
+                      )}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-gold font-medium mb-3">Budget Range</label>
+                <div className="flex flex-wrap gap-2">
+                  {priceRanges.map((r) => (
+                    <button
+                      key={r.value}
+                      onClick={() => setPriceRange(r.value)}
+                      className={cn(
+                        "px-4 py-2 rounded-xl text-xs font-normal border transition-all cursor-pointer",
+                        priceRange === r.value
+                          ? "bg-gold text-navy border-gold shadow-sm"
+                          : "bg-white border-gray-200 text-navy/60 hover:border-gold hover:text-navy"
+                      )}
+                    >
+                      {r.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Bottom Row: City Navigation tabs (Sleek text link style) */}
+          <div className="pt-5 border-t border-gray-100 flex flex-wrap items-center gap-x-8 gap-y-3">
+            <span className="text-xs uppercase tracking-wider text-gray-400 font-medium">Select City:</span>
+            <div className="flex flex-wrap gap-6">
+              {cityTabs.map((c) => (
+                <button
+                  key={c.value}
+                  onClick={() => handleCityChange(c.value)}
                   className={cn(
-                    "px-3 py-1.5 rounded-lg text-xs font-normal border transition-all",
-                    priceRange === r.value
-                      ? "bg-gold text-navy border-gold"
-                      : "border-gray-200 text-navy/60 hover:border-gold"
+                    "text-sm font-medium transition-all relative pb-1.5 cursor-pointer",
+                    activeCity === c.value
+                      ? "text-gold"
+                      : "text-navy/60 hover:text-navy"
                   )}
                 >
-                  {r.label}
+                  {c.label}
+                  {activeCity === c.value && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold rounded-full" />
+                  )}
                 </button>
               ))}
             </div>
           </div>
         </div>
-      )}
 
-      {/* Results count */}
-      <p className="text-gray-400 text-sm mb-6">
-        {filtered.length} {filtered.length === 1 ? "property" : "properties"} found
-      </p>
+        {/* Results grid container */}
+        <div className="max-w-7xl mx-auto mt-12">
+          {/* Results count info */}
+          <div className="flex justify-between items-center mb-6">
+            <p className="text-navy/50 text-sm">
+              Showing <span className="text-navy font-semibold">{filtered.length}</span> {filtered.length === 1 ? "property" : "properties"} found in <span className="font-semibold text-navy">{cityTabs.find(c => c.value === activeCity)?.label || activeCity}</span>
+            </p>
+          </div>
 
-      {/* Grid */}
-      {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((p, i) => (
-            <PropertyCard key={p.id} property={p} imagePriority={i < 3} />
-          ))}
+          {/* Grid of properties (cards are NOT modified) */}
+          {filtered.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((p, i) => (
+                <PropertyCard key={p.id} property={p} imagePriority={i < 3} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center bg-white border border-gray-100 rounded-3xl py-24 px-6 shadow-sm">
+              <div className="text-4xl mb-4">🔍</div>
+              <h3 className="font-heading text-xl text-navy font-normal mb-2">No Properties Found</h3>
+              <p className="text-gray-400 text-sm max-w-xs mx-auto mb-6">
+                We couldn't find any properties matching your current filter criteria.
+              </p>
+              <button
+                onClick={clearFilters}
+                className="bg-gold text-navy px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold/90 transition-all cursor-pointer"
+              >
+                Clear All Filters
+              </button>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="text-center py-20 text-gray-400">
-          <p className="text-lg mb-2">No properties match your filters.</p>
-          <button onClick={clearFilters} className="text-gold text-sm hover:underline">
-            Clear all filters
-          </button>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

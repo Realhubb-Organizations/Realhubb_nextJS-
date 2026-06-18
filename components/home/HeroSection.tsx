@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MapPin, Search, ChevronDown } from "lucide-react";
+import CountingNumber from "@/components/ui/counting_text";
 
 const VIDEO_SRC =
   "https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4";
@@ -39,8 +40,10 @@ const STATS = [
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const statsRef = useRef<HTMLElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined);
+  const [statsInView, setStatsInView] = useState(false);
 
   const [city, setCity] = useState("Bangalore");
   const [propertyType, setPropertyType] = useState("");
@@ -69,6 +72,23 @@ export default function HeroSection() {
     const raf = requestAnimationFrame(loadVideo);
     return () => { observer.disconnect(); cancelAnimationFrame(raf); };
   }, [videoSrc]);
+
+  // Intersection observer for stats counting animation
+  useEffect(() => {
+    const statsSection = statsRef.current;
+    if (!statsSection) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(statsSection);
+    return () => observer.disconnect();
+  }, []);
 
   // Autoplay/pause control based on video visibility
   useEffect(() => {
@@ -271,7 +291,7 @@ export default function HeroSection() {
     </section>
 
     {/* ── Stats Bar ── */}
-    <section className="bg-[#00274D] py-12 px-8 md:px-10 lg:px-10 xl:px-28 border-t border-white/5">
+    <section ref={statsRef} className="bg-[#00274D] py-12 px-8 md:px-10 lg:px-10 xl:px-28 border-t border-white/5">
       {/* BY THE NUMBERS label */}
       <div className="flex items-center justify-center gap-5 mb-2">
         <span className="h-px w-14 bg-[#D7A764]/50" />
@@ -297,7 +317,14 @@ export default function HeroSection() {
 
             {/* Big stat value */}
             <div className="text-[36px] lg:text-[48px] xl:text-[56px] font-normal text-[#D7A764] leading-none tracking-tight">
-              {stat.value}
+              <CountingNumber
+                fromNumber={0}
+                number={parseInt(stat.value.replace(/[^0-9]/g, ""), 10) || 0}
+                decimalPlaces={0}
+                duration={2000}
+                inView={statsInView}
+              />
+              {stat.value.replace(/[0-9]/g, "")}
             </div>
 
             {/* Label with leading dash */}

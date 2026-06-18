@@ -8,7 +8,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-navy text-white">
-      <div className="page-padding py-16">
+      <div className="page-padding pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-10">
 
           {/* Brand column */}
@@ -114,7 +114,7 @@ export default function Footer() {
         </div>
 
         {/* Contact strip */}
-        <div className="mt-12 pt-8 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-white/60">
+        <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-white/60">
           <a href={`tel:${company.phone}`} className="flex items-center gap-2 hover:text-gold transition-colors">
             <Phone className="w-4 h-4 shrink-0 text-gold" />
             <span>{company.phone}</span>

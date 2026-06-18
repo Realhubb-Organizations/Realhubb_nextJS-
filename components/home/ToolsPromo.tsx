@@ -37,21 +37,21 @@ export default function ToolsPromo() {
           </h2>
         </div>
 
-        <RevealGrid className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <RevealGrid className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {tools.map((tool) => {
             const Icon = tool.icon;
             return (
               <RevealCard key={tool.title}>
                 <Link
                   href={tool.href}
-                  className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-gold block h-full"
+                  className="group bg-white rounded-2xl p-8 md:p-10 shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-gold block h-full"
                 >
-                  <div className="w-10 h-10 bg-gold/10 rounded-xl flex items-center justify-center mb-4">
-                    <Icon className="w-5 h-5 text-gold" />
+                  <div className="w-12 h-12 bg-gold/10 rounded-xl flex items-center justify-center mb-6">
+                    <Icon className="w-6 h-6 text-gold" />
                   </div>
-                  <h3 className="font-heading text-navy text-lg font-normal mb-2">{tool.title}</h3>
-                  <p className="text-gray-400 text-sm mb-4">{tool.desc}</p>
-                  <span className="text-sm text-navy group-hover:text-gold transition-colors border-b border-navy/20 group-hover:border-gold">
+                  <h3 className="font-heading text-navy text-xl font-normal mb-3">{tool.title}</h3>
+                  <p className="text-gray-500 text-sm mb-6 leading-relaxed">{tool.desc}</p>
+                  <span className="text-sm font-medium text-navy group-hover:text-gold transition-colors border-b border-navy/20 group-hover:border-gold pb-0.5">
                     {tool.cta} →
                   </span>
                 </Link>

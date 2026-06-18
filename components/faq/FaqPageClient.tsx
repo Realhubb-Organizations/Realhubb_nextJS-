@@ -222,7 +222,10 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
             )}
 
             {visibleCategories.length > 0 ? (
-              <RevealGrid className="space-y-6">
+              <RevealGrid
+                key={`${activeCategory}_${searchQuery}`}
+                className="space-y-6"
+              >
                 {visibleCategories.map((category) => (
                   <RevealCard key={category.id}>
                     <div

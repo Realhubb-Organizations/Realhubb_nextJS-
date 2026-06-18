@@ -23,8 +23,8 @@ export default function LeadPopup() {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Determine if popup should run at all
-  const isAdminPage = pathname?.startsWith("/admin");
+  // Determine if popup should run at all (only on homepage)
+  const isHomepage = pathname === "/";
 
   useEffect(() => {
     setMounted(true);
@@ -37,21 +37,24 @@ export default function LeadPopup() {
         isTest = true;
         try {
           localStorage.removeItem("realhubb_popup_submitted");
+          sessionStorage.removeItem("realhubb_popup_dismissed");
         } catch (e) {
-          console.warn("Could not clear localStorage:", e);
+          console.warn("Could not clear storage:", e);
         }
       }
     }
 
-    // Check if user has already submitted the lead popup in the past
+    // Check if user has already submitted or dismissed the lead popup
     let isSubmitted = "false";
+    let isDismissed = "false";
     try {
       isSubmitted = localStorage.getItem("realhubb_popup_submitted") || "false";
+      isDismissed = sessionStorage.getItem("realhubb_popup_dismissed") || "false";
     } catch (e) {
-      console.warn("Could not read from localStorage:", e);
+      console.warn("Could not read from storage:", e);
     }
     
-    if (isSubmitted === "true" || isAdminPage) {
+    if (isSubmitted === "true" || isDismissed === "true" || !isHomepage) {
       return;
     }
 
@@ -65,27 +68,18 @@ export default function LeadPopup() {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [isAdminPage]);
+  }, [isHomepage]);
 
   // Handle closing the popup
   const handleClose = () => {
     setIsOpen(false);
-
-    // If already submitted, do not restart timers
-    let isSubmitted = "false";
-    try {
-      isSubmitted = localStorage.getItem("realhubb_popup_submitted") || "false";
-    } catch (e) {
-      console.warn("Could not read from localStorage:", e);
-    }
-    if (isSubmitted === "true" || isAdminPage) return;
-
-    // Clear any active timer and start a new 30 seconds timer
     if (timerRef.current) clearTimeout(timerRef.current);
     
-    timerRef.current = setTimeout(() => {
-      setIsOpen(true);
-    }, 30000);
+    try {
+      sessionStorage.setItem("realhubb_popup_dismissed", "true");
+    } catch (e) {
+      console.warn("Could not write to sessionStorage:", e);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -128,7 +122,7 @@ export default function LeadPopup() {
     }
   };
 
-  if (!mounted || isAdminPage) return null;
+  if (!mounted || !isHomepage) return null;
 
   return (
     <AnimatePresence>

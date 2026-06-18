@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { breadcrumbSchema } from "@/lib/structuredData";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import GalleryClient from "@/components/gallery/GalleryClient";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 
@@ -30,19 +29,34 @@ export default function GalleryPage() {
       />
       <div className="pt-20">
         {/* ── HERO ── */}
-        <section className="bg-navy py-14 page-padding">
-          <BreadcrumbNav items={breadcrumbs} dark />
-          <FadeInOnScroll direction="up">
-            <p className="text-[#D7A764] text-[10px] tracking-[0.28em] uppercase font-normal mb-4 mt-6">
-              Our Gallery
-            </p>
-            <h1 className="font-heading text-4xl md:text-[56px] text-white font-normal leading-tight mb-4 max-w-2xl">
-              Moments that <span className="text-[#D7A764]">define us.</span>
-            </h1>
-            <p className="text-white/60 text-base leading-relaxed max-w-xl">
-              A visual journey through our events, properties, team milestones, and community moments.
-            </p>
-          </FadeInOnScroll>
+        <section className="bg-navy py-16 md:py-20 page-padding relative overflow-hidden text-white">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80"
+              alt="RealHubb Gallery Showcase"
+              className="w-full h-full object-cover opacity-45 filter brightness-95"
+            />
+            {/* Subtle linear navy-dominant gradient to maintain readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
+          </div>
+
+          {/* Subtle top/right glow matching site branding */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10">
+            <FadeInOnScroll direction="up">
+              <p className="text-[#D7A764] text-[10px] tracking-[0.28em] uppercase font-normal mb-4 mt-6 animate-fadeIn">
+                Our Gallery
+              </p>
+              <h1 className="font-heading text-4xl md:text-[56px] text-white font-normal leading-tight mb-4 max-w-2xl animate-fadeIn">
+                Moments that <span className="text-[#D7A764]">define us.</span>
+              </h1>
+              <p className="text-white/60 text-base leading-relaxed max-w-xl animate-fadeIn">
+                A visual journey through our events, properties, team milestones, and community moments.
+              </p>
+            </FadeInOnScroll>
+          </div>
         </section>
 
         <GalleryClient />
