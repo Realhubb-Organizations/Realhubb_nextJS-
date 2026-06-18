@@ -15,12 +15,13 @@ export default function BreadcrumbNav({ items, dark = false }: Props) {
         {items.map((item, i) => {
           const isLast = i === items.length - 1;
           return (
-            <li key={item.url} className="flex items-center gap-1">
+            <li key={`${item.url}-${i}`} className="flex items-center gap-1">
               {i > 0 && (
                 <ChevronRight
                   className={cn("w-3 h-3", dark ? "text-white/30" : "text-gray-300")}
                 />
               )}
+
               {isLast ? (
                 <span className={cn(dark ? "text-white/50" : "text-gray-400")}>
                   {item.name}
