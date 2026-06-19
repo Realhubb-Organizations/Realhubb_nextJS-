@@ -77,45 +77,50 @@ export default async function AreaPage({ params }: { params: Params }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema(propertyListItems)) }} />
       )}
 
-      <div className="pt-20">
+      <div className="pt-20 bg-cream min-h-screen">
         {/* Hero */}
-        <div className="bg-navy py-14 page-padding">
-          <BreadcrumbNav items={breadcrumbs} dark />
-          <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
-            Flats & Properties in {loc.area}, {cityLabel}
-          </h1>
-          <p className="text-white/60 text-base mt-3 max-w-xl">
-            {loc.avgPriceSqft} · {loc.popularTypes.join(", ")}
-          </p>
+        <div className="bg-navy py-14 page-padding relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10">
+            <BreadcrumbNav items={breadcrumbs} />
+            <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
+              Flats & Properties in <span className="text-gold">{loc.area}</span>, {cityLabel}
+            </h1>
+            <p className="text-white/60 text-sm md:text-base mt-3 max-w-xl font-light">
+              {loc.avgPriceSqft} · {loc.popularTypes.join(", ")}
+            </p>
+          </div>
         </div>
 
         <div className="page-padding py-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-10">
+          <div className="lg:col-span-2 space-y-8">
 
             {/* Intro */}
-            <section>
-              <p className="text-gray-500 text-sm leading-relaxed">{loc.intro}</p>
-            </section>
+            <div className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
+              <p className="text-gray-500 text-sm leading-relaxed font-light">{loc.intro}</p>
+            </div>
 
             {/* Stats */}
             <section className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="bg-cream rounded-xl p-4">
+              <div className="bg-white border border-gray-150/80 rounded-2xl p-5 shadow-sm">
                 <p className="section-overline text-gold mb-1">Avg Price</p>
                 <p className="font-heading text-navy text-lg font-normal">{loc.avgPriceSqft}</p>
               </div>
-              <div className="bg-cream rounded-xl p-4">
+              <div className="bg-white border border-gray-150/80 rounded-2xl p-5 shadow-sm">
                 <p className="section-overline text-gold mb-1">Popular Types</p>
-                <p className="text-navy text-sm">{loc.popularTypes.slice(0, 2).join(", ")}</p>
+                <p className="text-navy text-sm font-light mt-0.5">{loc.popularTypes.slice(0, 2).join(", ")}</p>
               </div>
-              <div className="bg-cream rounded-xl p-4">
+              <div className="bg-white border border-gray-150/80 rounded-2xl p-5 shadow-sm">
                 <p className="section-overline text-gold mb-1">Top Builders</p>
-                <p className="text-navy text-sm">{loc.topBuilders.slice(0, 2).join(", ")}</p>
+                <p className="text-navy text-sm font-light mt-0.5">{loc.topBuilders.slice(0, 2).join(", ")}</p>
               </div>
             </section>
 
             {/* Properties */}
             {areaProps.length > 0 ? (
-              <section>
+              <section className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
                 <h2 className="font-heading text-2xl text-navy font-normal mb-6">
                   Properties in {loc.area}
                 </h2>
@@ -126,15 +131,15 @@ export default async function AreaPage({ params }: { params: Params }) {
                 </div>
               </section>
             ) : (
-              <section>
+              <section className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
                 <h2 className="font-heading text-2xl text-navy font-normal mb-4">
                   Properties in {loc.area}
                 </h2>
-                <div className="bg-cream rounded-2xl p-8 text-center">
+                <div className="bg-cream/40 border border-dashed border-gray-200 rounded-2xl p-8 text-center">
                   <p className="text-gray-400 text-sm mb-4">
                     No listed projects yet — contact us for upcoming launches in {loc.area}.
                   </p>
-                  <Link href="/contact-us" className="text-gold text-sm hover:underline">
+                  <Link href="/contact-us" className="text-gold text-sm hover:underline font-medium">
                     Enquire about {loc.area} →
                   </Link>
                 </div>
@@ -142,23 +147,23 @@ export default async function AreaPage({ params }: { params: Params }) {
             )}
 
             {/* Connectivity */}
-            <section className="bg-cream rounded-2xl p-6">
-              <h2 className="font-heading text-xl text-navy font-normal mb-4">
+            <section className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
+              <h2 className="font-heading text-2xl text-navy font-normal mb-6">
                 Connectivity &amp; Infrastructure
               </h2>
-              <ul className="space-y-2">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {loc.connectivity.map((c) => (
-                  <li key={c} className="flex items-start gap-2 text-sm text-gray-500">
-                    <span className="text-gold mt-0.5 shrink-0">→</span>
-                    {c}
+                  <li key={c} className="flex items-start gap-3 text-sm text-gray-500 font-light hover:text-gold transition-colors duration-200">
+                    <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
+                    <span>{c}</span>
                   </li>
                 ))}
               </ul>
             </section>
 
             {/* Nearby areas */}
-            <section>
-              <h2 className="font-heading text-xl text-navy font-normal mb-4">
+            <section className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
+              <h2 className="font-heading text-2xl text-navy font-normal mb-6">
                 Nearby Localities
               </h2>
               <div className="flex flex-wrap gap-3">
@@ -166,7 +171,7 @@ export default async function AreaPage({ params }: { params: Params }) {
                   <Link
                     key={n.areaSlug}
                     href={`/real-estate/${city}/${n.areaSlug}`}
-                    className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm text-navy/70 hover:border-gold hover:text-gold transition-all"
+                    className="px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-navy/70 hover:border-gold hover:text-gold transition-all duration-300 shadow-sm"
                   >
                     {n.area} →
                   </Link>
@@ -175,7 +180,7 @@ export default async function AreaPage({ params }: { params: Params }) {
             </section>
 
             {/* FAQ */}
-            <section>
+            <section className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
               <h2 className="font-heading text-2xl text-navy font-normal mb-6">
                 FAQs — {loc.area} Real Estate
               </h2>
@@ -187,26 +192,36 @@ export default async function AreaPage({ params }: { params: Params }) {
           <div>
             <div className="sticky top-24 space-y-4">
               <InstantCallbackForm city={`${loc.area}, ${cityLabel}`} />
-              <div className="bg-navy rounded-2xl p-5">
-                <p className="section-overline text-gold mb-3">Explore {cityLabel}</p>
-                <ul className="space-y-2">
+              <div className="bg-[#00274D] border border-gold/30 rounded-3xl p-6 relative overflow-hidden shadow-lg">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-2xl pointer-events-none" />
+                <p className="font-heading text-lg text-gold font-normal mb-4 relative z-10">Explore {cityLabel}</p>
+                <ul className="space-y-3 relative z-10">
                   <li>
-                    <Link href={`/real-estate/${city}`} className="text-white/60 hover:text-gold text-sm transition-colors">
-                      All {cityLabel} Localities →
+                    <Link
+                      href={`/real-estate/${city}`}
+                      className="flex items-center justify-between text-white/70 hover:text-gold text-sm font-light transition-colors group"
+                    >
+                      <span>All {cityLabel} Localities</span>
+                      <span className="text-xs transition-transform group-hover:translate-x-1">→</span>
                     </Link>
                   </li>
                   <li>
-                    <Link href={`/projects/ongoing/${city}`} className="text-white/60 hover:text-gold text-sm transition-colors">
-                      Ongoing Projects →
+                    <Link
+                      href={`/projects/ongoing/${city}`}
+                      className="flex items-center justify-between text-white/70 hover:text-gold text-sm font-light transition-colors group"
+                    >
+                      <span>Ongoing Projects</span>
+                      <span className="text-xs transition-transform group-hover:translate-x-1">→</span>
                     </Link>
                   </li>
                   {loc.topBuilders.slice(0, 2).map((b) => (
                     <li key={b}>
                       <Link
                         href={`/developers/${b.toLowerCase().replace(/\s+/g, "-")}`}
-                        className="text-white/60 hover:text-gold text-sm transition-colors"
+                        className="flex items-center justify-between text-white/70 hover:text-gold text-sm font-light transition-colors group"
                       >
-                        {b} →
+                        <span>{b} Projects</span>
+                        <span className="text-xs transition-transform group-hover:translate-x-1">→</span>
                       </Link>
                     </li>
                   ))}
