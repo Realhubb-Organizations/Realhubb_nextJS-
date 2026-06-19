@@ -101,6 +101,28 @@ export default function ContactPage() {
             </div>
           </div>
         </div>
+
+        {/* ── GOOGLE MAP EMBED ── */}
+        <div className="mt-8 mb-16 max-w-7xl mx-auto">
+          <div className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
+            <h2 className="font-heading text-2xl text-navy font-normal mb-6">
+              Our Office Location
+            </h2>
+            <div className="rounded-2xl overflow-hidden h-96 border border-gray-150/80 shadow-inner">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.272186791227!2d77.63973947594589!3d13.018336687301292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1766a504ef53%3A0xe4d31498b0f80757!2sRealhubb%20Ventures%20Pvt.%20Ltd.!5e0!3m2!1sen!2sin!4v1718712000000!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                title="RealHubb Ventures Office Location"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+        </div>
+
       </div>
     </>
   );
