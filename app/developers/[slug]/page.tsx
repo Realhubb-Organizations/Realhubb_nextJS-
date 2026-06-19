@@ -12,7 +12,7 @@ import { developers as staticDevs } from "@/data/developers";
 import { properties as staticProps } from "@/data/properties";
 import { breadcrumbSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 
@@ -89,7 +89,7 @@ export default async function DeveloperDetailPage({ params }: { params: Params }
 
             {/* Left — text */}
             <div className="flex-1 min-w-0">
-              <BreadcrumbNav items={breadcrumbs} dark />
+
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal mt-4 leading-tight animate-fadeIn">
                 {dev.name}
               </h1>

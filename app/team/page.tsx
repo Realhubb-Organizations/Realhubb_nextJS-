@@ -4,7 +4,7 @@ import { getAllTeamMembers } from "@/lib/firestoreServerService";
 import { teamMembers as staticTeam } from "@/data/team";
 import { company } from "@/data/company";
 import { personSchema, breadcrumbSchema } from "@/lib/structuredData";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 
 export const dynamic = "force-dynamic";
@@ -40,7 +40,7 @@ export default async function TeamPage() {
 
       <div className="pt-20">
         <div className="bg-navy py-14 page-padding">
-          <BreadcrumbNav items={breadcrumbs} dark />
+
           <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
             Meet the RealHubb Team
           </h1>

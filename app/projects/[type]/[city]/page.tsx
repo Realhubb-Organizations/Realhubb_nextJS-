@@ -4,7 +4,7 @@ import { getAllProperties } from "@/lib/firestoreServerService";
 import { properties as staticProperties } from "@/data/properties";
 import { breadcrumbSchema } from "@/lib/structuredData";
 import ProjectsClient from "@/components/property/ProjectsClient";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+
 
 type Params = Promise<{ type: string; city: string }>;
 type SearchParams = Promise<{ type?: string; price?: string; q?: string }>;

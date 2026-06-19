@@ -12,7 +12,7 @@ import {
 import { blogPosts as staticBlogPosts } from "@/data/blog";
 import { breadcrumbSchema, articleSchema, faqSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 import CommentSection from "@/components/blog/CommentSection";
 import FaqAccordion from "@/components/faq/FaqAccordion";
@@ -98,7 +98,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
           )}
           <div className="relative z-10 max-w-3xl">
             <div className="flex items-start justify-between gap-4">
-              <BreadcrumbNav items={breadcrumbs} dark />
+
               <LanguageControl dark />
             </div>
             <div className="flex items-center gap-3 mt-4 mb-4">

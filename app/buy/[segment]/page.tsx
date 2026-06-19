@@ -4,7 +4,7 @@ import { buySegmentMetadata } from "@/lib/seo";
 import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
 import { getAllProperties } from "@/lib/firestoreServerService";
 import { properties as staticProperties } from "@/data/properties";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 
@@ -135,7 +135,7 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
           
           <div className="max-w-7xl mx-auto relative z-10">
-            <BreadcrumbNav items={breadcrumbs} dark />
+
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal mt-4 leading-tight animate-fadeIn">
               {label} for Sale <span className="text-gold">2026</span>
             </h1>

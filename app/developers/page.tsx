@@ -6,7 +6,7 @@ import { getAllDevelopers } from "@/lib/firestoreServerService";
 import { developers as staticDevs } from "@/data/developers";
 import { breadcrumbSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
@@ -37,7 +37,7 @@ export default async function DevelopersPage() {
       />
       <div className="pt-20">
         <div className="bg-navy py-14 page-padding">
-          <BreadcrumbNav items={breadcrumbs} dark />
+
           <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
             Our Developer Partners
           </h1>
