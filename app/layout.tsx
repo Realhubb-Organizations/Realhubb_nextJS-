@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { organizationSchema, webSiteSchema } from "@/lib/structuredData";
@@ -8,15 +8,9 @@ import Footer from "@/components/layout/Footer";
 import ChatWidget from "@/components/lead/ChatWidget";
 import LeadPopup from "@/components/lead/LeadPopup";
 
-const inter = Inter({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-plus-jakarta",
   display: "swap",
 });
 
@@ -71,7 +65,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+    <html lang="en" className={plusJakarta.variable} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
