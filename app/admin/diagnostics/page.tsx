@@ -69,7 +69,7 @@ export default function AdminDiagnosticsPage() {
 
       // 2. Check Firestore Collections
       const collections = ['properties', 'blogPosts', 'developers', 'team', 'gallery', 'leads'];
-      
+
       for (const collName of collections) {
         try {
           const coll = collection(db, collName);
@@ -158,20 +158,19 @@ export default function AdminDiagnosticsPage() {
               {results.map((result) => (
                 <div
                   key={result.name}
-                  className={`p-4 border rounded-lg ${
-                    result.status === 'success'
+                  className={`p-4 border rounded-lg ${result.status === 'success'
                       ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800'
                       : result.status === 'error'
-                      ? 'bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800'
-                      : result.status === 'warning'
-                      ? 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-800'
-                      : 'bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800'
-                  }`}
+                        ? 'bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800'
+                        : result.status === 'warning'
+                          ? 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-800'
+                          : 'bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800'
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     {getIcon(result.status)}
                     <div className="flex-1">
-                      <h3 className="font-semibold text-sm">{result.name}</h3>
+                      <h3 className="font-normal text-sm">{result.name}</h3>
                       <p className="text-sm text-muted-foreground mt-1">{result.message}</p>
                       {result.details && (
                         <pre className="text-xs mt-2 p-2 bg-black/10 rounded overflow-auto">
@@ -187,7 +186,7 @@ export default function AdminDiagnosticsPage() {
 
           {/* Guidance */}
           <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4 space-y-2">
-            <h3 className="font-semibold text-sm flex items-center gap-2">
+            <h3 className="font-normal text-sm flex items-center gap-2">
               <AlertCircle className="h-4 w-4" />
               What to check if data isn't showing:
             </h3>
@@ -203,7 +202,7 @@ export default function AdminDiagnosticsPage() {
 
           {/* Debug Info */}
           <div className="bg-muted p-4 rounded-lg border border-border">
-            <h3 className="font-semibold text-sm mb-2">Debug Information</h3>
+            <h3 className="font-normal text-sm mb-2">Debug Information</h3>
             <pre className="text-xs overflow-auto max-h-32">
               {JSON.stringify(
                 {

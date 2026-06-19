@@ -37,7 +37,7 @@ export default function ClientPropertiesPage() {
             <div className="flex items-start gap-3">
               <AlertCircle className="h-5 w-5 text-red-500 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-sm">Error Loading Properties</h3>
+                <h3 className="font-normal text-sm">Error Loading Properties</h3>
                 <p className="text-sm text-muted-foreground mt-1">{error}</p>
               </div>
             </div>
@@ -48,7 +48,7 @@ export default function ClientPropertiesPage() {
         {!loading && !error && properties.length === 0 && (
           <div className="text-center py-20 border border-dashed rounded-lg">
             <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-            <h2 className="text-lg font-semibold mb-2">No Properties Found</h2>
+            <h2 className="text-lg font-normal mb-2">No Properties Found</h2>
             <p className="text-muted-foreground mb-6">
               No properties in Firestore yet. Add some from the admin panel!
             </p>
@@ -90,26 +90,26 @@ export default function ClientPropertiesPage() {
                   {/* Content */}
                   <div className="p-4 space-y-3">
                     <div>
-                      <h3 className="font-semibold text-lg">{property.name}</h3>
+                      <h3 className="font-normal text-lg">{property.name}</h3>
                       <p className="text-sm text-muted-foreground">{property.location}</p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="p-2 bg-muted rounded">
                         <p className="text-muted-foreground">Price</p>
-                        <p className="font-semibold">{property.price}</p>
+                        <p className="font-normal">{property.price}</p>
                       </div>
                       <div className="p-2 bg-muted rounded">
                         <p className="text-muted-foreground">Type</p>
-                        <p className="font-semibold capitalize">{property.type}</p>
+                        <p className="font-normal capitalize">{property.type}</p>
                       </div>
                       <div className="p-2 bg-muted rounded">
                         <p className="text-muted-foreground">Area</p>
-                        <p className="font-semibold">{property.area}</p>
+                        <p className="font-normal">{property.area}</p>
                       </div>
                       <div className="p-2 bg-muted rounded">
                         <p className="text-muted-foreground">Status</p>
-                        <p className="font-semibold capitalize">{property.status}</p>
+                        <p className="font-normal capitalize">{property.status}</p>
                       </div>
                     </div>
 
@@ -139,7 +139,7 @@ export default function ClientPropertiesPage() {
 
                     {/* Debug Info */}
                     <details className="text-xs text-muted-foreground cursor-pointer">
-                      <summary className="font-semibold hover:text-foreground">Raw Data</summary>
+                      <summary className="font-normal hover:text-foreground">Raw Data</summary>
                       <pre className="mt-2 p-2 bg-muted rounded overflow-auto max-h-32">
                         {JSON.stringify(property, null, 2)}
                       </pre>
@@ -153,7 +153,7 @@ export default function ClientPropertiesPage() {
 
         {/* How It Works */}
         <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6 space-y-4">
-          <h2 className="font-semibold">How to Use</h2>
+          <h2 className="font-normal">How to Use</h2>
           <ol className="text-sm space-y-2 ml-4 list-decimal text-muted-foreground">
             <li>Add properties in the <Link href="/admin/dashboard" className="underline text-primary">Admin Dashboard</Link></li>
             <li>Fill in all required fields (name, location, price, images)</li>

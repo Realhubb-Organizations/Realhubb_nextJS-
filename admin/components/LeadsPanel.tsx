@@ -45,7 +45,7 @@ export default function LeadsPanel() {
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
         <FileText className="h-5 w-5 text-primary" />
-        <h2 className="text-lg font-semibold">Leads ({leads.length})</h2>
+        <h2 className="text-lg font-normal">Leads ({leads.length})</h2>
       </div>
 
       {leads.length === 0 ? (

@@ -65,7 +65,7 @@ export default async function CareerPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqs)) }} />
 
       <div className="min-h-screen bg-cream">
-        
+
         {/* ── HERO ── */}
         <section className="relative pt-32 pb-24 bg-navy overflow-hidden text-white">
           {/* Background Image with Overlay */}
@@ -95,7 +95,7 @@ export default async function CareerPage() {
                 Be part of Bangalore&apos;s leading real estate channel partner. Build your career with us
                 and make a difference in people&apos;s lives.
               </p>
-              
+
               <div className="flex flex-wrap justify-center gap-3 animate-fadeIn">
                 {[
                   { label: "10+ Team Members", cls: "bg-white/10 border-white/10 text-white/80" },
@@ -210,7 +210,7 @@ export default async function CareerPage() {
             <FadeInOnScroll direction="up" delay={100}>
               <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-gray-150/80 hover:shadow-md transition-shadow duration-300">
                 <FaqAccordion items={faqs} />
-                
+
                 <p className="text-sm text-gray-400 mt-8 text-center font-light">
                   Still have questions?{" "}
                   <a href={`mailto:${company.email}`} className="text-gold font-normal underline underline-offset-2 hover:text-gold/80 transition-colors">
@@ -230,7 +230,7 @@ export default async function CareerPage() {
                 {/* Subtle absolute glows */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
-                
+
                 <div className="relative z-10 max-w-2xl mx-auto">
                   <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-4">
                     Get in Touch
@@ -244,7 +244,7 @@ export default async function CareerPage() {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <a
                       href={`mailto:${company.email}`}
-                      className="px-8 py-3.5 rounded-full bg-gold hover:bg-gold/90 text-navy font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                      className="px-8 py-3.5 rounded-full bg-gold hover:bg-gold/90 text-navy font-normal text-sm transition-all duration-200 hover:scale-105 shadow-md flex items-center justify-center gap-2 cursor-pointer"
                     >
                       Email HR Team
                     </a>

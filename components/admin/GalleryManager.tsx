@@ -19,15 +19,15 @@ const EMPTY: Omit<AdminGalleryPost, "id"> = {
 };
 
 export default function GalleryManager() {
-  const [posts,   setPosts]   = useState<AdminGalleryPost[]>([]);
+  const [posts, setPosts] = useState<AdminGalleryPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [saving,  setSaving]  = useState(false);
-  const [search,  setSearch]  = useState("");
-  const [editing,   setEditing]   = useState<AdminGalleryPost | null>(null);
-  const [form,      setForm]      = useState<Omit<AdminGalleryPost, "id">>(EMPTY);
-  const [showForm,  setShowForm]  = useState(false);
-  const [toast,   setToast]   = useState<{ msg: string; ok: boolean } | null>(null);
-  const [delId,   setDelId]   = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [search, setSearch] = useState("");
+  const [editing, setEditing] = useState<AdminGalleryPost | null>(null);
+  const [form, setForm] = useState<Omit<AdminGalleryPost, "id">>(EMPTY);
+  const [showForm, setShowForm] = useState(false);
+  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
+  const [delId, setDelId] = useState<string | null>(null);
 
   const showToast = (msg: string, ok = true) => {
     setToast({ msg, ok });
@@ -43,18 +43,20 @@ export default function GalleryManager() {
 
   useEffect(() => { load(); }, []);
 
-  const openNew  = () => { setEditing(null); setForm(EMPTY); setShowForm(true); };
+  const openNew = () => { setEditing(null); setForm(EMPTY); setShowForm(true); };
   const openEdit = (p: AdminGalleryPost) => {
     setEditing(p);
-    setForm({ title: p.title, description: p.description, image: p.image,
-              category: p.category, published: p.published, publishedAt: p.publishedAt });
+    setForm({
+      title: p.title, description: p.description, image: p.image,
+      category: p.category, published: p.published, publishedAt: p.publishedAt
+    });
     setShowForm(true);
   };
   const closeForm = () => { setEditing(null); setForm(EMPTY); setShowForm(false); };
 
   const handleSave = async () => {
     if (!form.title.trim()) return showToast("Title is required", false);
-    if (!form.image)        return showToast("Please upload an image", false);
+    if (!form.image) return showToast("Please upload an image", false);
     setSaving(true);
     try {
       if (editing) {
@@ -99,7 +101,7 @@ export default function GalleryManager() {
   );
 
   const published = posts.filter(p => p.published).length;
-  const drafts    = posts.length - published;
+  const drafts = posts.length - published;
 
   return (
     <div className="space-y-6">
@@ -116,12 +118,12 @@ export default function GalleryManager() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: "Total Posts", value: posts.length,  color: "text-slate-700" },
-          { label: "Published",   value: published,     color: "text-emerald-600" },
-          { label: "Drafts",      value: drafts,        color: "text-amber-600" },
+          { label: "Total Posts", value: posts.length, color: "text-slate-700" },
+          { label: "Published", value: published, color: "text-emerald-600" },
+          { label: "Drafts", value: drafts, color: "text-amber-600" },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-4">
-            <p className={`text-2xl font-semibold ${s.color}`}>{s.value}</p>
+            <p className={`text-2xl font-normal ${s.color}`}>{s.value}</p>
             <p className="text-xs text-slate-400 mt-0.5">{s.label}</p>
           </div>
         ))}
@@ -149,7 +151,7 @@ export default function GalleryManager() {
       {showForm && (
         <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-slate-800">
+            <h3 className="font-normal text-slate-800">
               {editing ? "Edit Post" : "New Gallery Post"}
             </h3>
             <button onClick={closeForm} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400">
@@ -245,7 +247,7 @@ export default function GalleryManager() {
       {delId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-2xl p-6 shadow-xl max-w-sm w-full mx-4 space-y-4">
-            <h3 className="font-semibold text-slate-800">Delete this post?</h3>
+            <h3 className="font-normal text-slate-800">Delete this post?</h3>
             <p className="text-sm text-slate-500">This action cannot be undone.</p>
             <div className="flex gap-3 justify-end">
               <button onClick={() => setDelId(null)} className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50">Cancel</button>

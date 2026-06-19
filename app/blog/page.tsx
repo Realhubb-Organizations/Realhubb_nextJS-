@@ -42,7 +42,7 @@ export default async function BlogPage() {
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <p className="section-overline text-gold mb-3 uppercase tracking-wider text-xs font-semibold animate-fadeIn">
+          <p className="section-overline text-gold mb-3 uppercase tracking-wider text-xs font-normal animate-fadeIn">
             Expert Insights
           </p>
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal leading-tight animate-fadeIn">

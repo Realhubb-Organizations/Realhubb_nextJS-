@@ -73,10 +73,10 @@ export default function PropertyManager() {
       setSaving(true);
       setError('');
       const id = await saveProperty(editing);
-      
+
       // Trigger background revalidation instantly
       await revalidatePropertyPages(editing.slug, editing.city);
-      
+
       if ('id' in editing && editing.id) {
         setProperties((prev) =>
           prev.map((p) => (p.id === id ? editing : p))
@@ -130,7 +130,7 @@ export default function PropertyManager() {
 
       {editing ? (
         <div className="space-y-4 p-4 bg-muted/30 rounded-lg border border-border">
-          <h3 className="font-semibold">
+          <h3 className="font-normal">
             {editing.id ? 'Edit Property' : 'New Property'}
           </h3>
 

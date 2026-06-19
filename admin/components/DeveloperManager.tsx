@@ -57,10 +57,10 @@ export default function DeveloperManager() {
       setSaving(true);
       setError('');
       const id = await saveDeveloper(editing);
-      
+
       // Trigger background revalidation instantly
       await revalidateDeveloperPages(editing.slug);
-      
+
       if ('id' in editing && editing.id) {
         setDevelopers((prev) =>
           prev.map((d) => (d.id === id ? editing : d))
@@ -114,7 +114,7 @@ export default function DeveloperManager() {
 
       {editing ? (
         <div className="space-y-4 p-4 bg-muted/30 rounded-lg border border-border">
-          <h3 className="font-semibold">
+          <h3 className="font-normal">
             {editing.id ? 'Edit Developer' : 'New Developer'}
           </h3>
 

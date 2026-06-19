@@ -47,10 +47,10 @@ export default function TeamManager() {
       setSaving(true);
       setError('');
       const id = await saveTeamMember(editing);
-      
+
       // Trigger background revalidation instantly
       await triggerRevalidate(['/about', '/team']);
-      
+
       if ('id' in editing && editing.id) {
         setMembers((prev) =>
           prev.map((m) => (m.id === id ? editing : m))
@@ -74,7 +74,7 @@ export default function TeamManager() {
       setError('');
       await deleteTeamMember(id);
       setMembers((prev) => prev.filter((m) => m.id !== id));
-      
+
       // Trigger background revalidation instantly
       await triggerRevalidate(['/about', '/team']);
     } catch (err: any) {
@@ -101,7 +101,7 @@ export default function TeamManager() {
 
       {editing ? (
         <div className="space-y-4 p-4 bg-muted/30 rounded-lg border border-border">
-          <h3 className="font-semibold">
+          <h3 className="font-normal">
             {editing.id ? 'Edit Team Member' : 'New Team Member'}
           </h3>
 

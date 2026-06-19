@@ -18,10 +18,10 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
   return (
     <Link
       href={`/property/${p.slug}`}
-      className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100 hover:border-gold/30"
+      className="group flex flex-col h-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100 hover:border-gold/30"
     >
       {/* Image */}
-      <div className="relative h-52 bg-navy/5 overflow-hidden">
+      <div className="relative h-52 bg-navy/5 overflow-hidden shrink-0">
         {img ? (
           <Image
             src={img}
@@ -65,7 +65,7 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         <p className="section-overline text-gold mb-1">{p.developer}</p>
         <h3 className="font-heading text-navy text-lg font-normal group-hover:text-gold transition-colors mb-2 line-clamp-1">
           {p.name}
@@ -73,7 +73,7 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
 
         <div className="flex items-center gap-1 text-gray-400 text-xs mb-3">
           <MapPin className="w-3.5 h-3.5 shrink-0" />
-          <span>{p.location}, {p.city.charAt(0).toUpperCase() + p.city.slice(1)}</span>
+          <span className="truncate">{p.location}, {p.city.charAt(0).toUpperCase() + p.city.slice(1)}</span>
         </div>
 
         <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
@@ -94,14 +94,14 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
           )}
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-end justify-between mt-auto pt-2 border-t border-gray-50">
           <div>
             <p className="font-heading text-navy text-lg font-normal">{p.price}</p>
             {p.possession && (
               <p className="text-gray-400 text-xs">Possession: {p.possession}</p>
             )}
           </div>
-          <span className="text-xs text-gold border border-gold/30 px-3 py-1 rounded-full group-hover:bg-gold group-hover:text-navy transition-all">
+          <span className="text-xs text-gold border border-gold/30 px-3 py-1 rounded-full group-hover:bg-gold group-hover:text-navy transition-all shrink-0">
             View →
           </span>
         </div>

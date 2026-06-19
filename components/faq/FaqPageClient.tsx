@@ -143,13 +143,13 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
       {/* Body */}
       <section className="py-20 bg-cream">
         <div className="page-padding max-w-7xl mx-auto flex flex-col lg:flex-row gap-10">
-                 {/* Category Selector Column — Desktop Sidebar (Sticky, Open List) */}
+          {/* Category Selector Column — Desktop Sidebar (Sticky, Open List) */}
           <aside className="hidden lg:block w-64 shrink-0">
             <div className="sticky top-28 space-y-2.5 z-20">
               <p className="section-overline text-gray-400 mb-3 px-1 text-left block">
                 Category
               </p>
-              
+
               <button
                 onClick={() => scrollToCategory("all")}
                 className={cn(
@@ -288,7 +288,7 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
               {/* Subtle absolute glows */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
-              
+
               <div className="relative z-10 max-w-2xl mx-auto">
                 <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-4">
                   Still Need Help?
@@ -302,7 +302,7 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
                     href="/contact-us"
-                    className="px-8 py-3.5 rounded-full bg-gold hover:bg-gold/90 text-navy font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    className="px-8 py-3.5 rounded-full bg-gold hover:bg-gold/90 text-navy font-normal text-sm transition-all duration-200 hover:scale-105 shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Phone className="h-4 w-4" />
                     Talk to an Advisor

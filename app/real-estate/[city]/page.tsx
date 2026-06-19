@@ -76,7 +76,7 @@ export default async function CityHubPage({ params }: { params: Params }) {
           {/* Symmetrical branding glows */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
-          
+
           <div className="max-w-7xl mx-auto relative z-10">
 
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal mt-4 leading-tight animate-fadeIn">
@@ -130,7 +130,7 @@ export default async function CityHubPage({ params }: { params: Params }) {
                   <div className="mt-8 text-center">
                     <Link
                       href={`/projects/ongoing/${city}`}
-                      className="inline-block bg-navy text-gold hover:text-white px-8 py-3.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-200 shadow-md hover:scale-[1.02]"
+                      className="inline-block bg-navy text-gold hover:text-white px-8 py-3.5 rounded-xl text-xs font-normal uppercase tracking-wider transition-all duration-200 shadow-md hover:scale-[1.02]"
                     >
                       View All {cityLabel} Projects →
                     </Link>

@@ -23,9 +23,9 @@ export default function CloudinaryTest() {
     return unsub;
   }, [router]);
 
-  const cloudNameSet  = !!CLOUDINARY_CONFIG.cloudName   && CLOUDINARY_CONFIG.cloudName   !== "undefined"   && CLOUDINARY_CONFIG.cloudName   !== "";
-  const presetSet     = !!CLOUDINARY_CONFIG.uploadPreset && CLOUDINARY_CONFIG.uploadPreset !== "undefined" && CLOUDINARY_CONFIG.uploadPreset !== "";
-  const configValid   = cloudNameSet && presetSet;
+  const cloudNameSet = !!CLOUDINARY_CONFIG.cloudName && CLOUDINARY_CONFIG.cloudName !== "undefined" && CLOUDINARY_CONFIG.cloudName !== "";
+  const presetSet = !!CLOUDINARY_CONFIG.uploadPreset && CLOUDINARY_CONFIG.uploadPreset !== "undefined" && CLOUDINARY_CONFIG.uploadPreset !== "";
+  const configValid = cloudNameSet && presetSet;
 
   if (checking) {
     return (
@@ -42,7 +42,7 @@ export default function CloudinaryTest() {
           <Link href="/admin/dashboard" className="inline-flex items-center gap-2 text-sm text-navy hover:text-gold transition-colors font-medium">
             <ArrowLeft className="w-4 h-4" /> Back to Dashboard
           </Link>
-          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Authenticated</span>
+          <span className="text-xs font-normal px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Authenticated</span>
         </div>
 
         <div>
@@ -54,7 +54,7 @@ export default function CloudinaryTest() {
 
         {/* Config status */}
         <div className="bg-white rounded-2xl border border-navy/10 p-6 space-y-4 shadow-sm">
-          <p className="text-sm font-semibold text-navy">Environment Variables</p>
+          <p className="text-sm font-normal text-navy">Environment Variables</p>
 
           <div className="space-y-3">
             <ConfigRow
@@ -73,7 +73,7 @@ export default function CloudinaryTest() {
             <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
               <AlertCircle className="h-5 w-5 shrink-0 text-amber-600 mt-0.5" />
               <div>
-                <p className="font-semibold text-amber-900">Setup Incomplete</p>
+                <p className="font-normal text-amber-900">Setup Incomplete</p>
                 <p className="mt-1 text-amber-800 leading-relaxed">
                   Create a <code className="bg-amber-100/80 px-1.5 py-0.5 rounded text-amber-900 font-mono text-[11px]">.env.local</code> file in your
                   project root and add the Cloudinary variables. Then restart the dev server.
@@ -86,7 +86,7 @@ export default function CloudinaryTest() {
         {/* Upload test */}
         {configValid && (
           <div className="bg-white rounded-2xl border border-navy/10 p-6 space-y-4 shadow-sm">
-            <p className="text-sm font-semibold text-navy">Test Live Upload</p>
+            <p className="text-sm font-normal text-navy">Test Live Upload</p>
             <ImageUpload
               folder="properties"
               label="Test image (properties folder)"
@@ -96,13 +96,13 @@ export default function CloudinaryTest() {
 
             {uploadResult && (
               <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
-                <p className="flex items-center gap-2 text-sm font-semibold text-emerald-800">
+                <p className="flex items-center gap-2 text-sm font-normal text-emerald-800">
                   <CheckCircle className="h-5 w-5 text-emerald-600" />
                   Upload successful!
                 </p>
                 <div className="space-y-1 text-xs text-emerald-700 font-mono">
                   <p className="break-all">
-                    <span className="font-semibold">URL: </span>
+                    <span className="font-normal">URL: </span>
                     <a
                       href={uploadResult.url}
                       target="_blank"
@@ -113,7 +113,7 @@ export default function CloudinaryTest() {
                     </a>
                   </p>
                   <p>
-                    <span className="font-semibold">Public ID: </span>
+                    <span className="font-normal">Public ID: </span>
                     <span className="bg-emerald-100/50 px-1 rounded">{uploadResult.publicId}</span>
                   </p>
                 </div>

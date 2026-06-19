@@ -121,10 +121,10 @@ export default function ProjectsClient({
       <div className="page-padding relative z-20 -mt-12 md:-mt-16">
         {/* Floating Controls Bar */}
         <div className="max-w-7xl mx-auto bg-white border border-gray-100 rounded-3xl p-6 shadow-xl space-y-6">
-          
+
           {/* Top Row: Selectors and Search */}
           <div className="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
-            
+
             {/* Left side: Type controls (Ongoing/Upcoming sliding switcher) */}
             <div className="flex bg-gray-100 p-1.5 rounded-xl self-start">
               {typeTabs.map((t) => (
@@ -254,7 +254,7 @@ export default function ProjectsClient({
           {/* Results count info */}
           <div className="flex justify-between items-center mb-6">
             <p className="text-navy/50 text-sm">
-              Showing <span className="text-navy font-semibold">{filtered.length}</span> {filtered.length === 1 ? "property" : "properties"} found in <span className="font-semibold text-navy">{cityTabs.find(c => c.value === activeCity)?.label || activeCity}</span>
+              Showing <span className="text-navy font-normal">{filtered.length}</span> {filtered.length === 1 ? "property" : "properties"} found in <span className="font-normal text-navy">{cityTabs.find(c => c.value === activeCity)?.label || activeCity}</span>
             </p>
           </div>
 
@@ -274,7 +274,7 @@ export default function ProjectsClient({
               </p>
               <button
                 onClick={clearFilters}
-                className="bg-gold text-navy px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold/90 transition-all cursor-pointer"
+                className="bg-gold text-navy px-6 py-2.5 rounded-xl text-sm font-normal hover:bg-gold/90 transition-all cursor-pointer"
               >
                 Clear All Filters
               </button>
