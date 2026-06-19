@@ -76,9 +76,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}
         />
       </head>
-      <body className="bg-cream font-body text-navy antialiased">
+      <body className="bg-cream font-body text-navy antialiased flex flex-col min-h-screen">
         <Header />
-        <main>{children}</main>
+        <main className="flex-1">{children}</main>
         <Footer />
         <ChatWidget />
         <LeadPopup />
