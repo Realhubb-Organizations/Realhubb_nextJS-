@@ -79,16 +79,27 @@ export default async function AreaPage({ params }: { params: Params }) {
 
       <div className="pt-20 bg-cream min-h-screen">
         {/* Hero */}
-        <div className="bg-navy py-14 page-padding relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80"
+              alt={loc.area}
+              className="w-full h-full object-cover opacity-40 filter brightness-95"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
+          </div>
+
+          {/* Symmetrical branding glows */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
           
-          <div className="relative z-10">
-            <BreadcrumbNav items={breadcrumbs} />
-            <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
+          <div className="max-w-7xl mx-auto relative z-10">
+            <BreadcrumbNav items={breadcrumbs} dark />
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal mt-4 leading-tight animate-fadeIn">
               Flats & Properties in <span className="text-gold">{loc.area}</span>, {cityLabel}
             </h1>
-            <p className="text-white/60 text-sm md:text-base mt-3 max-w-xl font-light">
+            <p className="text-white/80 text-base md:text-lg leading-relaxed max-w-xl font-light mt-3 animate-fadeIn">
               {loc.avgPriceSqft} · {loc.popularTypes.join(", ")}
             </p>
           </div>

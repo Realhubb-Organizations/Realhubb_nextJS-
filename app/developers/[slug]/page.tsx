@@ -70,20 +70,31 @@ export default async function DeveloperDetailPage({ params }: { params: Params }
 
       <div className="pt-20 bg-cream min-h-screen">
         {/* ── Hero ──────────────────────────────────────────────────────── */}
-        <div className="bg-navy py-14 page-padding relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"
+              alt={dev.name}
+              className="w-full h-full object-cover opacity-35 filter brightness-95"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
+          </div>
+
+          {/* Symmetrical branding glows */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 relative z-10">
 
             {/* Left — text */}
             <div className="flex-1 min-w-0">
-              <BreadcrumbNav items={breadcrumbs} />
-              <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4 leading-tight">
+              <BreadcrumbNav items={breadcrumbs} dark />
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal mt-4 leading-tight animate-fadeIn">
                 {dev.name}
               </h1>
               {metaParts.length > 0 && (
-                <p className="text-white/50 text-sm mt-3 flex flex-wrap gap-x-3 gap-y-1 font-light">
+                <p className="text-white/50 text-sm mt-3 flex flex-wrap gap-x-3 gap-y-1 font-light animate-fadeIn">
                   {metaParts.map((part, i) => (
                     <span key={i} className="flex items-center gap-2">
                       {i > 0 && <span className="text-white/20">·</span>}
@@ -97,7 +108,7 @@ export default async function DeveloperDetailPage({ params }: { params: Params }
                   href={dev.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-4 text-gold text-sm hover:underline font-medium"
+                  className="inline-flex items-center gap-2 mt-4 text-gold text-sm hover:underline font-medium animate-fadeIn"
                 >
                   <Globe className="w-4 h-4" />
                   Visit official website
