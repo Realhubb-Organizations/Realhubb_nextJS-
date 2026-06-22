@@ -15,14 +15,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   {
     label: "Properties",
-    href: "/projects/ongoing",
-    children: [
-      { label: "Ongoing Projects", href: "/projects/ongoing" },
-      { label: "Upcoming Projects", href: "/projects/upcoming" },
-      { label: "Bangalore", href: "/projects/ongoing/bangalore" },
-      { label: "Hyderabad", href: "/projects/ongoing/hyderabad" },
-      { label: "Chennai", href: "/projects/ongoing/chennai" },
-    ],
+    href: "/projects/ongoing/bangalore",
   },
 
   {
