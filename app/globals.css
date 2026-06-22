@@ -86,3 +86,25 @@
   margin-top: -5rem !important;
   padding-top: 8.5rem !important;
 }
+
+/* Premium 3D flip-flop animation for preloader logo */
+@keyframes flip-flop {
+  0%, 100% {
+    transform: rotateY(0deg);
+  }
+  45% {
+    transform: rotateY(180deg);
+  }
+  55% {
+    transform: rotateY(180deg);
+  }
+  95% {
+    transform: rotateY(360deg);
+  }
+}
+
+.animate-flip-flop {
+  animation: flip-flop 3.2s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}

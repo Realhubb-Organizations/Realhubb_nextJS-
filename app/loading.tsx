@@ -10,15 +10,15 @@ export default function Loading() {
         {/* Spinning thin gold accent border */}
         <div className="absolute w-28 h-28 rounded-full border-2 border-gold/10 border-t-gold animate-spin" />
         
-        {/* Breathing logo image in the center */}
-        <div className="relative w-16 h-16 animate-pulse flex items-center justify-center select-none">
+        {/* 3D Flip-Flop logo image in the center */}
+        <div className="relative w-16 h-16 flex items-center justify-center select-none">
           <Image
             src="/realhubb-logo-icon.png"
             alt="Loading..."
             width={64}
             height={64}
             priority
-            className="object-contain"
+            className="object-contain animate-flip-flop"
           />
         </div>
       </div>
