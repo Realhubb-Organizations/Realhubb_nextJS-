@@ -160,10 +160,9 @@ export default function ToolsHubPage() {
         title="Investment & Property Calculators | RealHubb"
         description="Access our suite of financial planning tools: Home Loan EMI Calculator, Currency Converter, Home Loan Eligibility, Rental Yield, and Salary Advisor."
       />
-
       <main className="min-h-screen bg-cream">
-        {/* Immersive Header Banner */}
-        <section className="bg-navy pt-28 pb-36 md:pt-32 md:pb-44 page-padding relative overflow-hidden text-white">
+        {/* Header Hero */}
+        <section className="relative bg-navy pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden text-white">
           {/* Background image & gradient overlay */}
           <div className="absolute inset-0 z-0">
             <img
@@ -174,8 +173,7 @@ export default function ToolsHubPage() {
             {/* Smooth linear gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/55 to-navy" />
           </div>
-
-          {/* Golden glow light effects */}
+          
           <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -236,7 +234,7 @@ export default function ToolsHubPage() {
         </section>
 
         {/* Content Area */}
-        <section className="page-padding relative z-20 -mt-16 md:-mt-20 pb-24 pt-4">
+        <section className="page-padding relative z-20 pb-24 pt-12">
           <div className="max-w-6xl mx-auto">
 
             {/* Dynamic Results Grid */}
