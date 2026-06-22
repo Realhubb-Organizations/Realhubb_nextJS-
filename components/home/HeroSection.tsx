@@ -12,6 +12,9 @@ const VIDEO_SRC =
 const POSTER_SRC =
   "https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4/ik-thumbnail.jpg?tr=w-1280,q-60,f-webp";
 
+const POSTER_SRC_MOBILE =
+  "https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4/ik-thumbnail.jpg?tr=w-640,q-60,f-webp";
+
 const CITIES = ["Bangalore", "Hyderabad", "Chennai"];
 
 const PROPERTY_TYPES = [
@@ -44,6 +47,7 @@ export default function HeroSection() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined);
   const [statsInView, setStatsInView] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const [city, setCity] = useState("Bangalore");
   const [propertyType, setPropertyType] = useState("");
@@ -52,9 +56,10 @@ export default function HeroSection() {
 
   const router = useRouter();
 
-  // Retrieve user reduced motion preference on mount to avoid Next.js hydration mismatches
+  // Retrieve user reduced motion preference and check device type on mount to avoid Next.js hydration mismatches
   useEffect(() => {
     if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 1024);
       setPrefersReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     }
   }, []);
@@ -62,7 +67,7 @@ export default function HeroSection() {
   // Lazy-load the video source when the hero section intersects the viewport
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section || isMobile) return;
     const loadVideo = () => { if (!videoSrc) setVideoSrc(VIDEO_SRC); };
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { loadVideo(); observer.disconnect(); } },
@@ -71,7 +76,7 @@ export default function HeroSection() {
     observer.observe(section);
     const raf = requestAnimationFrame(loadVideo);
     return () => { observer.disconnect(); cancelAnimationFrame(raf); };
-  }, [videoSrc]);
+  }, [videoSrc, isMobile]);
 
   // Intersection observer for stats counting animation
   useEffect(() => {
@@ -123,17 +128,17 @@ export default function HeroSection() {
       {/* Background Media */}
       <div className="absolute inset-0 z-0">
         <img
-          src={POSTER_SRC}
+          src={isMobile ? POSTER_SRC_MOBILE : POSTER_SRC}
           alt=""
           aria-hidden="true"
-          width={1280}
-          height={720}
+          width={isMobile ? 640 : 1280}
+          height={isMobile ? 360 : 720}
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
           style={{ opacity: videoLoaded ? 0 : 1, transition: "opacity 0.2s ease" }}
         />
-        {!prefersReducedMotion && (
+        {!prefersReducedMotion && !isMobile && videoSrc && (
           <video
             ref={videoRef}
             src={videoSrc}
