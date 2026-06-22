@@ -75,6 +75,19 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}
         />
+        {/* Preload hero poster for early LCP discovery */}
+        <link
+          rel="preload"
+          as="image"
+          href="https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4/ik-thumbnail.jpg?tr=w-640,q-60,f-webp"
+          media="(max-width: 1023px)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4/ik-thumbnail.jpg?tr=w-1280,q-60,f-webp"
+          media="(min-width: 1024px)"
+        />
       </head>
       <body className="bg-cream font-body text-navy antialiased flex flex-col min-h-screen">
         <Header />

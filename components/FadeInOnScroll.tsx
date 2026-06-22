@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -18,52 +17,42 @@ export function FadeInOnScroll({
   direction = "up",
   className = "",
 }: Props) {
-  const [mounted, setMounted] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -50px 0px", threshold: 0 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
-  if (!mounted) {
-    return <div className={className}>{children}</div>;
-  }
-
-  const offset = 40;
-  const directionMap = {
-    up: { x: -offset },
-    down: { x: -offset },
-    left: { x: -offset },
-    right: { x: -offset },
-    none: {},
-  };
-
-  const variants = {
-    hidden: {
-      opacity: 0,
-      ...directionMap[direction],
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      transition: {
-        duration,
-        delay: delay / 1000,
-        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      },
-    },
-  };
+  const offset = direction === "none" ? "0px" : "40px";
+  const axis =
+    direction === "left" || direction === "right" ? "translateX" : "translateY";
+  const sign = direction === "down" || direction === "right" ? "" : "-";
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-      variants={variants}
-      style={{ willChange: "transform, opacity" }}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "none" : `${axis}(${sign}${offset})`,
+        transition: `opacity ${duration}s ease ${delay / 1000}s, transform ${duration}s cubic-bezier(0.25,0.46,0.45,0.94) ${delay / 1000}s`,
+        willChange: "transform, opacity",
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

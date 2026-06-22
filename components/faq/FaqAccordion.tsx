@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { FaqItem } from "@/types/seo";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
   items: FaqItem[];
@@ -30,6 +29,7 @@ export default function FaqAccordion({ items }: Props) {
             <button
               onClick={() => setOpenIndex(isOpen ? null : i)}
               className="w-full flex items-center justify-between px-6 py-5 text-left focus:outline-none group"
+              aria-expanded={isOpen}
             >
               <span className="text-navy font-heading text-[15px] sm:text-base font-normal pr-4 group-hover:text-gold transition-colors duration-200">
                 {item.question}
@@ -48,21 +48,22 @@ export default function FaqAccordion({ items }: Props) {
                 />
               </div>
             </button>
-            
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-                >
-                  <div className="px-6 pb-6 pt-1 text-gray-500 text-sm sm:text-base leading-relaxed font-light border-t border-gray-50/50">
-                    {item.answer}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+
+            {/* CSS-based accordion — no framer-motion */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateRows: isOpen ? "1fr" : "0fr",
+                opacity: isOpen ? 1 : 0,
+                transition: "grid-template-rows 0.3s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.3s ease",
+              }}
+            >
+              <div style={{ overflow: "hidden" }}>
+                <div className="px-6 pb-6 pt-1 text-gray-500 text-sm sm:text-base leading-relaxed font-light border-t border-gray-50/50">
+                  {item.answer}
+                </div>
+              </div>
+            </div>
           </div>
         );
       })}

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Calculator, DollarSign, Percent, TrendingUp, Briefcase, ChevronRight, ArrowRight, Search, X } from "lucide-react";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import SEO from "@/components/seo/SEO";
-import { motion } from "framer-motion";
 
 const buyerTools = [
   {

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { X, Send, CheckCircle2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { trackLead } from "@/lib/ga";
 
 export default function LeadPopup() {
@@ -125,26 +124,21 @@ export default function LeadPopup() {
   if (!mounted || !isHomepage) return null;
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          {/* Backdrop Blur */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          {/* Backdrop */}
+          <div
             onClick={handleClose}
             className="absolute inset-0 bg-navy/60 backdrop-blur-md"
             aria-hidden="true"
+            style={{ animation: "rh-fadeIn 0.25s ease forwards" }}
           />
 
           {/* Modal Container */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", duration: 0.5 }}
+          <div
             className="relative w-full max-w-md bg-navy border border-gold/30 rounded-3xl p-8 shadow-2xl text-white overflow-hidden"
+            style={{ animation: "rh-popIn 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards" }}
           >
             {/* Background Accent Gradients */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
@@ -160,10 +154,9 @@ export default function LeadPopup() {
             </button>
 
             {submitted ? (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+              <div
                 className="text-center py-8 flex flex-col items-center justify-center space-y-4"
+                style={{ animation: "rh-fadeInUp 0.3s ease forwards" }}
               >
                 <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center text-gold animate-bounce">
                   <CheckCircle2 className="w-10 h-10" />
@@ -174,7 +167,7 @@ export default function LeadPopup() {
                 <p className="text-white/70 text-sm max-w-xs mx-auto">
                   Your details have been registered. A property advisor will contact you within 15 minutes.
                 </p>
-              </motion.div>
+              </div>
             ) : (
               <div>
                 <p className="section-overline text-gold mb-2 text-xs uppercase tracking-widest text-center">
@@ -184,7 +177,7 @@ export default function LeadPopup() {
                   Find Your Dream Home
                 </h3>
                 <p className="text-white/60 text-xs text-center mb-6 max-w-xs mx-auto">
-                  Get a free site visit & consulting callback in 15 minutes. Zero brokerage.
+                  Get a free site visit &amp; consulting callback in 15 minutes. Zero brokerage.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -285,9 +278,16 @@ export default function LeadPopup() {
                 </form>
               </div>
             )}
-          </motion.div>
+          </div>
         </div>
       )}
-    </AnimatePresence>
+
+      {/* CSS keyframe animations — no framer-motion needed */}
+      <style>{`
+        @keyframes rh-fadeIn { from { opacity: 0 } to { opacity: 1 } }
+        @keyframes rh-popIn { from { opacity: 0; transform: scale(0.9) translateY(20px) } to { opacity: 1; transform: scale(1) translateY(0) } }
+        @keyframes rh-fadeInUp { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: translateY(0) } }
+      `}</style>
+    </>
   );
 }

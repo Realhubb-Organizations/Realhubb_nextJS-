@@ -127,17 +127,32 @@ export default function HeroSection() {
     >
       {/* Background Media */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={isMobile ? POSTER_SRC_MOBILE : POSTER_SRC}
-          alt=""
-          aria-hidden="true"
-          width={isMobile ? 640 : 1280}
-          height={isMobile ? 360 : 720}
-          fetchPriority="high"
-          decoding="async"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: videoLoaded ? 0 : 1, transition: "opacity 0.2s ease" }}
-        />
+        {/* Responsive poster — served immediately from SSR, no JS needed */}
+        <picture>
+          <source
+            media="(max-width: 1023px)"
+            srcSet={POSTER_SRC_MOBILE}
+            width={640}
+            height={360}
+          />
+          <source
+            media="(min-width: 1024px)"
+            srcSet={POSTER_SRC}
+            width={1280}
+            height={720}
+          />
+          <img
+            src={POSTER_SRC}
+            alt=""
+            aria-hidden="true"
+            width={1280}
+            height={720}
+            fetchPriority="high"
+            decoding="sync"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: videoLoaded ? 0 : 1, transition: "opacity 0.2s ease" }}
+          />
+        </picture>
         {!prefersReducedMotion && !isMobile && videoSrc && (
           <video
             ref={videoRef}
