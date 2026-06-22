@@ -6,8 +6,12 @@ export default function cloudinaryLoader({ src, width, quality }: ImageLoaderPro
     return `${src}?w=${width}`;
   }
 
-  // External URLs (like postimg or unsplash) that are not on Cloudinary
+  // External URLs (like postimg, unsplash, istock, ftcdn)
   if (src.startsWith("http") && !src.includes("res.cloudinary.com")) {
+    const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    if (cloud) {
+      return `https://res.cloudinary.com/${cloud}/image/fetch/w_${width},q_${quality ?? 75},f_auto/${encodeURIComponent(src)}`;
+    }
     const separator = src.includes("?") ? "&" : "?";
     return `${src}${separator}w=${width}`;
   }

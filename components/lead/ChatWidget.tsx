@@ -31,7 +31,14 @@ export default function ChatWidget() {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMounted(true);
+    const handleMount = () => setMounted(true);
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(handleMount, { timeout: 3000 });
+      } else {
+        setTimeout(handleMount, 3000);
+      }
+    }
   }, []);
 
   useEffect(() => {

@@ -104,10 +104,10 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center shrink-0">
           <Image
-            src="/realhubb-new-logo-trimmed.png"
+            src="/realhubb-logo-optimized.png"
             alt="RealHubb Ventures"
-            width={2015}
-            height={658}
+            width={200}
+            height={65}
             priority
             unoptimized
             className="h-12 sm:h-14 w-auto"
