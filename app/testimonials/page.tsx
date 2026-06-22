@@ -261,28 +261,49 @@ const TestimonialsPage = () => {
             </div>
 
             {/* Bottom Row: Selector Switches */}
-            <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch lg:items-center">
+            <div className="flex flex-col gap-6">
               
-              {/* Category switches (sliding switcher style) */}
-              <div className="flex flex-nowrap overflow-x-auto scrollbar-hide max-w-full bg-gray-50 p-1.5 rounded-xl self-start border border-gray-100">
-                {CATEGORIES.map((c) => (
-                  <button
-                    key={c.key}
-                    onClick={() => handleCategoryChange(c.key)}
-                    className={cn(
-                      "px-4 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer whitespace-nowrap",
-                      category === c.key
-                        ? "bg-navy text-white shadow-sm"
-                        : "text-navy/60 hover:text-navy"
-                    )}
-                  >
-                    {c.label} ({categoryCounts[c.key] ?? 0})
-                  </button>
-                ))}
+              {/* Category selector */}
+              <div className="flex flex-col gap-3">
+                {/* Top Row: All Reviews option acting as label/header */}
+                <button
+                  onClick={() => handleCategoryChange("all")}
+                  className={cn(
+                    "text-xs uppercase tracking-wider font-semibold font-body transition-all relative pb-1 cursor-pointer self-start",
+                    category === "all" ? "text-gold" : "text-gray-400 hover:text-navy"
+                  )}
+                >
+                  All Reviews ({categoryCounts["all"] ?? 0})
+                  {category === "all" && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold rounded-full" />
+                  )}
+                </button>
+
+                {/* Bottom Row: Subcategories */}
+                <div className="flex flex-wrap gap-5">
+                  {CATEGORIES.filter((c) => c.key !== "all").map((c) => {
+                    const isSelected = category === c.key;
+                    return (
+                      <button
+                        key={c.key}
+                        onClick={() => handleCategoryChange(c.key)}
+                        className={cn(
+                          "text-sm font-semibold tracking-wide uppercase transition-all relative pb-1.5 cursor-pointer",
+                          isSelected ? "text-gold" : "text-navy/60 hover:text-navy"
+                        )}
+                      >
+                        {c.label} ({categoryCounts[c.key] ?? 0})
+                        {isSelected && (
+                          <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold rounded-full" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* City selector tabs */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-5 border-t border-gray-100">
                 <span className="text-xs uppercase tracking-wider text-gray-400 font-semibold font-body">Select City:</span>
                 <div className="flex flex-wrap gap-5">
                   {CITIES.map((c) => {
