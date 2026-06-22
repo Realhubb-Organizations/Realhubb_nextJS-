@@ -35,51 +35,91 @@ export default async function DevelopersPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
       />
-      <div className="pt-20">
-        <div className="bg-navy py-14 page-padding">
+      <div className="pt-20 bg-cream min-h-screen">
+        {/* Immersive Header Banner */}
+        <div className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"
+              alt="Developers"
+              className="w-full h-full object-cover opacity-35 filter brightness-95"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
+          </div>
 
-          <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
-            Our Developer Partners
-          </h1>
-          <p className="text-white/60 text-base mt-3 max-w-xl">
-            We work with India&apos;s most trusted real estate developers — RERA verified,
-            proven track records, on-time delivery.
-          </p>
+          {/* Symmetrical branding glows */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto relative z-10">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal mt-4 leading-tight animate-fadeIn">
+              Our Developer <span className="text-gold">Partners</span>
+            </h1>
+            <p className="text-white/80 text-base md:text-lg leading-relaxed max-w-xl font-light mt-3 animate-fadeIn">
+              We work with India&apos;s most trusted real estate developers — RERA verified,
+              proven track records, and on-time delivery.
+            </p>
+          </div>
         </div>
 
-        <div className="page-padding py-12">
-          <RevealGrid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="page-padding py-16">
+          <RevealGrid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {devs.map((dev) => (
               <RevealCard key={dev.id}>
                 <Link
                   href={`/developers/${dev.slug}`}
-                  className="group bg-white border border-gray-100 rounded-2xl p-6 hover:border-gold hover:shadow-md transition-all block h-full"
+                  className="group flex flex-col justify-between h-full bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 hover:border-gold hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
-                  {dev.logo ? (
-                    <div className="relative w-36 h-16 mb-4">
-                      <Image
-                        src={imagePresets.developerLogo(dev.logo)}
-                        alt={dev.name}
-                        fill
-                        sizes="144px"
-                        className="object-contain object-left"
-                      />
-                    </div>
-                  ) : (
-                    <div className="h-16 flex items-center mb-4">
-                      <span className="font-heading text-navy text-xl group-hover:text-gold transition-colors">
-                        {dev.name}
-                      </span>
-                    </div>
-                  )}
-                  <p className="text-gray-500 text-sm line-clamp-3 mb-4">{dev.description}</p>
+                  <div className="flex-1">
+                    {dev.logo ? (
+                      <div className="relative w-36 h-16 mb-6">
+                        <Image
+                          src={imagePresets.developerLogo(dev.logo)}
+                          alt={dev.name}
+                          fill
+                          sizes="144px"
+                          className="object-contain object-left filter brightness-95 contrast-105"
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-16 flex items-center mb-6">
+                        <span className="font-heading text-navy text-xl group-hover:text-gold transition-colors">
+                          {dev.name}
+                        </span>
+                      </div>
+                    )}
+                    <p className="text-gray-500 text-sm leading-relaxed font-light line-clamp-3 mb-6">
+                      {dev.description}
+                    </p>
+                  </div>
+
                   {(dev.established || dev.totalProjects || dev.headquarters) && (
-                    <div className="flex flex-wrap gap-3 text-xs text-gray-400">
-                      {dev.established && <span>Est. {dev.established}</span>}
-                      {dev.totalProjects && <span>{dev.totalProjects} Projects</span>}
-                      {dev.headquarters && <span>{dev.headquarters}</span>}
+                    <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-gray-400 font-light mb-6">
+                      {dev.established && (
+                        <span className="flex items-center gap-1">
+                          Est. {dev.established}
+                        </span>
+                      )}
+                      {dev.totalProjects && (
+                        <>
+                          <span className="text-gray-250">•</span>
+                          <span>{dev.totalProjects} Projects</span>
+                        </>
+                      )}
+                      {dev.headquarters && (
+                        <>
+                          <span className="text-gray-250">•</span>
+                          <span>{dev.headquarters}</span>
+                        </>
+                      )}
                     </div>
                   )}
+
+                  <div className="flex items-center justify-between text-xs text-navy group-hover:text-gold transition-colors pt-4 border-t border-gray-100 mt-auto">
+                    <span className="font-medium">View Developer Profile</span>
+                    <span className="text-xs transition-transform group-hover:translate-x-1 duration-200">→</span>
+                  </div>
                 </Link>
               </RevealCard>
             ))}
