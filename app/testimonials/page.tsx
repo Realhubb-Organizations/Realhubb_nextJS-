@@ -8,6 +8,7 @@ import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 import { cn } from "@/lib/utils";
 import {
   Star, Quote, CheckCircle, MapPin, Home, Users, TrendingUp, ThumbsUp, Building2,
+  ChevronDown, SlidersHorizontal, Search, X,
 } from "lucide-react";
 
 const REVIEWS = [
@@ -97,77 +98,89 @@ const ReviewCard = ({ r }: { r: (typeof REVIEWS)[0] }) => (
 );
 
 const TestimonialsPage = () => {
-  const [category, setCategory] = useState("all");
-  const [city, setCity]         = useState("All Cities");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCities, setSelectedCities]         = useState<string[]>([]);
+  const [search, setSearch]                         = useState("");
+  const [openDropdown, setOpenDropdown]             = useState<"category" | "city" | null>(null);
 
-  // Calculate review counts per category based on active city
+  // Calculate review counts per category dynamically
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    CATEGORIES.forEach((c) => {
+    
+    // "all" counts matches city & search filter
+    counts["all"] = REVIEWS.filter((r) => {
+      const cityMatch = selectedCities.length === 0 || selectedCities.includes(r.city.toLowerCase());
+      const textMatch = !search || 
+        r.name.toLowerCase().includes(search.toLowerCase()) || 
+        r.review.toLowerCase().includes(search.toLowerCase()) || 
+        r.role.toLowerCase().includes(search.toLowerCase());
+      return cityMatch && textMatch;
+    }).length;
+
+    CATEGORIES.filter((c) => c.key !== "all").forEach((c) => {
       counts[c.key] = REVIEWS.filter((r) => {
-        const cityMatch = city === "All Cities" || r.city.toLowerCase() === city.toLowerCase();
-        const catMatch = c.key === "all" || r.category.toLowerCase() === c.key.toLowerCase();
-        return cityMatch && catMatch;
+        const cityMatch = selectedCities.length === 0 || selectedCities.includes(r.city.toLowerCase());
+        const textMatch = !search || 
+          r.name.toLowerCase().includes(search.toLowerCase()) || 
+          r.review.toLowerCase().includes(search.toLowerCase()) || 
+          r.role.toLowerCase().includes(search.toLowerCase());
+        const catMatch = r.category.toLowerCase() === c.key.toLowerCase();
+        return cityMatch && textMatch && catMatch;
       }).length;
     });
     return counts;
-  }, [city]);
+  }, [selectedCities, search]);
 
-  // Calculate review counts per city based on active category
+  // Calculate review counts per city dynamically
   const cityCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    CITIES.forEach((c) => {
-      counts[c] = REVIEWS.filter((r) => {
-        const cityMatch = c === "All Cities" || r.city.toLowerCase() === c.toLowerCase();
-        const catMatch = category === "all" || r.category.toLowerCase() === category.toLowerCase();
-        return cityMatch && catMatch;
+    CITIES.filter((c) => c !== "All Cities").forEach((c) => {
+      const key = c.toLowerCase();
+      counts[key] = REVIEWS.filter((r) => {
+        const catMatch = selectedCategories.length === 0 || selectedCategories.includes(r.category.toLowerCase());
+        const textMatch = !search || 
+          r.name.toLowerCase().includes(search.toLowerCase()) || 
+          r.review.toLowerCase().includes(search.toLowerCase()) || 
+          r.role.toLowerCase().includes(search.toLowerCase());
+        const cityMatch = r.city.toLowerCase() === key;
+        return catMatch && textMatch && cityMatch;
       }).length;
     });
     return counts;
-  }, [category]);
+  }, [selectedCategories, search]);
 
-  const handleCityChange = (selectedCity: string) => {
-    setCity(selectedCity);
-    
-    // Auto fallback to 'all' if the selected category has 0 reviews in the selected city
-    const nextCategoryCounts: Record<string, number> = {};
-    CATEGORIES.forEach((cat) => {
-      nextCategoryCounts[cat.key] = REVIEWS.filter((r) => {
-        const cityMatch = selectedCity === "All Cities" || r.city.toLowerCase() === selectedCity.toLowerCase();
-        const catMatch = cat.key === "all" || r.category.toLowerCase() === cat.key.toLowerCase();
-        return cityMatch && catMatch;
-      }).length;
-    });
-
-    if (category !== "all" && (!nextCategoryCounts[category] || nextCategoryCounts[category] === 0)) {
-      setCategory("all");
-    }
+  const handleCategoryToggle = (catKey: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(catKey)
+        ? prev.filter((k) => k !== catKey)
+        : [...prev, catKey]
+    );
   };
 
-  const handleCategoryChange = (selectedCategory: string) => {
-    setCategory(selectedCategory);
+  const handleCityToggle = (cityKey: string) => {
+    setSelectedCities((prev) =>
+      prev.includes(cityKey)
+        ? prev.filter((k) => k !== cityKey)
+        : [...prev, cityKey]
+    );
+  };
 
-    // Auto fallback to 'All Cities' if the selected city has 0 reviews in the selected category
-    const nextCityCounts: Record<string, number> = {};
-    CITIES.forEach((c) => {
-      nextCityCounts[c] = REVIEWS.filter((r) => {
-        const cityMatch = c === "All Cities" || r.city.toLowerCase() === c.toLowerCase();
-        const catMatch = selectedCategory === "all" || r.category.toLowerCase() === selectedCategory.toLowerCase();
-        return cityMatch && catMatch;
-      }).length;
-    });
-
-    if (city !== "All Cities" && (!nextCityCounts[city] || nextCityCounts[city] === 0)) {
-      setCity("All Cities");
-    }
+  const clearAllFilters = () => {
+    setSelectedCategories([]);
+    setSelectedCities([]);
+    setSearch("");
   };
 
   const filtered = useMemo(() =>
     REVIEWS.filter((r) => {
-      const catMatch  = category === "all" || r.category.toLowerCase() === category.toLowerCase();
-      const cityMatch = city === "All Cities" || r.city.toLowerCase() === city.toLowerCase();
-      return catMatch && cityMatch;
-    }), [category, city]);
+      const catMatch = selectedCategories.length === 0 || selectedCategories.includes(r.category.toLowerCase());
+      const cityMatch = selectedCities.length === 0 || selectedCities.includes(r.city.toLowerCase());
+      const textMatch = !search || 
+        r.name.toLowerCase().includes(search.toLowerCase()) || 
+        r.review.toLowerCase().includes(search.toLowerCase()) || 
+        r.role.toLowerCase().includes(search.toLowerCase());
+      return catMatch && cityMatch && textMatch;
+    }), [selectedCategories, selectedCities, search]);
 
   const avgRating = (REVIEWS.reduce((a, b) => a + b.rating, 0) / REVIEWS.length).toFixed(1);
   const fiveStars = REVIEWS.filter((r) => r.rating === 5).length;
@@ -260,72 +273,213 @@ const TestimonialsPage = () => {
               ))}
             </div>
 
-            {/* Bottom Row: Selector Switches */}
-            <div className="flex flex-col gap-6">
+            {/* Bottom Row: Unified Premium Filter Suite */}
+            <div className="flex flex-col gap-5">
               
-              {/* Category selector */}
-              <div className="flex flex-col gap-3">
-                {/* Top Row: All Reviews option acting as label/header */}
-                <button
-                  onClick={() => handleCategoryChange("all")}
-                  className={cn(
-                    "text-xs uppercase tracking-wider font-semibold font-body transition-all relative pb-1 cursor-pointer self-start",
-                    category === "all" ? "text-gold" : "text-gray-400 hover:text-navy"
+              {/* Filter controls row */}
+              <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between pt-2">
+                
+                {/* Search Box */}
+                <div className="flex-1 max-w-md relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search reviews by name, keyword or role..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full bg-gray-50/50 border border-gray-200 focus:border-gold focus:ring-1 focus:ring-gold/30 rounded-xl pl-11 pr-10 py-3 text-sm text-navy focus:outline-none transition-all"
+                  />
+                  {search && (
+                    <button 
+                      onClick={() => setSearch("")}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-navy cursor-pointer flex items-center justify-center p-0.5 rounded-full hover:bg-gray-100 transition-colors"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
                   )}
-                >
-                  All Reviews ({categoryCounts["all"] ?? 0})
-                  {category === "all" && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold rounded-full" />
-                  )}
-                </button>
+                </div>
 
-                {/* Bottom Row: Subcategories */}
-                <div className="flex flex-wrap gap-5">
-                  {CATEGORIES.filter((c) => c.key !== "all").map((c) => {
-                    const isSelected = category === c.key;
-                    return (
-                      <button
-                        key={c.key}
-                        onClick={() => handleCategoryChange(c.key)}
-                        className={cn(
-                          "text-sm font-semibold tracking-wide uppercase transition-all relative pb-1.5 cursor-pointer",
-                          isSelected ? "text-gold" : "text-navy/60 hover:text-navy"
-                        )}
-                      >
-                        {c.label} ({categoryCounts[c.key] ?? 0})
-                        {isSelected && (
-                          <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold rounded-full" />
-                        )}
-                      </button>
-                    );
-                  })}
+                {/* Dropdowns group */}
+                <div className="flex flex-wrap items-center gap-3 relative">
+                  
+                  {/* Category Dropdown Button */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setOpenDropdown(openDropdown === "category" ? null : "category")}
+                      className={cn(
+                        "flex items-center gap-2 px-5 py-3 rounded-xl border text-sm font-medium transition-all cursor-pointer shadow-sm bg-white select-none",
+                        selectedCategories.length > 0
+                          ? "border-gold text-gold ring-1 ring-gold/20"
+                          : "border-gray-200 text-navy/60 hover:border-gold hover:text-navy"
+                      )}
+                    >
+                      <SlidersHorizontal className="w-4 h-4" />
+                      <span>
+                        {selectedCategories.length === 0
+                          ? "All Reviews"
+                          : `Categories (${selectedCategories.length})`}
+                      </span>
+                      <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", openDropdown === "category" && "rotate-180")} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {openDropdown === "category" && (
+                      <>
+                        <div className="fixed inset-0 z-30" onClick={() => setOpenDropdown(null)} />
+                        <div className="absolute right-0 md:left-0 mt-2 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl p-4 z-40 animate-fadeIn">
+                          <div className="flex items-center justify-between pb-2 mb-2 border-b border-gray-100">
+                            <span className="text-[10px] font-bold text-navy/50 uppercase tracking-wider font-body">Select Categories</span>
+                            {selectedCategories.length > 0 && (
+                              <button
+                                onClick={() => setSelectedCategories([])}
+                                className="text-[10px] text-red-500 hover:text-red-700 font-semibold uppercase tracking-wider cursor-pointer"
+                              >
+                                Clear
+                              </button>
+                            )}
+                          </div>
+                          <div className="space-y-1 max-h-60 overflow-y-auto py-1">
+                            {CATEGORIES.filter(c => c.key !== "all").map((cat) => {
+                              const isChecked = selectedCategories.includes(cat.key);
+                              const count = categoryCounts[cat.key] ?? 0;
+                              return (
+                                <label
+                                  key={cat.key}
+                                  className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50/70 cursor-pointer transition-colors select-none"
+                                >
+                                  <div className="flex items-center gap-2.5">
+                                    <input
+                                      type="checkbox"
+                                      checked={isChecked}
+                                      onChange={() => handleCategoryToggle(cat.key)}
+                                      className="accent-gold h-4 w-4 rounded border-gray-300 text-gold focus:ring-gold focus:ring-offset-0 cursor-pointer"
+                                    />
+                                    <span className="text-xs font-semibold text-navy/80">{cat.label}</span>
+                                  </div>
+                                  <span className="text-[9px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full font-semibold font-body">{count}</span>
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* City Dropdown Button */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setOpenDropdown(openDropdown === "city" ? null : "city")}
+                      className={cn(
+                        "flex items-center gap-2 px-5 py-3 rounded-xl border text-sm font-medium transition-all cursor-pointer shadow-sm bg-white select-none",
+                        selectedCities.length > 0
+                          ? "border-gold text-gold ring-1 ring-gold/20"
+                          : "border-gray-200 text-navy/60 hover:border-gold hover:text-navy"
+                      )}
+                    >
+                      <MapPin className="w-4 h-4" />
+                      <span>
+                        {selectedCities.length === 0
+                          ? "All Cities"
+                          : `Cities (${selectedCities.length})`}
+                      </span>
+                      <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", openDropdown === "city" && "rotate-180")} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {openDropdown === "city" && (
+                      <>
+                        <div className="fixed inset-0 z-30" onClick={() => setOpenDropdown(null)} />
+                        <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl p-4 z-40 animate-fadeIn">
+                          <div className="flex items-center justify-between pb-2 mb-2 border-b border-gray-100">
+                            <span className="text-[10px] font-bold text-navy/50 uppercase tracking-wider font-body">Select Cities</span>
+                            {selectedCities.length > 0 && (
+                              <button
+                                onClick={() => setSelectedCities([])}
+                                className="text-[10px] text-red-500 hover:text-red-700 font-semibold uppercase tracking-wider cursor-pointer"
+                              >
+                                Clear
+                              </button>
+                            )}
+                          </div>
+                          <div className="space-y-1 max-h-60 overflow-y-auto py-1">
+                            {CITIES.filter(c => c !== "All Cities").map((cityName) => {
+                              const key = cityName.toLowerCase();
+                              const isChecked = selectedCities.includes(key);
+                              const count = cityCounts[key] ?? 0;
+                              return (
+                                <label
+                                  key={cityName}
+                                  className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50/70 cursor-pointer transition-colors select-none"
+                                >
+                                  <div className="flex items-center gap-2.5">
+                                    <input
+                                      type="checkbox"
+                                      checked={isChecked}
+                                      onChange={() => handleCityToggle(key)}
+                                      className="accent-gold h-4 w-4 rounded border-gray-300 text-gold focus:ring-gold focus:ring-offset-0 cursor-pointer"
+                                    />
+                                    <span className="text-xs font-semibold text-navy/80">{cityName}</span>
+                                  </div>
+                                  <span className="text-[9px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full font-semibold font-body">{count}</span>
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+
                 </div>
               </div>
 
-              {/* City selector tabs */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-5 border-t border-gray-100">
-                <span className="text-xs uppercase tracking-wider text-gray-400 font-semibold font-body">Select City:</span>
-                <div className="flex flex-wrap gap-5">
-                  {CITIES.map((c) => {
-                    const isSelected = city === c;
-                    return (
-                      <button
-                        key={c}
-                        onClick={() => handleCityChange(c)}
-                        className={cn(
-                          "text-sm font-semibold tracking-wide uppercase transition-all relative pb-1.5 cursor-pointer",
-                          isSelected ? "text-gold" : "text-navy/60 hover:text-navy"
-                        )}
-                      >
-                        {c} ({cityCounts[c] ?? 0})
-                        {isSelected && (
-                          <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold rounded-full" />
-                        )}
+              {/* Active filters pill row */}
+              {(selectedCategories.length > 0 || selectedCities.length > 0 || search) && (
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-50 animate-fadeIn">
+                  <span className="text-[10px] tracking-wider uppercase text-navy/40 font-bold font-body mr-1">Filters:</span>
+                  
+                  {search && (
+                    <span className="inline-flex items-center gap-1.5 bg-gold/5 text-gold border border-gold/20 px-3 py-1 rounded-full text-xs font-medium">
+                      Search: "{search}"
+                      <button onClick={() => setSearch("")} className="hover:text-navy cursor-pointer flex items-center">
+                        <X className="w-3.5 h-3.5" />
                       </button>
+                    </span>
+                  )}
+
+                  {selectedCategories.map((catKey) => {
+                    const label = CATEGORIES.find(c => c.key === catKey)?.label ?? catKey;
+                    return (
+                      <span key={catKey} className="inline-flex items-center gap-1.5 bg-navy/5 text-navy border border-navy/10 px-3 py-1 rounded-full text-xs font-medium">
+                        {label}
+                        <button onClick={() => handleCategoryToggle(catKey)} className="hover:text-gold cursor-pointer flex items-center">
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </span>
                     );
                   })}
+
+                  {selectedCities.map((cityKey) => {
+                    const label = CITIES.find(c => c.toLowerCase() === cityKey) ?? cityKey;
+                    return (
+                      <span key={cityKey} className="inline-flex items-center gap-1.5 bg-navy/5 text-navy border border-navy/10 px-3 py-1 rounded-full text-xs font-medium">
+                        {label}
+                        <button onClick={() => handleCityToggle(cityKey)} className="hover:text-gold cursor-pointer flex items-center">
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </span>
+                    );
+                  })}
+
+                  <button
+                    onClick={clearAllFilters}
+                    className="text-xs text-red-500 hover:text-red-700 font-semibold uppercase tracking-wider ml-2 cursor-pointer"
+                  >
+                    Clear All
+                  </button>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -335,16 +489,20 @@ const TestimonialsPage = () => {
           <div className="max-w-7xl mx-auto">
             
             {/* Results Header Count */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6 animate-fadeIn">
               <p className="text-navy/50 text-sm font-body font-light">
                 Showing <span className="text-navy font-normal">{filtered.length}</span> verified customer review{filtered.length !== 1 ? "s" : ""}
-                {category !== "all" && <> for <span className="font-normal text-navy capitalize">{category}</span></>}
-                {city !== "All Cities" && <> in <span className="font-normal text-navy">{city}</span></>}
+                {selectedCategories.length > 0 && (
+                  <> for <span className="font-normal text-navy">{selectedCategories.map(catKey => CATEGORIES.find(c => c.key === catKey)?.label).join(", ")}</span></>
+                )}
+                {selectedCities.length > 0 && (
+                  <> in <span className="font-normal text-navy capitalize">{selectedCities.map(cityKey => CITIES.find(c => c.toLowerCase() === cityKey)).join(", ")}</span></>
+                )}
               </p>
             </div>
 
             {filtered.length > 0 ? (
-              <RevealGrid key={`${category}-${city}`} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <RevealGrid key={`${selectedCategories.join(",")}-${selectedCities.join(",")}-${search}`} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filtered.map((review) => (
                   <RevealCard key={review.id}>
                     <ReviewCard r={review} />
@@ -361,7 +519,7 @@ const TestimonialsPage = () => {
                   We couldn't find any verified client reviews matching your current selection.
                 </p>
                 <button
-                  onClick={() => { setCategory("all"); setCity("All Cities") }}
+                  onClick={clearAllFilters}
                   className="bg-gold text-navy px-6 py-2.5 rounded-xl text-sm font-normal hover:bg-gold/90 transition-all cursor-pointer"
                 >
                   Clear All Filters
