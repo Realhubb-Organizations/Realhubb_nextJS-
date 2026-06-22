@@ -111,6 +111,7 @@ export default function Header() {
             priority
             unoptimized
             className="h-12 sm:h-14 w-auto"
+            style={{ aspectRatio: "200 / 65" }}
           />
         </Link>
 

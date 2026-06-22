@@ -73,15 +73,21 @@ export function RevealCard({ children, className, index = 0 }: CardProps) {
     return () => obs.disconnect();
   }, [index]);
 
+  const combinedClassName = className
+    ? `${className} transition-all duration-700 opacity-100 translate-x-0 lg:opacity-0 lg:-translate-x-10`
+    : "transition-all duration-700 opacity-100 translate-x-0 lg:opacity-0 lg:-translate-x-10";
+
   return (
     <div
       ref={ref}
-      className={className}
+      className={combinedClassName}
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "none" : "translateX(-40px)",
-        transition: `opacity 0.6s cubic-bezier(0.25,0.46,0.45,0.94) ${index * 80}ms, transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94) ${index * 80}ms`,
-        willChange: "transform, opacity",
+        opacity: visible ? 1 : undefined,
+        transform: visible ? "none" : undefined,
+        transition: visible
+          ? `opacity 0.6s cubic-bezier(0.25,0.46,0.45,0.94) ${index * 80}ms, transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94) ${index * 80}ms`
+          : undefined,
+        willChange: visible ? undefined : "transform, opacity",
       }}
     >
       {children}

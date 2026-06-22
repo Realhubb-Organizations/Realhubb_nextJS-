@@ -5,6 +5,7 @@ import { getFeaturedProperties, getLatestBlogPosts, getAllDevelopers, getPublish
 import { properties as staticProperties } from "@/data/properties";
 import { blogPosts as staticBlogPosts } from "@/data/blog";
 import { developers as staticDevelopers } from "@/data/developers";
+import { generalFaq } from "@/data/faqData";
 import HeroSection from "@/components/home/HeroSection";
 import ServingCities from "@/components/home/ServingCities";
 import FeaturedProperties from "@/components/home/FeaturedProperties";
@@ -38,7 +39,7 @@ function FeaturedPropertiesSkeleton() {
         <div className="h-10 bg-gray-100 rounded-lg w-1/3 mb-10 animate-pulse" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="bg-gray-100 rounded-2xl h-80 animate-pulse" />
+            <div key={i} className="bg-gray-100 rounded-2xl h-[390px] animate-pulse" />
           ))}
         </div>
       </div>
@@ -48,10 +49,16 @@ function FeaturedPropertiesSkeleton() {
 
 function DeveloperStripSkeleton() {
   return (
-    <div className="py-12 bg-white/50 border-y border-gray-100">
-      <div className="page-padding flex items-center justify-between gap-6 overflow-hidden">
+    <div className="py-16 bg-navy overflow-hidden">
+      <div className="page-padding text-center mb-10">
+        <p className="section-overline text-gold/30 mb-2 animate-pulse">Trusted Developer Partners</p>
+        <p className="text-white/20 text-xs animate-pulse">
+          We work exclusively with RERA-verified, track-record-proven builders
+        </p>
+      </div>
+      <div className="page-padding flex items-center justify-center gap-5 overflow-hidden">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="h-10 bg-gray-100 rounded-lg w-28 animate-pulse shrink-0" />
+          <div key={i} className="h-20 w-44 bg-white/5 rounded-xl animate-pulse shrink-0" />
         ))}
       </div>
     </div>
@@ -65,7 +72,7 @@ function BlogPreviewSkeleton() {
         <div className="h-10 bg-gray-100 rounded-lg w-1/4 mb-10 animate-pulse" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="bg-gray-100 rounded-2xl h-64 animate-pulse" />
+            <div key={i} className="bg-gray-100 rounded-2xl h-[328px] animate-pulse" />
           ))}
         </div>
       </div>
@@ -78,10 +85,12 @@ function HomeFaqsSkeleton() {
     <div className="py-20 bg-cream">
       <div className="page-padding max-w-4xl mx-auto">
         <div className="h-10 bg-gray-200 rounded-lg w-1/3 mx-auto mb-10 animate-pulse" />
-        <div className="space-y-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-16 bg-gray-200 rounded-xl animate-pulse" />
-          ))}
+        <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-gray-100">
+          <div className="space-y-4 animate-pulse">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-16 bg-gray-100 rounded-xl" />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -91,15 +100,28 @@ function HomeFaqsSkeleton() {
 function CitySectionSkeleton() {
   return (
     <section className="py-20 bg-cream">
-      <div className="page-padding animate-pulse">
-        <div className="text-center mb-10">
+      <div className="page-padding">
+        <div className="text-center mb-10 animate-pulse">
           <p className="section-overline text-gold mb-2">Explore by Location</p>
           <div className="h-10 bg-gray-200 rounded-lg w-1/3 mx-auto mb-6" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="bg-gray-200 rounded-2xl h-80" />
+        
+        {/* Mocked tab buttons */}
+        <div className="flex items-center justify-center gap-2 mb-10 flex-wrap animate-pulse">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-9 w-28 bg-white border border-gray-200 rounded-full" />
           ))}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-white border border-gray-100 rounded-2xl h-[390px]" />
+          ))}
+        </div>
+
+        {/* Mocked bottom button */}
+        <div className="mt-10 text-center animate-pulse">
+          <div className="inline-block bg-white border border-gray-200 h-11 w-44 rounded-xl" />
         </div>
       </div>
     </section>
@@ -150,11 +172,14 @@ async function HomeFaqsWrapper() {
   let homeFaqs: any[] = [];
   try {
     const data = await getPublishedFaqsByPage("home");
-    if (data) {
+    if (data && data.length > 0) {
       homeFaqs = data;
+    } else {
+      homeFaqs = generalFaq;
     }
   } catch (err) {
     console.error("Error fetching homepage FAQs:", err);
+    homeFaqs = generalFaq;
   }
   return <HomeFaqs faqs={homeFaqs} />;
 }

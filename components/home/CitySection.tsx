@@ -36,8 +36,14 @@ export default function CitySection({ properties }: Props) {
     setAnimKey((k) => k + 1);
   };
 
+  const isInitialMount = useRef(true);
+
   // Trigger stagger animation on grid children when animKey changes
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     const grid = gridRef.current;
     if (!grid) return;
     const cards = Array.from(grid.children) as HTMLElement[];
