@@ -264,13 +264,13 @@ const TestimonialsPage = () => {
             <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch lg:items-center">
               
               {/* Category switches (sliding switcher style) */}
-              <div className="flex flex-wrap bg-gray-50 p-1.5 rounded-xl self-start border border-gray-100">
+              <div className="flex flex-nowrap overflow-x-auto scrollbar-hide max-w-full bg-gray-50 p-1.5 rounded-xl self-start border border-gray-100">
                 {CATEGORIES.map((c) => (
                   <button
                     key={c.key}
                     onClick={() => handleCategoryChange(c.key)}
                     className={cn(
-                      "px-4 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer",
+                      "px-4 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer whitespace-nowrap",
                       category === c.key
                         ? "bg-navy text-white shadow-sm"
                         : "text-navy/60 hover:text-navy"
