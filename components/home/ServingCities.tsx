@@ -9,21 +9,24 @@ const CITIES = [
     name: "Bangalore",
     projectCount: "120+",
     description: "India's leading IT hub and fastest-growing real estate market.",
-    image: "https://media.istockphoto.com/id/1382384282/photo/bangalore-or-bengaluru.jpg?s=612x612&w=0&k=20&c=6pxwL3JxNV2B_NZSLMZLhrSLqAbyCPlGuSZYKImpjKQ=",
+    image: "/real-estate-projects-bangalore.webp",
+    alt: "Verified real estate projects and luxury flats in Bangalore",
     href: "/projects/ongoing/bangalore",
   },
   {
     name: "Hyderabad",
     projectCount: "110+",
     description: "Booming tech city with excellent investment potential.",
-    image: "https://t4.ftcdn.net/jpg/14/44/29/99/360_F_1444299904_cSP0QWCZXioyVl1IFYjL4BgZqnvsVwJS.jpg",
+    image: "/verified-apartments-hyderabad.webp",
+    alt: "Verified residential apartments and gated communities in Hyderabad",
     href: "/projects/ongoing/hyderabad",
   },
   {
     name: "Chennai",
     projectCount: "90+",
     description: "Known for beachfront living and a strong industrial base.",
-    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80",
+    image: "/premium-villas-chennai.webp",
+    alt: "Premium villas and beachfront residential projects in Chennai",
     href: "/projects/ongoing/chennai",
   },
 ];
@@ -56,7 +59,7 @@ export default function ServingCities() {
                 {/* Background City Image */}
                 <Image
                   src={city.image}
-                  alt={`Real estate projects in ${city.name}`}
+                  alt={city.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"

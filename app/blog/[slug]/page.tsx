@@ -15,11 +15,9 @@ import { imagePresets } from "@/lib/cloudinary";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 import CommentSection from "@/components/blog/CommentSection";
 import FaqAccordion from "@/components/faq/FaqAccordion";
+import BlogReaderWrapper from "@/components/blog/BlogReaderWrapper";
 import {
   BlogTranslationProvider,
-  LanguageControl,
-  TranslatedTitle,
-  TranslatedExcerpt,
   TranslatedContent,
 } from "@/components/blog/TranslatableArticle";
 
@@ -81,111 +79,26 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       )}
 
       <BlogTranslationProvider post={{ title: post.title, excerpt: post.excerpt, content: post.content }}>
-      <div className="pt-20">
-        {/* Hero */}
-        <div className="relative bg-navy py-16 page-padding overflow-hidden">
-          {coverImage && (
-            <div className="absolute inset-0 opacity-10">
-              <Image src={coverImage} alt={post.title} fill className="object-cover" />
-            </div>
-          )}
-          <div className="relative z-10 max-w-3xl">
-            <div className="flex items-start justify-between gap-4">
-
-              <LanguageControl dark />
-            </div>
-            <div className="flex items-center gap-3 mt-4 mb-4">
-              <span className="section-overline text-gold">{post.category}</span>
-              <span className="text-white/30">·</span>
-              <span className="text-white/50 text-xs">{post.readTime}</span>
-              <span className="text-white/30">·</span>
-              <span className="text-white/50 text-xs">{post.publishedAt}</span>
-            </div>
-            <TranslatedTitle className="speakable-title font-heading text-3xl md:text-4xl text-white font-normal" />
-            <TranslatedExcerpt className="speakable-summary text-white/60 text-base mt-4" />
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="page-padding py-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <article className="lg:col-span-2">
-            {coverImage && (
-              <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-8">
-                <Image src={coverImage} alt={post.title} fill className="object-cover" priority />
-              </div>
-            )}
+        <div className="pt-20">
+          <BlogReaderWrapper
+            post={{
+              title: post.title,
+              slug: post.slug,
+              excerpt: post.excerpt,
+              content: post.content,
+              category: post.category,
+              readTime: post.readTime,
+              publishedAt: post.publishedAt,
+              author: post.author,
+              coverImage: coverImage,
+              tags: post.tags,
+            }}
+            blogFaqs={blogFaqs}
+            related={related}
+          >
             <TranslatedContent />
-
-            {/* Tags */}
-            {post.tags?.length > 0 && (
-              <div className="mt-10 pt-8 border-t border-gray-100/80">
-                <p className="text-xs font-semibold tracking-wider text-navy/40 uppercase mb-4">Tags</p>
-                <div className="flex flex-wrap gap-2.5">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3.5 py-1.5 bg-white border border-gray-200/80 text-navy/70 rounded-xl text-xs hover:border-gold hover:text-gold transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-0.5"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Author */}
-            <div className="mt-8 bg-cream rounded-2xl p-5 flex items-center gap-4">
-              <div className="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-gold font-heading text-lg shrink-0">
-                {post.author[0]}
-              </div>
-              <div>
-                <p className="text-navy text-sm font-normal">{post.author}</p>
-                <p className="text-gray-400 text-xs">Real Estate Expert · RealHubb Ventures</p>
-              </div>
-            </div>
-
-            {/* FAQ Section */}
-            {blogFaqs.length > 0 && (
-              <div className="mt-8 pt-8 border-t border-gray-100">
-                <h3 className="font-heading text-xl text-navy font-normal mb-6">Frequently Asked Questions</h3>
-                <FaqAccordion items={blogFaqs} />
-              </div>
-            )}
-
-            <CommentSection slug={post.slug} />
-          </article>
-
-          {/* Sidebar */}
-          <aside>
-            <div className="sticky top-24 space-y-6">
-              <InstantCallbackForm />
-              {/* Related posts */}
-              {related.filter((r) => r.slug !== post.slug).length > 0 && (
-                <div>
-                  <p className="section-overline text-gold mb-4">Related Articles</p>
-                  <div className="space-y-4">
-                    {related
-                      .filter((r) => r.slug !== post.slug)
-                      .slice(0, 3)
-                      .map((r) => (
-                        <Link
-                          key={r.id}
-                          href={`/blog/${r.slug}`}
-                          className="block group"
-                        >
-                          <p className="text-navy text-sm font-normal group-hover:text-gold transition-colors line-clamp-2">
-                            {r.title}
-                          </p>
-                          <p className="text-gray-400 text-xs mt-1">{r.readTime}</p>
-                        </Link>
-                      ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </aside>
+          </BlogReaderWrapper>
         </div>
-      </div>
       </BlogTranslationProvider>
     </>
   );

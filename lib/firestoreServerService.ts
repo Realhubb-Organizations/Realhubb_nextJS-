@@ -61,7 +61,8 @@ export async function getAllProperties(): Promise<Property[]> {
       const timeB = b.createdAt?.seconds ?? 0;
       return timeB - timeA;
     });
-  } catch {
+  } catch (error) {
+    console.error("Error in getAllProperties:", error);
     return [];
   }
 }
@@ -73,7 +74,8 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
     if (snap.empty) return null;
     const doc = snap.docs[0];
     return normalizeProperty(docToPlain(doc.id, doc.data()));
-  } catch {
+  } catch (error) {
+    console.error("Error in getPropertyBySlug:", error);
     return null;
   }
 }
@@ -87,7 +89,8 @@ export async function getFeaturedProperties(): Promise<Property[]> {
       .limit(8)
       .get();
     return snap.docs.map((d) => normalizeProperty(docToPlain(d.id, d.data())));
-  } catch {
+  } catch (error) {
+    console.error("Error in getFeaturedProperties:", error);
     return [];
   }
 }
@@ -97,7 +100,8 @@ export async function getPropertiesByCity(city: string): Promise<Property[]> {
     const db = getAdminDb();
     const snap = await db.collection("properties").where("city", "==", city).get();
     return snap.docs.map((d) => normalizeProperty(docToPlain(d.id, d.data())));
-  } catch {
+  } catch (error) {
+    console.error("Error in getPropertiesByCity:", error);
     return [];
   }
 }
@@ -116,7 +120,8 @@ export async function getPropertiesByCityAndLocation(
         p.location.toLowerCase().replace(/\s+/g, "-") === slug ||
         p.location.toLowerCase().includes(slug.replace(/-/g, " "))
     );
-  } catch {
+  } catch (error) {
+    console.error("Error in getPropertiesByCityAndLocation:", error);
     return [];
   }
 }
@@ -211,7 +216,8 @@ export async function getAllDevelopers(): Promise<Developer[]> {
     const db = getAdminDb();
     const snap = await db.collection("developers").get();
     return snap.docs.map((d) => normalizeDeveloper(docToPlain(d.id, d.data())));
-  } catch {
+  } catch (error) {
+    console.error("Error in getAllDevelopers:", error);
     return [];
   }
 }
@@ -226,7 +232,8 @@ export async function getDeveloperBySlug(slug: string): Promise<Developer | null
       .get();
     if (snap.empty) return null;
     return normalizeDeveloper(docToPlain(snap.docs[0].id, snap.docs[0].data()));
-  } catch {
+  } catch (error) {
+    console.error("Error in getDeveloperBySlug:", error);
     return null;
   }
 }
@@ -264,7 +271,8 @@ export async function getAllTeamMembers(): Promise<TeamMember[]> {
       if (orderA !== orderB) return orderA - orderB;
       return a.name.localeCompare(b.name);
     });
-  } catch {
+  } catch (error) {
+    console.error("Error in getAllTeamMembers:", error);
     return [];
   }
 }
@@ -277,7 +285,8 @@ export async function getAllPropertySlugs(): Promise<string[]> {
     const db = getAdminDb();
     const snap = await db.collection("properties").select("slug").get();
     return snap.docs.map((d) => d.data().slug as string).filter(Boolean);
-  } catch {
+  } catch (error) {
+    console.error("Error in getAllPropertySlugs:", error);
     return [];
   }
 }
@@ -291,7 +300,8 @@ export async function getAllBlogSlugs(): Promise<string[]> {
       .select("slug")
       .get();
     return snap.docs.map((d) => d.data().slug as string).filter(Boolean);
-  } catch {
+  } catch (error) {
+    console.error("Error in getAllBlogSlugs:", error);
     return [];
   }
 }
@@ -301,7 +311,8 @@ export async function getAllDeveloperSlugs(): Promise<string[]> {
     const db = getAdminDb();
     const snap = await db.collection("developers").select("slug").get();
     return snap.docs.map((d) => d.data().slug as string).filter(Boolean);
-  } catch {
+  } catch (error) {
+    console.error("Error in getAllDeveloperSlugs:", error);
     return [];
   }
 }

@@ -19,6 +19,7 @@ import {
 import PropertyCard from "@/components/property/PropertyCard";
 import HeroBackgroundSlideshow from "@/components/property/HeroBackgroundSlideshow";
 import EnquiryPopup from "@/components/property/EnquiryPopup";
+import PropertyGallery from "@/components/property/PropertyGallery";
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 
 type Params = Promise<{ slug: string }>;
@@ -210,6 +211,20 @@ export default async function PropertyDetailPage({ params }: { params: Params })
                 </div>
               )}
             </div>
+
+            {/* Property Gallery */}
+            {p.images && p.images.length > 0 && (
+              <div className="bg-white border border-gray-150/80 rounded-3xl overflow-hidden shadow-sm">
+                <div className="p-6 md:p-8 pb-0">
+                  <h2 className="font-heading text-2xl text-navy font-normal">
+                    Property <span className="text-gold">Gallery</span>
+                  </h2>
+                </div>
+                <div className="p-6 md:p-8 pt-4">
+                  <PropertyGallery images={p.images} propertyName={p.name} />
+                </div>
+              </div>
+            )}
 
             {/* About description */}
             <div className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">

@@ -23,6 +23,30 @@ export default function PropertyGallery({ images, propertyName }: Props) {
   const next = useCallback(() =>
     setActive((i) => (i + 1) % total), [total]);
 
+  // Touch swipe gestures for mobile navigation
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setTouchEnd(null);
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if (touchStart === null || touchEnd === null) return;
+    const diff = touchStart - touchEnd;
+    const minSwipeDistance = 50; // pixels
+    if (diff > minSwipeDistance) {
+      next();
+    } else if (diff < -minSwipeDistance) {
+      prev();
+    }
+  }, [touchStart, touchEnd, next, prev]);
+
   // Keyboard navigation (active in lightbox)
   useEffect(() => {
     if (!lightbox) return;
@@ -58,8 +82,11 @@ export default function PropertyGallery({ images, propertyName }: Props) {
       <div className="relative bg-black group">
         {/* Main image */}
         <div
-          className="relative h-72 md:h-[480px] cursor-pointer overflow-hidden"
+          className="relative h-72 md:h-[480px] cursor-pointer overflow-hidden select-none touch-pan-y"
           onClick={() => setLightbox(true)}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <Image
             key={images[active]}
@@ -97,8 +124,8 @@ export default function PropertyGallery({ images, propertyName }: Props) {
               className="absolute left-3 top-1/2 -translate-y-1/2
                          w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm
                          flex items-center justify-center text-white
-                         opacity-0 group-hover:opacity-100
-                         hover:bg-black/80 transition-all"
+                         opacity-80 md:opacity-0 md:group-hover:opacity-100
+                         hover:bg-black/80 hover:scale-105 transition-all duration-200 z-10"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -108,8 +135,8 @@ export default function PropertyGallery({ images, propertyName }: Props) {
               className="absolute right-3 top-1/2 -translate-y-1/2
                          w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm
                          flex items-center justify-center text-white
-                         opacity-0 group-hover:opacity-100
-                         hover:bg-black/80 transition-all"
+                         opacity-80 md:opacity-0 md:group-hover:opacity-100
+                         hover:bg-black/80 hover:scale-105 transition-all duration-200 z-10"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -186,8 +213,11 @@ export default function PropertyGallery({ images, propertyName }: Props) {
 
           {/* Main lightbox image */}
           <div
-            className="relative flex-1 mx-4 mb-4 rounded-2xl overflow-hidden"
+            className="relative flex-1 mx-4 mb-4 rounded-2xl overflow-hidden select-none touch-none"
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             <Image
               key={`lb-${images[active]}`}
@@ -207,7 +237,7 @@ export default function PropertyGallery({ images, propertyName }: Props) {
                   className="absolute left-3 top-1/2 -translate-y-1/2
                              w-11 h-11 rounded-full bg-black/70 backdrop-blur-sm
                              flex items-center justify-center text-white
-                             hover:bg-black/90 transition-colors"
+                             hover:bg-black/90 hover:scale-105 transition-all duration-200 z-10"
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
@@ -216,7 +246,7 @@ export default function PropertyGallery({ images, propertyName }: Props) {
                   className="absolute right-3 top-1/2 -translate-y-1/2
                              w-11 h-11 rounded-full bg-black/70 backdrop-blur-sm
                              flex items-center justify-center text-white
-                             hover:bg-black/90 transition-colors"
+                             hover:bg-black/90 hover:scale-105 transition-all duration-200 z-10"
                 >
                   <ChevronRight className="w-6 h-6" />
                 </button>

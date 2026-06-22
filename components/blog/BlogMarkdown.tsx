@@ -6,14 +6,7 @@ export default function BlogMarkdown({ content }: Props) {
   const html = parseMarkdown(content);
   return (
     <div
-      className="prose prose-sm max-w-none text-gray-600
-        prose-headings:font-heading prose-headings:text-navy prose-headings:font-normal
-        prose-h2:text-2xl prose-h3:text-xl
-        prose-a:text-gold prose-a:no-underline hover:prose-a:underline
-        prose-strong:text-navy prose-strong:font-normal
-        prose-li:text-gray-500
-        prose-blockquote:border-gold prose-blockquote:text-gray-400
-        prose-table:text-sm prose-th:bg-cream prose-th:text-navy prose-th:font-normal"
+      className="blog-content blog-content-with-dropcap transition-all duration-300"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -22,8 +15,14 @@ export default function BlogMarkdown({ content }: Props) {
 function parseMarkdown(md: string): string {
   return md
     .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-    .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-    .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+    .replace(/^## (.+)$/gm, (_, title) => {
+      const id = title.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-");
+      return `<h2 id="${id}">${title}</h2>`;
+    })
+    .replace(/^### (.+)$/gm, (_, title) => {
+      const id = title.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-");
+      return `<h3 id="${id}">${title}</h3>`;
+    })
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
@@ -38,3 +37,4 @@ function parseMarkdown(md: string): string {
     .replace(/^([^<\n].+)$/gm, (line) => (line.startsWith("<") ? line : `<p>${line}</p>`))
     .replace(/<p><\/p>/g, "");
 }
+
