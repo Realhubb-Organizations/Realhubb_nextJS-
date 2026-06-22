@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { getAllBlogPosts } from "@/lib/firestoreServerService";
-import { blogPosts as staticBlogPosts } from "@/data/blog";
 import BlogListingClient from "@/components/blog/BlogListingClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
@@ -17,11 +16,7 @@ export const metadata: Metadata = buildMetadata({
 export const dynamic = "force-dynamic";
 
 export default async function BlogPage() {
-  const firestorePosts = await getAllBlogPosts().catch(() => []);
-  const posts =
-    firestorePosts.length > 0
-      ? firestorePosts
-      : staticBlogPosts.filter((p) => p.published);
+  const posts = await getAllBlogPosts().catch(() => []);
 
   return (
     <div className="pt-20">

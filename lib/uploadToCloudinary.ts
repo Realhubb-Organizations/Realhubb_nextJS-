@@ -89,3 +89,29 @@ export function formatBytes(bytes: number): string {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
+
+export async function uploadRawToCloudinary(
+  file: File,
+  folder: string = "resumes"
+): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_CONFIG.uploadPreset || "realhubb");
+  formData.append("folder", `realhubb/${folder}`);
+
+  const cloudName = CLOUDINARY_CONFIG.cloudName || "dr0fl3ak5";
+  const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
+
+  const response = await fetch(uploadUrl, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(errData.error?.message ?? "Cloudinary upload failed");
+  }
+
+  const data = await response.json();
+  return data.secure_url;
+}

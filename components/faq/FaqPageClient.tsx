@@ -83,10 +83,10 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
           <HelpCircle className="h-3.5 w-3.5" />
           Help Center
         </div>
-        <h1 className="font-heading text-3xl md:text-5xl text-white font-normal max-w-2xl">
+        <h1 className="speakable-title font-heading text-3xl md:text-5xl text-white font-normal max-w-2xl">
           Frequently asked <span className="text-gold">questions.</span>
         </h1>
-        <p className="text-white/60 text-base mt-3 max-w-xl">
+        <p className="speakable-summary text-white/60 text-base mt-3 max-w-xl">
           Everything you need to know about buying property, RERA compliance, home loans, and how
           RealHubb works.
         </p>

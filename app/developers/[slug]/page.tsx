@@ -6,11 +6,9 @@ import { developerMetadata } from "@/lib/seo";
 import {
   getDeveloperBySlug,
   getAllDeveloperSlugs,
-  getPropertiesByCity,
+  getAllProperties,
 } from "@/lib/firestoreServerService";
-import { developers as staticDevs } from "@/data/developers";
-import { properties as staticProps } from "@/data/properties";
-import { breadcrumbSchema } from "@/lib/structuredData";
+import { breadcrumbSchema, builderSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import PropertyCard from "@/components/property/PropertyCard";
@@ -21,30 +19,24 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const dev =
-    (await getDeveloperBySlug(slug).catch(() => null)) ??
-    staticDevs.find((d) => d.slug === slug);
+  const dev = await getDeveloperBySlug(slug).catch(() => null);
   if (!dev) return { title: "Developer Not Found" };
   return developerMetadata(dev.name, dev.slug);
 }
 
 export async function generateStaticParams() {
   const fireStoreSlugs = await getAllDeveloperSlugs().catch(() => []);
-  const staticSlugs = staticDevs.map((d) => d.slug);
-  return [...new Set([...fireStoreSlugs, ...staticSlugs])].map((slug) => ({ slug }));
+  return fireStoreSlugs.map((slug) => ({ slug }));
 }
 
 export const dynamic = "force-dynamic";
 
 export default async function DeveloperDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const dev =
-    (await getDeveloperBySlug(slug).catch(() => null)) ??
-    staticDevs.find((d) => d.slug === slug);
+  const dev = await getDeveloperBySlug(slug).catch(() => null);
   if (!dev) notFound();
 
-  const firestoreProps = await getPropertiesByCity("bangalore").catch(() => []);
-  const allProps = firestoreProps.length > 0 ? firestoreProps : staticProps;
+  const allProps = await getAllProperties().catch(() => []);
   const devProps = allProps.filter((p) =>
     p.developer.toLowerCase().includes(dev.name.toLowerCase().split(" ")[0])
   );
@@ -61,8 +53,21 @@ export default async function DeveloperDetailPage({ params }: { params: Params }
     dev.totalProjects && `${dev.totalProjects} projects`,
   ].filter(Boolean);
 
+  const developerSchema = builderSchema({
+    name: dev.name,
+    description: dev.description,
+    established: dev.established,
+    headquarters: dev.headquarters,
+    logo: dev.logo ? imagePresets.developerLogo(dev.logo) : undefined,
+    url: dev.website || `${SITE_URL}/developers/${dev.slug}`,
+  });
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(developerSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}

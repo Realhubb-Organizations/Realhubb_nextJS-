@@ -14,7 +14,7 @@ import GalleryManager from "@/admin/components/GalleryManager";
 import FaqManager from "@/admin/components/FaqManager";
 import LeadsPanel from "@/admin/components/LeadsPanel";
 
-type Tab = "properties" | "blog" | "team" | "developers" | "gallery" | "faq" | "leads";
+type Tab = "properties" | "blog" | "team" | "developers" | "gallery" | "faq" | "resumes";
 
 const tabs = [
   { id: "properties" as Tab, label: "Properties", icon: Building2 },
@@ -23,7 +23,7 @@ const tabs = [
   { id: "developers" as Tab, label: "Developers", icon: Users },
   { id: "gallery" as Tab, label: "Gallery", icon: Image },
   { id: "faq" as Tab, label: "FAQs", icon: HelpCircle },
-  { id: "leads" as Tab, label: "Leads", icon: BarChart3 },
+  { id: "resumes" as Tab, label: "Resumes", icon: FileText },
 ];
 
 export default function AdminDashboard() {
@@ -86,7 +86,7 @@ export default function AdminDashboard() {
         {activeTab === "developers" && <DeveloperManager />}
         {activeTab === "gallery" && <GalleryManager />}
         {activeTab === "faq" && <FaqManager />}
-        {activeTab === "leads" && <LeadsPanel />}
+        {activeTab === "resumes" && <LeadsPanel />}
       </main>
     </div>
   );

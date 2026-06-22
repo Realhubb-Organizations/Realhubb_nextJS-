@@ -9,7 +9,6 @@ import {
   getLatestBlogPosts,
   getPublishedFaqsByReference,
 } from "@/lib/firestoreServerService";
-import { blogPosts as staticBlogPosts } from "@/data/blog";
 import { breadcrumbSchema, articleSchema, faqSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
@@ -30,8 +29,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const post =
-    (await getBlogPostBySlug(slug)) ?? staticBlogPosts.find((p) => p.slug === slug);
+  const post = await getBlogPostBySlug(slug);
   if (!post) return { title: "Post Not Found" };
   return blogMetadata({
     title: post.title,
@@ -47,22 +45,17 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export async function generateStaticParams() {
   const fireStoreSlugs = await getAllBlogSlugs().catch(() => []);
-  const staticSlugs = staticBlogPosts.filter((p) => p.published).map((p) => p.slug);
-  const all = [...new Set([...fireStoreSlugs, ...staticSlugs])];
-  return all.map((slug) => ({ slug }));
+  return fireStoreSlugs.map((slug) => ({ slug }));
 }
 
 export const dynamic = "force-dynamic";
 
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const post =
-    (await getBlogPostBySlug(slug)) ?? staticBlogPosts.find((p) => p.slug === slug && p.published);
-  if (!post) notFound();
+  const post = await getBlogPostBySlug(slug);
+  if (!post || !post.published) notFound();
 
-  const related = await getLatestBlogPosts(3).catch(() =>
-    staticBlogPosts.filter((p) => p.published && p.slug !== slug).slice(0, 3)
-  );
+  const related = await getLatestBlogPosts(3).catch(() => []);
 
   const dbFaqs = await getPublishedFaqsByReference("blog", post.id);
   const blogFaqs = dbFaqs.map((f) => ({
@@ -108,8 +101,8 @@ export default async function BlogPostPage({ params }: { params: Params }) {
               <span className="text-white/30">·</span>
               <span className="text-white/50 text-xs">{post.publishedAt}</span>
             </div>
-            <TranslatedTitle className="font-heading text-3xl md:text-4xl text-white font-normal" />
-            <TranslatedExcerpt className="text-white/60 text-base mt-4" />
+            <TranslatedTitle className="speakable-title font-heading text-3xl md:text-4xl text-white font-normal" />
+            <TranslatedExcerpt className="speakable-summary text-white/60 text-base mt-4" />
           </div>
         </div>
 

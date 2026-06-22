@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import { getAllTeamMembers } from "@/lib/firestoreServerService";
-import { teamMembers as staticTeam } from "@/data/team";
 import { company } from "@/data/company";
 import { personSchema, breadcrumbSchema } from "@/lib/structuredData";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
@@ -22,8 +22,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function TeamPage() {
-  const firestoreTeam = await getAllTeamMembers().catch(() => []);
-  const team = firestoreTeam.length > 0 ? firestoreTeam : staticTeam;
+  const team = await getAllTeamMembers().catch(() => []);
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
@@ -55,10 +54,20 @@ export default async function TeamPage() {
             {team.map((m) => (
               <RevealCard key={m.id}>
               <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-md transition-shadow h-full">
-                <div className="bg-navy/5 h-48 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-navy/20 rounded-full flex items-center justify-center">
-                    <span className="font-heading text-navy text-4xl font-normal">{m.name[0]}</span>
-                  </div>
+                <div className="bg-navy/5 h-48 flex items-center justify-center relative overflow-hidden">
+                  {m.photo ? (
+                    <Image
+                      src={m.photo}
+                      alt={m.name}
+                      fill
+                      className="object-contain p-2"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 bg-navy/20 rounded-full flex items-center justify-center">
+                      <span className="font-heading text-navy text-4xl font-normal">{m.name[0]}</span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
                   <h2 className="font-heading text-navy text-xl font-normal">{m.name}</h2>

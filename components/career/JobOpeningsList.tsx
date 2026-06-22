@@ -28,6 +28,7 @@ export default function JobOpeningsList() {
             </div>
             <button
               onClick={() => setSelectedJob(selectedJob === job.id ? null : job.id)}
+              suppressHydrationWarning
               className="w-full md:w-auto shrink-0 px-5 py-2.5 rounded-full bg-gold hover:bg-gold/90 text-navy font-normal text-sm flex items-center justify-center gap-2 transition-colors duration-200"
             >
               {selectedJob === job.id ? "Hide Details" : "View Details"}

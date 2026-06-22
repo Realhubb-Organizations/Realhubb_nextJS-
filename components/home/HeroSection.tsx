@@ -171,14 +171,14 @@ export default function HeroSection() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-[35px] md:text-[45px] xl:text-[56px] font-normal text-white leading-[1.08] tracking-tight">
+            <h1 className="speakable-title text-[35px] md:text-[45px] xl:text-[56px] font-normal text-white leading-[1.08] tracking-tight">
               Find your <span className="text-[#D7A764]">Dream Home</span>
               <br />
               in India's Fast-Growing Cities
             </h1>
 
             {/* Subtitle */}
-            <p className="text-white/65 text-[15px] max-w-[480px] leading-relaxed">
+            <p className="speakable-summary text-white/65 text-[15px] max-w-[480px] leading-relaxed">
               Discover verified properties across Bangalore, Hyderabad, and Chennai. 
               Find RERA-compliant homes from trusted developers. Enjoy transparent buying 
               and renting support across cities with expert real estate guidance you can rely on. 

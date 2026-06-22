@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import SEO from "@/components/seo/SEO";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
+import { reviewSchema, webPageSchema } from "@/lib/structuredData";
 import {
   Star, Quote, ArrowRight, CheckCircle,
   MapPin, Home, Users, TrendingUp, ThumbsUp, Building2,
@@ -107,44 +108,53 @@ const TestimonialsPage = () => {
   const fiveStars = REVIEWS.filter((r) => r.rating === 5).length;
   const fivePct   = Math.round((fiveStars / REVIEWS.length) * 100);
 
-  const reviewSchema = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: "RealHubb — Realhubb Ventures Private Limited",
-    url: "https://www.realhubb.in",
-    address: { "@type": "PostalAddress", streetAddress: "No.96/110, Markondaiah Layout, Thanisandra Village", addressLocality: "Bangalore North", addressRegion: "Karnataka", postalCode: "560064", addressCountry: "IN" },
-    aggregateRating: { "@type": "AggregateRating", ratingValue: avgRating, reviewCount: REVIEWS.length, bestRating: "5", worstRating: "1" },
-    review: REVIEWS.map((r) => ({ "@type": "Review", author: { "@type": "Person", name: r.name }, reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: "5" }, reviewBody: r.review, datePublished: r.date })),
-  };
+  const reviewsData = reviewSchema({
+      ratingValue: avgRating,
+      reviewCount: REVIEWS.length,
+      reviews: REVIEWS.map((r) => ({
+        name: r.name,
+        rating: r.rating,
+        review: r.review,
+        date: r.date,
+      })),
+    });
 
-  return (
-    <>
-      <SEO
-        title="Customer Reviews & Testimonials | RealHubb Real Estate Bangalore, Hyderabad & Chennai"
-        description="Read verified Google reviews and testimonials from RealHubb customers across Bangalore, Hyderabad and Chennai. Real stories from home buyers, tenants and investors about their property journey with Realhubb Ventures Private Limited."
-        keywords="RealHubb reviews, RealHubb testimonials, Realhubb Ventures reviews, real estate reviews Bangalore, property buyer reviews Hyderabad, RealHubb Google reviews, trusted real estate agent Bangalore, property consultant reviews Chennai, best real estate company Bangalore"
-        canonical="https://www.realhubb.in/testimonials"
-        image="https://www.realhubb.in/assets/realhubb%20trademark%20logo-DpR5IVGg.png"
-      />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }} />
+    const webPage = {
+      name: "Customer Reviews & Testimonials | RealHubb Real Estate Bangalore, Hyderabad & Chennai",
+      description: "Read verified Google reviews and testimonials from RealHubb customers across Bangalore, Hyderabad and Chennai. Real stories from home buyers, tenants and investors about their property journey with Realhubb Ventures Private Limited.",
+      url: "https://www.realhubb.in/testimonials",
+      speakableSelectors: [".speakable-title", ".speakable-summary"],
+    };
 
-      <div className="min-h-screen bg-[#faf6f1]">
+    return (
+      <>
+        <SEO
+          title="Customer Reviews & Testimonials | RealHubb Real Estate Bangalore, Hyderabad & Chennai"
+          description="Read verified Google reviews and testimonials from RealHubb customers across Bangalore, Hyderabad and Chennai. Real stories from home buyers, tenants and investors about their property journey with Realhubb Ventures Private Limited."
+          keywords="RealHubb reviews, RealHubb testimonials, Realhubb Ventures reviews, real estate reviews Bangalore, property buyer reviews Hyderabad, RealHubb Google reviews, trusted real estate agent Bangalore, property consultant reviews Chennai, best real estate company Bangalore"
+          canonical="https://www.realhubb.in/testimonials"
+          image="https://www.realhubb.in/assets/realhubb%20trademark%20logo-DpR5IVGg.png"
+        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema(webPage)) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsData) }} />
 
-        {/* ── HERO ── */}
-        <section className="pt-32 pb-20 bg-[#00274D]">
-          <div className="px-8 md:px-14 lg:px-20 xl:px-28">
-            <FadeInOnScroll direction="up">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#D7A764]/10 border border-[#D7A764]/20 text-[#D7A764] text-xs font-normal mb-5">
-                <Star size={13} style={{ fill: "#D7A764", color: "#D7A764" }} />
-                Verified Google Reviews
-              </div>
-              <h1 className="text-4xl md:text-[52px] font-normal text-white leading-tight mb-4 max-w-3xl">
-                What our customers say about{" "}
-                <span className="text-[#D7A764]">RealHubb.</span>
-              </h1>
-              <p className="text-white/60 text-base leading-relaxed max-w-2xl mb-10">
-                Genuine reviews from verified home buyers, investors, and tenants — no paid reviews, no fabricated stories.
-              </p>
+        <div className="min-h-screen bg-[#faf6f1]">
+
+          {/* ── HERO ── */}
+          <section className="pt-32 pb-20 bg-[#00274D]">
+            <div className="px-8 md:px-14 lg:px-20 xl:px-28">
+              <FadeInOnScroll direction="up">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#D7A764]/10 border border-[#D7A764]/20 text-[#D7A764] text-xs font-normal mb-5">
+                  <Star size={13} style={{ fill: "#D7A764", color: "#D7A764" }} />
+                  Verified Google Reviews
+                </div>
+                <h1 className="speakable-title text-4xl md:text-[52px] font-normal text-white leading-tight mb-4 max-w-3xl">
+                  What our customers say about{" "}
+                  <span className="text-[#D7A764]">RealHubb.</span>
+                </h1>
+                <p className="speakable-summary text-white/60 text-base leading-relaxed max-w-2xl mb-10">
+                  Genuine reviews from verified home buyers, investors, and tenants — no paid reviews, no fabricated stories.
+                </p>
 
               {/* Stats cards */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl">

@@ -1,8 +1,5 @@
 import type { MetadataRoute } from "next";
 import { getAllPropertySlugs, getAllBlogSlugs, getAllDeveloperSlugs } from "@/lib/firestoreServerService";
-import { properties as staticProperties } from "@/data/properties";
-import { blogPosts as staticBlogPosts } from "@/data/blog";
-import { developers as staticDevs } from "@/data/developers";
 import { locations } from "@/data/locations";
 
 export const dynamic = "force-dynamic";
@@ -16,17 +13,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getAllDeveloperSlugs(),
   ]);
 
-  const propertySlugs = firePropertySlugs.status === "fulfilled" && firePropertySlugs.value.length > 0
+  const propertySlugs = firePropertySlugs.status === "fulfilled"
     ? firePropertySlugs.value
-    : staticProperties.map((p) => p.slug);
+    : [];
 
-  const blogSlugs = fireBlogSlugs.status === "fulfilled" && fireBlogSlugs.value.length > 0
+  const blogSlugs = fireBlogSlugs.status === "fulfilled"
     ? fireBlogSlugs.value
-    : staticBlogPosts.filter((p) => p.published).map((p) => p.slug);
+    : [];
 
-  const devSlugs = fireDevSlugs.status === "fulfilled" && fireDevSlugs.value.length > 0
+  const devSlugs = fireDevSlugs.status === "fulfilled"
     ? fireDevSlugs.value
-    : staticDevs.map((d) => d.slug);
+    : [];
 
   const now = new Date().toISOString();
 

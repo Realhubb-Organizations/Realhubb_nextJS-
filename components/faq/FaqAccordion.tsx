@@ -29,6 +29,7 @@ export default function FaqAccordion({ items }: Props) {
           >
             <button
               onClick={() => setOpenIndex(isOpen ? null : i)}
+              suppressHydrationWarning
               className="w-full flex items-center justify-between px-6 py-5 text-left focus:outline-none group"
             >
               <span className="text-navy font-heading text-[15px] sm:text-base font-normal pr-4 group-hover:text-gold transition-colors duration-200">

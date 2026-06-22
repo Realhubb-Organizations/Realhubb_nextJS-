@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { getFeaturedProperties, getLatestBlogPosts, getAllDevelopers, getPublishedFaqsByPage } from "@/lib/firestoreServerService";
-import { properties as staticProperties } from "@/data/properties";
-import { blogPosts as staticBlogPosts } from "@/data/blog";
-import { developers as staticDevelopers } from "@/data/developers";
+import { webPageSchema, videoSchema, faqSchema } from "@/lib/structuredData";
 import HeroSection from "@/components/home/HeroSection";
 import ServingCities from "@/components/home/ServingCities";
 import FeaturedProperties from "@/components/home/FeaturedProperties";
@@ -19,6 +17,8 @@ import ContactCTA from "@/components/home/ContactCTA";
 
 export const dynamic = "force-dynamic";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+
 export const metadata: Metadata = buildMetadata({
   title: "RealHubb — Real Estate Bangalore, Hyderabad & Chennai",
   // 135 chars ✅
@@ -26,7 +26,7 @@ export const metadata: Metadata = buildMetadata({
     "Find verified flats & apartments in Bangalore, Hyderabad & Chennai. RERA registered. Zero brokerage. Expert advisors. Free site visit.",
   keywords:
     "real estate bangalore, flats in bangalore, buy flat bangalore, apartments bangalore, property bangalore hyderabad chennai",
-  canonical: "https://www.realhubb.in",
+  canonical: SITE_URL,
   geoRegion: "IN-KA",
   geoPlacename: "Bangalore",
 });
@@ -40,27 +40,61 @@ export default async function HomePage() {
   ]);
 
   const featured =
-    firestoreFeatured.status === "fulfilled" && firestoreFeatured.value.length > 0
+    firestoreFeatured.status === "fulfilled"
       ? firestoreFeatured.value
-      : staticProperties.filter((p) => p.featured);
+      : [];
 
   const blogPosts =
-    firestoreBlog.status === "fulfilled" && firestoreBlog.value.length > 0
+    firestoreBlog.status === "fulfilled"
       ? firestoreBlog.value
-      : staticBlogPosts.filter((p) => p.published).slice(0, 3);
+      : [];
 
   const developers =
-    firestoreDevelopers.status === "fulfilled" && firestoreDevelopers.value.length > 0
+    firestoreDevelopers.status === "fulfilled"
       ? firestoreDevelopers.value
-      : staticDevelopers;
+      : [];
 
   const homeFaqs =
     firestoreFaqs.status === "fulfilled"
       ? firestoreFaqs.value
       : [];
 
+  const faqItems = homeFaqs.map((f) => ({
+    question: f.question,
+    answer: f.answer,
+  }));
+
+  const homeVideo = {
+    name: "RealHubb Ventures Real Estate Walkthrough",
+    description: "Discover verified, RERA-approved properties in Bangalore, Hyderabad, and Chennai with RealHubb.",
+    thumbnailUrl: "https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4/ik-thumbnail.jpg?tr=w-1280,q-60,f-webp",
+    uploadDate: "2026-01-01T00:00:00Z",
+    contentUrl: "https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4",
+  };
+
+  const webPage = {
+    name: "RealHubb — Real Estate Bangalore, Hyderabad & Chennai",
+    description: "Find verified flats & apartments in Bangalore, Hyderabad & Chennai. RERA registered. Zero brokerage. Expert advisors. Free site visit.",
+    url: SITE_URL,
+    speakableSelectors: [".speakable-title", ".speakable-summary"],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema(webPage)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema(homeVideo)) }}
+      />
+      {faqItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqItems)) }}
+        />
+      )}
       <HeroSection />
       <ServingCities />
       <FeaturedProperties properties={featured} />

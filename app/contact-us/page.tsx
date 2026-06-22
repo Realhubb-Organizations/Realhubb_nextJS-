@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { buildMetadata } from "@/lib/seo";
-import { breadcrumbSchema } from "@/lib/structuredData";
+import { breadcrumbSchema, webPageSchema } from "@/lib/structuredData";
 import { company } from "@/data/company";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import ContactForm from "@/components/contact/ContactForm";
@@ -32,8 +32,19 @@ const breadcrumbs = [
 ];
 
 export default function ContactPage() {
+  const webPage = {
+    name: "Contact Us — Free Property Advice | RealHubb",
+    description: "Contact RealHubb Ventures for free property advice in Bangalore, Hyderabad & Chennai. Call, WhatsApp or email. Mon–Sat 9am–7pm. Free callback in 15 min.",
+    url: `${SITE_URL}/contact-us`,
+    speakableSelectors: [".speakable-title", ".speakable-summary"],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema(webPage)) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
@@ -41,10 +52,10 @@ export default function ContactPage() {
       <div className="pt-20">
         <div className="bg-navy py-14 page-padding">
           <BreadcrumbNav items={breadcrumbs} dark />
-          <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
+          <h1 className="speakable-title font-heading text-3xl md:text-5xl text-white font-normal mt-4">
             Contact Us
           </h1>
-          <p className="text-white/60 text-base mt-3 max-w-lg">
+          <p className="speakable-summary text-white/60 text-base mt-3 max-w-lg">
             Our advisors are available Mon–Sat, 9am–7pm. Get a free callback in 15 minutes.
           </p>
         </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Loader2, Send } from "lucide-react";
 import { trackLead } from "@/lib/ga";
 import { careerJobs } from "@/data/careerJobs";
+import { uploadRawToCloudinary } from "@/lib/uploadToCloudinary";
 
 const inputClass =
   "w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold disabled:opacity-60";
@@ -34,11 +35,21 @@ export default function ApplicationForm() {
     }
   };
 
+  const [uploadProgressMsg, setUploadProgressMsg] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(false);
+    setUploadProgressMsg("");
     try {
+      let resumeUrl = "";
+      if (formData.resume) {
+        setUploadProgressMsg("Uploading resume...");
+        resumeUrl = await uploadRawToCloudinary(formData.resume);
+      }
+
+      setUploadProgressMsg("Saving application...");
       const response = await fetch("/api/leads", {
         method: "POST",
         headers: {
@@ -50,7 +61,7 @@ export default function ApplicationForm() {
           phone: formData.phone,
           position: formData.position,
           experience: formData.experience,
-          resumeUrl: formData.resume ? formData.resume.name : "No file uploaded",
+          resumeUrl: resumeUrl || "No file uploaded",
           coverLetter: formData.coverLetter || "",
           type: "career",
         }),
@@ -67,6 +78,7 @@ export default function ApplicationForm() {
       setError(true);
     } finally {
       setIsSubmitting(false);
+      setUploadProgressMsg("");
     }
   };
 
@@ -86,22 +98,22 @@ export default function ApplicationForm() {
       <div className="grid md:grid-cols-2 gap-5">
         <div>
           <label className={labelClass}>Full Name *</label>
-          <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className={inputClass} placeholder="Enter your full name" disabled={isSubmitting} />
+          <input type="text" name="name" required value={formData.name} onChange={handleInputChange} className={inputClass} placeholder="Enter your full name" disabled={isSubmitting} suppressHydrationWarning />
         </div>
         <div>
           <label className={labelClass}>Email *</label>
-          <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className={inputClass} placeholder="your.email@example.com" disabled={isSubmitting} />
+          <input type="email" name="email" required value={formData.email} onChange={handleInputChange} className={inputClass} placeholder="your.email@example.com" disabled={isSubmitting} suppressHydrationWarning />
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-5">
         <div>
           <label className={labelClass}>Phone Number *</label>
-          <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} className={inputClass} placeholder="+91 XXXXX XXXXX" disabled={isSubmitting} />
+          <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} className={inputClass} placeholder="+91 XXXXX XXXXX" disabled={isSubmitting} suppressHydrationWarning />
         </div>
         <div>
           <label className={labelClass}>Position Applied For *</label>
-          <select name="position" required value={formData.position} onChange={handleInputChange} className={inputClass} disabled={isSubmitting}>
+          <select name="position" required value={formData.position} onChange={handleInputChange} className={inputClass} disabled={isSubmitting} suppressHydrationWarning>
             <option value="">Select a position</option>
             {careerJobs.map((job) => (
               <option key={job.id} value={job.title}>{job.title}</option>
@@ -112,12 +124,12 @@ export default function ApplicationForm() {
 
       <div>
         <label className={labelClass}>Years of Experience *</label>
-        <input type="text" name="experience" required value={formData.experience} onChange={handleInputChange} className={inputClass} placeholder="e.g., 3 years" disabled={isSubmitting} />
+        <input type="text" name="experience" required value={formData.experience} onChange={handleInputChange} className={inputClass} placeholder="e.g., 3 years" disabled={isSubmitting} suppressHydrationWarning />
       </div>
 
       <div>
         <label className={labelClass}>Upload Resume * (PDF, DOC, DOCX — Max 5MB)</label>
-        <input type="file" name="resume" required onChange={handleFileChange} accept=".pdf,.doc,.docx" className={`${inputClass} file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:bg-gold/10 file:text-gold file:text-xs file:font-normal cursor-pointer`} disabled={isSubmitting} />
+        <input type="file" name="resume" required onChange={handleFileChange} accept=".pdf,.doc,.docx" className={`${inputClass} file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:bg-gold/10 file:text-gold file:text-xs file:font-normal cursor-pointer`} disabled={isSubmitting} suppressHydrationWarning />
         {formData.resume && <p className="text-xs text-gray-400 mt-1.5">Selected: {formData.resume.name}</p>}
       </div>
 
@@ -135,10 +147,11 @@ export default function ApplicationForm() {
       <button
         type="submit"
         disabled={isSubmitting}
+        suppressHydrationWarning
         className="w-full py-3 rounded-full bg-gold hover:bg-gold/90 text-navy font-normal text-sm flex items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isSubmitting ? (
-          <><Loader2 className="h-4 w-4 animate-spin" /> Submitting…</>
+          <><Loader2 className="h-4 w-4 animate-spin" /> {uploadProgressMsg || "Submitting…"}</>
         ) : (
           <><Send className="h-4 w-4" /> Submit Application</>
         )}

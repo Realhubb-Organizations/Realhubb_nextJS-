@@ -129,6 +129,10 @@ export function articleSchema(post: {
     dateModified: post.updatedAt ?? post.publishedAt,
     url: `${SITE_URL}/blog/${post.slug}`,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".speakable-title", ".speakable-summary"],
+    },
   };
 }
 
@@ -252,5 +256,141 @@ export function softwareApplicationSchema(name: string, description: string, url
     applicationCategory: "FinanceApplication",
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+  };
+}
+
+export function webPageSchema(p: {
+  name: string;
+  description: string;
+  url: string;
+  speakableSelectors?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: p.name,
+    description: p.description,
+    url: p.url,
+    ...(p.speakableSelectors && p.speakableSelectors.length > 0
+      ? {
+          speakable: {
+            "@type": "SpeakableSpecification",
+            cssSelector: p.speakableSelectors,
+          },
+        }
+      : {}),
+  };
+}
+
+export function howToSchema(
+  name: string,
+  description: string,
+  steps: { name: string; text: string; url: string }[],
+  totalTime?: string
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name,
+    description,
+    ...(totalTime ? { totalTime } : {}),
+    step: steps.map((s, idx) => ({
+      "@type": "HowToStep",
+      position: idx + 1,
+      name: s.name,
+      url: s.url,
+      itemListElement: [
+        {
+          "@type": "HowToDirection",
+          text: s.text,
+        },
+      ],
+    })),
+  };
+}
+
+export function videoSchema(video: {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  uploadDate: string;
+  contentUrl: string;
+  embedUrl?: string;
+  duration?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: video.name,
+    description: video.description,
+    thumbnailUrl: video.thumbnailUrl,
+    uploadDate: video.uploadDate,
+    contentUrl: video.contentUrl,
+    ...(video.embedUrl ? { embedUrl: video.embedUrl } : {}),
+    ...(video.duration ? { duration: video.duration } : {}),
+  };
+}
+
+export function reviewSchema(p: {
+  ratingValue: string;
+  reviewCount: number;
+  reviews: { name: string; rating: number; review: string; date: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "RealHubb — Realhubb Ventures Private Limited",
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "No.96/110, Markondaiah Layout, Thanisandra Village",
+      addressLocality: "Bangalore North",
+      addressRegion: "Karnataka",
+      postalCode: "560064",
+      addressCountry: "IN",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: p.ratingValue,
+      reviewCount: p.reviewCount,
+      bestRating: "5",
+      worstRating: "1",
+    },
+    review: p.reviews.map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.name },
+      reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: "5" },
+      reviewBody: r.review,
+      datePublished: r.date,
+    })),
+  };
+}
+
+export function builderSchema(dev: {
+  name: string;
+  description: string;
+  established?: string;
+  headquarters?: string;
+  logo?: string;
+  url?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: dev.name,
+    description: dev.description,
+    ...(dev.logo ? { logo: dev.logo } : {}),
+    ...(dev.url ? { url: dev.url } : {}),
+    ...(dev.established ? { foundingDate: dev.established } : {}),
+    ...(dev.headquarters
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: dev.headquarters,
+            addressCountry: "IN",
+          },
+        }
+      : {}),
   };
 }

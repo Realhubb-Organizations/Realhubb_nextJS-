@@ -5,7 +5,6 @@ import { locationMetadata } from "@/lib/seo";
 import { breadcrumbSchema, localBusinessSchema, itemListSchema } from "@/lib/structuredData";
 import { getLocationsByCity } from "@/data/locations";
 import { getPropertiesByCity, getAllProperties } from "@/lib/firestoreServerService";
-import { properties as staticProperties } from "@/data/properties";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
@@ -35,10 +34,7 @@ export default async function CityHubPage({ params }: { params: Params }) {
   const cityLabel = cityLabels[city] ?? city;
   const areaLocations = getLocationsByCity(city);
 
-  const firestoreProps = await getPropertiesByCity(city).catch(() => []);
-  const cityProps = firestoreProps.length > 0
-    ? firestoreProps
-    : staticProperties.filter((p) => p.city === city);
+  const cityProps = await getPropertiesByCity(city).catch(() => []);
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },

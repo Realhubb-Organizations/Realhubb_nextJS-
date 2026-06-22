@@ -3,7 +3,6 @@ import Link from "next/link";
 import { buySegmentMetadata } from "@/lib/seo";
 import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
 import { getAllProperties } from "@/lib/firestoreServerService";
-import { properties as staticProperties } from "@/data/properties";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
@@ -81,8 +80,7 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
   const { segment } = await params;
   const config = segmentConfig[segment];
 
-  const firestoreProps = await getAllProperties().catch(() => []);
-  const allProps = firestoreProps.length > 0 ? firestoreProps : staticProperties;
+  const allProps = await getAllProperties().catch(() => []);
 
   const filtered = allProps.filter((p) => {
     if (config?.city && p.city !== config.city) return false;

@@ -74,7 +74,7 @@ export default function TeamCard({ member: m, index }: Props) {
             <h3 className="font-heading text-white text-lg font-normal mb-0.5">{m.name}</h3>
             <p className="text-gold text-[10px] section-overline tracking-wider mb-3">{m.role}</p>
             <p className="text-white/70 text-xs leading-relaxed mb-4 line-clamp-6">
-              {m.bio || `Expert real estate advisor dedicated to finding your dream home with zero brokerage and 100% transparency.`}
+              {m.bio}
             </p>
           </div>
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { FileText, Mail, Phone } from 'lucide-react';
+import { FileText, Mail, Phone, Briefcase, Calendar, Download } from 'lucide-react';
 
 interface Lead {
   id: string;
@@ -13,6 +13,9 @@ interface Lead {
   message: string;
   timestamp: string;
   type: string;
+  position?: string;
+  experience?: string;
+  resumeUrl?: string;
 }
 
 export default function LeadsPanel() {
@@ -21,14 +24,23 @@ export default function LeadsPanel() {
 
   useEffect(() => {
     const q = query(collection(db, 'leads'), orderBy('timestamp', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const leadsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      } as Lead));
-      setLeads(leadsData);
-      setLoading(false);
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const leadsData = snapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          } as Lead))
+          .filter((lead) => lead.type === "career");
+        setLeads(leadsData);
+        setLoading(false);
+      },
+      (err) => {
+        console.error("Error loading resumes from Firestore:", err);
+        setLoading(false);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
@@ -36,7 +48,7 @@ export default function LeadsPanel() {
   if (loading) {
     return (
       <div className="p-8 flex items-center justify-center">
-        <div className="text-muted-foreground">Loading leads…</div>
+        <div className="text-muted-foreground">Loading resumes…</div>
       </div>
     );
   }
@@ -45,11 +57,11 @@ export default function LeadsPanel() {
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-4">
         <FileText className="h-5 w-5 text-primary" />
-        <h2 className="text-lg font-semibold">Leads ({leads.length})</h2>
+        <h2 className="text-lg font-semibold">Resumes ({leads.length})</h2>
       </div>
 
       {leads.length === 0 ? (
-        <p className="text-muted-foreground text-sm py-8 text-center">No leads yet</p>
+        <p className="text-muted-foreground text-sm py-8 text-center">No resumes uploaded yet</p>
       ) : (
         <div className="space-y-2">
           {leads.map((lead) => (
@@ -86,8 +98,40 @@ export default function LeadsPanel() {
 
               {lead.message && (
                 <p className="text-sm text-foreground bg-muted/30 p-2 rounded max-h-20 overflow-y-auto">
+                  <strong>Message / Cover Letter:</strong><br />
                   {lead.message}
                 </p>
+              )}
+
+              {lead.type === 'career' && (
+                <div className="mt-3 p-3 bg-gold/5 rounded-xl border border-gold/10 space-y-2 text-sm text-foreground/85">
+                  <div className="flex flex-wrap gap-x-6 gap-y-1.5 text-xs">
+                    <p className="flex items-center gap-1.5">
+                      <Briefcase className="h-3.5 w-3.5 text-gold shrink-0" />
+                      <strong>Position:</strong> {lead.position || 'N/A'}
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5 text-gold shrink-0" />
+                      <strong>Experience:</strong> {lead.experience || 'N/A'}
+                    </p>
+                  </div>
+                  {lead.resumeUrl && lead.resumeUrl !== 'No file uploaded' && (
+                    <div className="pt-2 border-t border-gold/10 flex items-center justify-between gap-4">
+                      <span className="text-xs text-muted-foreground truncate">
+                        Resume: {lead.resumeUrl.split('/').pop() || 'file'}
+                      </span>
+                      <a
+                        href={lead.resumeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 bg-navy text-white hover:bg-navy/90 font-semibold text-xs px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm shrink-0"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                        Download Resume
+                      </a>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           ))}

@@ -17,11 +17,10 @@ import {
   Rocket,
 } from "lucide-react";
 import { getAllTeamMembers, getPublishedFaqsByPage } from "@/lib/firestoreServerService";
-import { teamMembers as staticTeam } from "@/data/team";
 import TeamCard from "@/components/team/TeamCard";
 import CountingNumber from "@/components/ui/counting_text";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
-import { personSchema, breadcrumbSchema } from "@/lib/structuredData";
+import { personSchema, breadcrumbSchema, webPageSchema, faqSchema } from "@/lib/structuredData";
 import { faqCategories } from "@/data/faqData";
 import FaqAccordion from "@/components/faq/FaqAccordion";
 import ContactCTA from "@/components/home/ContactCTA";
@@ -41,8 +40,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function AboutPage() {
-  const firestoreTeam = await getAllTeamMembers().catch(() => []);
-  const team = firestoreTeam.length > 0 ? firestoreTeam : staticTeam;
+  const team = await getAllTeamMembers().catch(() => []);
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
@@ -65,10 +63,28 @@ export default async function AboutPage() {
       : faqCategories.find((c) => c.id === "about")?.items || []
   };
 
+  const aboutFaqItems = aboutFaqCategory.items;
+
+  const webPage = {
+    name: "About RealHubb Ventures | Real Estate Channel Partner in Bangalore",
+    description: "RealHubb Ventures Pvt. Ltd. is a trusted real estate channel partner in Bangalore. We help buyers find verified RERA-approved properties in Bangalore, Hyderabad & Chennai with expert advisory and site visits.",
+    url: `${SITE_URL}/about`,
+    speakableSelectors: [".speakable-title", ".speakable-summary"],
+  };
 
   return (
     <>
       {/* JSON-LD Schemas */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema(webPage)) }}
+      />
+      {aboutFaqItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(aboutFaqItems)) }}
+        />
+      )}
       {team.map((m) => (
         <script
           key={m.id}
@@ -114,10 +130,10 @@ export default async function AboutPage() {
               <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-4 animate-fadeIn">
                 About RealHubb
               </p>
-              <h1 className="text-4xl md:text-[56px] font-heading font-normal text-white leading-tight mb-6 max-w-3xl animate-fadeIn">
+              <h1 className="speakable-title text-4xl md:text-[56px] font-heading font-normal text-white leading-tight mb-6 max-w-3xl animate-fadeIn">
                 Building India's most <span className="text-gold">trusted</span> real estate platform.
               </h1>
-              <p className="text-white/60 text-base leading-relaxed max-w-2xl mb-8 font-light animate-fadeIn">
+              <p className="speakable-summary text-white/60 text-base leading-relaxed max-w-2xl mb-8 font-light animate-fadeIn">
                 Realhubb Ventures Pvt. Ltd. — a RERA-compliant channel partner connecting thousands
                 of families with verified properties across Bangalore, Hyderabad, and Chennai.
               </p>

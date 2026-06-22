@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import { getAllDevelopers } from "@/lib/firestoreServerService";
-import { developers as staticDevs } from "@/data/developers";
 import { breadcrumbSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
@@ -21,8 +20,7 @@ export const metadata: Metadata = buildMetadata({
 export const dynamic = "force-dynamic";
 
 export default async function DevelopersPage() {
-  const firestoreDevs = await getAllDevelopers().catch(() => []);
-  const devs = firestoreDevs.length > 0 ? firestoreDevs : staticDevs;
+  const devs = await getAllDevelopers().catch(() => []);
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },

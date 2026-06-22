@@ -9,7 +9,6 @@ import {
   getPropertiesByCity,
   getPublishedFaqsByReference,
 } from "@/lib/firestoreServerService";
-import { properties as staticProperties } from "@/data/properties";
 import {
   breadcrumbSchema,
   propertyListingSchema,
@@ -27,9 +26,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const p =
-    (await getPropertyBySlug(slug)) ??
-    staticProperties.find((x) => x.slug === slug);
+  const p = await getPropertyBySlug(slug);
   if (!p) return { title: "Property Not Found" };
   return propertyMetadata({
     name: p.name,
@@ -49,8 +46,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export async function generateStaticParams() {
   const fireStoreSlugs = await getAllPropertySlugs().catch(() => []);
-  const staticSlugs = staticProperties.map((p) => p.slug);
-  return [...new Set([...fireStoreSlugs, ...staticSlugs])].map((slug) => ({ slug }));
+  return fireStoreSlugs.map((slug) => ({ slug }));
 }
 
 export const dynamic = "force-dynamic";
@@ -58,18 +54,12 @@ export const dynamic = "force-dynamic";
 export default async function PropertyDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
 
-  const p =
-    (await getPropertyBySlug(slug)) ??
-    staticProperties.find((x) => x.slug === slug);
+  const p = await getPropertyBySlug(slug);
 
   if (!p) notFound();
 
   const relatedRaw = await getPropertiesByCity(p.city).catch(() => []);
-  const related = (
-    relatedRaw.length > 0
-      ? relatedRaw
-      : staticProperties.filter((s) => s.city === p.city)
-  )
+  const related = relatedRaw
     .filter((r) => r.slug !== p.slug)
     .slice(0, 3);
 

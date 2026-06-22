@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { getAllProperties } from "@/lib/firestoreServerService";
-import { properties as staticProperties } from "@/data/properties";
 import { breadcrumbSchema } from "@/lib/structuredData";
 import ProjectsClient from "@/components/property/ProjectsClient";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
@@ -46,8 +45,7 @@ export default async function ProjectsCityPage({
   const { type, city } = await params;
   const sp = await searchParams;
 
-  const firestoreProps = await getAllProperties().catch(() => []);
-  const allProps = firestoreProps.length > 0 ? firestoreProps : staticProperties;
+  const allProps = await getAllProperties().catch(() => []);
 
   const cityLabel = cityLabels[city] ?? city;
   const typeLabel = type === "upcoming" ? "Upcoming" : "Ongoing";

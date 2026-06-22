@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import type { Property } from "@/types/property";
 import { normalizeProperty } from "@/types/property";
-import { properties as staticProperties } from "@/data/properties";
 import { imagePresets } from "@/lib/cloudinary";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
@@ -16,9 +15,7 @@ function applyPresets(p: Property): Property {
 }
 
 export function useProperties() {
-  const [properties, setProperties] = useState<Property[]>(
-    staticProperties.map(applyPresets)
-  );
+  const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [fromFirestore, setFromFirestore] = useState(false);
 

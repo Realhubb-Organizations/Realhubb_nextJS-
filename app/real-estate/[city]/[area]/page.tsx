@@ -10,7 +10,6 @@ import {
 } from "@/lib/structuredData";
 import { getLocationBySlug, getLocationsByCity, locations } from "@/data/locations";
 import { getPropertiesByCityAndLocation } from "@/lib/firestoreServerService";
-import { properties as staticProperties } from "@/data/properties";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
@@ -43,15 +42,7 @@ export default async function AreaPage({ params }: { params: Params }) {
 
   const cityLabel = cityLabels[city] ?? city;
 
-  const firestoreProps = await getPropertiesByCityAndLocation(city, area).catch(() => []);
-  const areaProps =
-    firestoreProps.length > 0
-      ? firestoreProps
-      : staticProperties.filter(
-            (p) =>
-              p.city === city &&
-              p.location.toLowerCase().replace(/\s+/g, "-") === area
-          );
+  const areaProps = await getPropertiesByCityAndLocation(city, area).catch(() => []);
 
   const nearbyLocations = getLocationsByCity(city).filter((l) => l.areaSlug !== area).slice(0, 5);
 
