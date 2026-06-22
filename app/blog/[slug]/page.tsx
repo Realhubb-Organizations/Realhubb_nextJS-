@@ -11,7 +11,7 @@ import {
 } from "@/lib/firestoreServerService";
 import { breadcrumbSchema, articleSchema, faqSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 import CommentSection from "@/components/blog/CommentSection";
 import FaqAccordion from "@/components/faq/FaqAccordion";
@@ -91,7 +91,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
           )}
           <div className="relative z-10 max-w-3xl">
             <div className="flex items-start justify-between gap-4">
-              <BreadcrumbNav items={breadcrumbs} dark />
+
               <LanguageControl dark />
             </div>
             <div className="flex items-center gap-3 mt-4 mb-4">
@@ -118,12 +118,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
             {/* Tags */}
             {post.tags?.length > 0 && (
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <p className="text-xs text-gray-400 mb-3">Tags</p>
-                <div className="flex flex-wrap gap-2">
+              <div className="mt-10 pt-8 border-t border-gray-100/80">
+                <p className="text-xs font-semibold tracking-wider text-navy/40 uppercase mb-4">Tags</p>
+                <div className="flex flex-wrap gap-2.5">
                   {post.tags.map((tag) => (
-                    <span key={tag} className="px-3 py-1 bg-cream rounded-full text-xs text-navy/60">
-                      {tag}
+                    <span
+                      key={tag}
+                      className="px-3.5 py-1.5 bg-white border border-gray-200/80 text-navy/70 rounded-xl text-xs hover:border-gold hover:text-gold transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                    >
+                      #{tag}
                     </span>
                   ))}
                 </div>

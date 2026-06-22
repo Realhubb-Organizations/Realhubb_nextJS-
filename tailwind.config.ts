@@ -78,8 +78,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ["var(--font-playfair)", "Georgia", "serif"],
-        body: ["var(--font-inter)", "system-ui", "sans-serif"],
+        heading: ["var(--font-plus-jakarta)", "system-ui", "sans-serif"],
+        body: ["var(--font-plus-jakarta)", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

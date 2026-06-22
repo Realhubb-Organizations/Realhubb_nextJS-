@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { useProperties } from "@/hooks/useProperties";
+import type { Property } from "@/types/property";
 import PropertyCard from "@/components/property/PropertyCard";
 
 type CityTab = "all" | "bangalore" | "hyderabad" | "chennai";
@@ -15,9 +14,14 @@ const tabs: { label: string; value: CityTab }[] = [
   { label: "Chennai", value: "chennai" },
 ];
 
-export default function CitySection() {
+interface Props {
+  properties: Property[];
+}
+
+export default function CitySection({ properties }: Props) {
   const [activeCity, setActiveCity] = useState<CityTab>("all");
-  const { properties, loading } = useProperties();
+  const [animKey, setAnimKey] = useState(0);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const filtered =
     activeCity === "all"
@@ -26,6 +30,36 @@ export default function CitySection() {
 
   const cityHref =
     activeCity === "all" ? "/projects/ongoing" : `/projects/ongoing/${activeCity}`;
+
+  const handleTabChange = (value: CityTab) => {
+    setActiveCity(value);
+    setAnimKey((k) => k + 1);
+  };
+
+  const isInitialMount = useRef(true);
+
+  // Trigger stagger animation on grid children when animKey changes
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const grid = gridRef.current;
+    if (!grid) return;
+    const cards = Array.from(grid.children) as HTMLElement[];
+    cards.forEach((card, i) => {
+      card.style.opacity = "0";
+      card.style.transform = "translateX(-30px)";
+      card.style.transition = "none";
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          card.style.transition = `opacity 0.4s ease ${i * 70}ms, transform 0.4s cubic-bezier(0.16,1,0.3,1) ${i * 70}ms`;
+          card.style.opacity = "1";
+          card.style.transform = "none";
+        });
+      });
+    });
+  }, [animKey]);
 
   return (
     <section className="py-20 bg-cream">
@@ -42,7 +76,7 @@ export default function CitySection() {
           {tabs.map((tab) => (
             <button
               key={tab.value}
-              onClick={() => setActiveCity(tab.value)}
+              onClick={() => handleTabChange(tab.value)}
               suppressHydrationWarning={true}
               className={`px-5 py-2 rounded-full text-sm font-normal transition-all ${
                 activeCity === tab.value
@@ -56,34 +90,17 @@ export default function CitySection() {
         </div>
 
         {/* Property grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-gray-100 rounded-2xl h-80 animate-pulse" />
+        {filtered.length ? (
+          <div
+            ref={gridRef}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {filtered.map((p) => (
+              <div key={p.id}>
+                <PropertyCard property={p} />
+              </div>
             ))}
           </div>
-        ) : filtered.length ? (
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCity}
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 30 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {filtered.map((p, i) => (
-                <motion.div
-                  key={p.id}
-                  initial={{ opacity: 0, x: -52 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <PropertyCard property={p} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
         ) : (
           <p className="text-center text-gray-400 py-16">No properties found in this city yet.</p>
         )}

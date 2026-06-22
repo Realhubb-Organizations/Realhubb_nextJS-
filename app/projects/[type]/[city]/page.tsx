@@ -3,7 +3,7 @@ import { buildMetadata } from "@/lib/seo";
 import { getAllProperties } from "@/lib/firestoreServerService";
 import { breadcrumbSchema } from "@/lib/structuredData";
 import ProjectsClient from "@/components/property/ProjectsClient";
-import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+
 
 type Params = Promise<{ type: string; city: string }>;
 type SearchParams = Promise<{ type?: string; price?: string; q?: string }>;
@@ -11,6 +11,7 @@ type SearchParams = Promise<{ type?: string; price?: string; q?: string }>;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 const cityLabels: Record<string, string> = {
+  all: "All Cities",
   bangalore: "Bangalore",
   hyderabad: "Hyderabad",
   chennai: "Chennai",

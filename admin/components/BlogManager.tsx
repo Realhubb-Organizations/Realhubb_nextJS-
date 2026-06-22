@@ -58,10 +58,10 @@ export default function BlogManager() {
       setSaving(true);
       setError('');
       const id = await saveBlogPost(editing);
-      
+
       // Trigger background revalidation instantly
       await revalidateBlogPages(editing.slug);
-      
+
       if ('id' in editing && editing.id) {
         setPosts((prev) =>
           prev.map((p) => (p.id === id ? editing : p))
@@ -115,7 +115,7 @@ export default function BlogManager() {
 
       {editing ? (
         <div className="space-y-4 p-4 bg-muted/30 rounded-lg border border-border">
-          <h3 className="font-semibold">
+          <h3 className="font-normal">
             {editing.id ? 'Edit Blog Post' : 'New Blog Post'}
           </h3>
 

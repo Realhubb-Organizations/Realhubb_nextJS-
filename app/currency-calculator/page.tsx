@@ -100,7 +100,7 @@ const CurrencyConverter = () => {
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-3xl mx-auto relative z-10 text-center">
-            <span className="text-xs uppercase tracking-[0.25em] text-gold font-semibold bg-gold/10 px-4 py-1.5 rounded-full border border-gold/20 mb-6 inline-block">
+            <span className="text-xs uppercase tracking-[0.25em] text-gold font-normal bg-gold/10 px-4 py-1.5 rounded-full border border-gold/20 mb-6 inline-block">
               RealHubb Financial Suite
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-normal text-white max-w-3xl leading-tight mx-auto">
@@ -186,14 +186,14 @@ const CurrencyConverter = () => {
 
                 {/* Rate reference list */}
                 <div className="border-t border-gray-100 pt-5">
-                  <p className="text-xs text-navy font-semibold text-center mb-3">
+                  <p className="text-xs text-navy font-normal text-center mb-3">
                     Exchange Rate Reference (vs INR)
                   </p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {currencies.filter((c) => c !== "INR").map((c) => (
                       <div key={c} className="flex justify-between items-center bg-gray-50 border border-gray-100/50 rounded-xl px-3 py-2 text-xs">
                         <span className="text-gray-500">{CURRENCY_FLAGS[c]} {c}</span>
-                        <span className="font-semibold text-navy">₹{RATES_TO_INR[c]}</span>
+                        <span className="font-normal text-navy">₹{RATES_TO_INR[c]}</span>
                       </div>
                     ))}
                   </div>
@@ -203,7 +203,7 @@ const CurrencyConverter = () => {
 
             {/* Suite Navigator */}
             <div className="mt-16 bg-white border border-gray-100 rounded-3xl p-6 md:p-8 shadow-sm text-center">
-              <h3 className="text-xs uppercase tracking-[0.2em] text-gold font-semibold mb-5">
+              <h3 className="text-xs uppercase tracking-[0.2em] text-gold font-normal mb-5">
                 RealHubb Financial Suite
               </h3>
               <div className="flex flex-wrap justify-center gap-3">
@@ -213,11 +213,10 @@ const CurrencyConverter = () => {
                     <Link
                       key={link.name}
                       href={link.href}
-                      className={`px-4 py-2 text-xs md:text-sm font-medium border rounded-xl transition-all duration-200 ${
-                        isCurrent
+                      className={`px-4 py-2 text-xs md:text-sm font-medium border rounded-xl transition-all duration-200 ${isCurrent
                           ? "bg-navy border-navy text-white"
                           : "border-gray-200 text-navy hover:text-gold hover:border-gold"
-                      }`}
+                        }`}
                     >
                       {link.name}
                     </Link>

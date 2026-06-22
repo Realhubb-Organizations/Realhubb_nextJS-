@@ -15,10 +15,10 @@ export default function Footer() {
           <div className="md:col-span-3 lg:col-span-2 pb-8 lg:pb-0 border-b lg:border-0 border-white/10">
             <Link href="/" className="block mb-5">
               <Image
-                src="/realhubb-new-logo-trimmed.png"
+                src="/realhubb-logo-optimized.png"
                 alt="RealHubb Ventures"
-                width={2015}
-                height={658}
+                width={200}
+                height={65}
                 unoptimized
                 className="h-12 w-auto"
               />

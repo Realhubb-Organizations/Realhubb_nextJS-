@@ -128,7 +128,7 @@ export default function ContactCTA() {
                     type="submit"
                     disabled={loading}
                     suppressHydrationWarning={true}
-                    className="w-full bg-gold text-navy py-3.5 rounded-xl text-sm font-semibold hover:bg-gold/90 transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 shrink-0 cursor-pointer shadow-md"
+                    className="w-full bg-gold text-navy py-3.5 rounded-xl text-sm font-normal hover:bg-gold/90 transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 shrink-0 cursor-pointer shadow-md"
                   >
                     {loading ? "Sending…" : "Get Callback"}
                     <ArrowRight className="w-4 h-4" />

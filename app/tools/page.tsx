@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Calculator, DollarSign, Percent, TrendingUp, Briefcase, ChevronRight, ArrowRight, Search, X } from "lucide-react";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import SEO from "@/components/seo/SEO";
-import { motion } from "framer-motion";
 
 const buyerTools = [
   {
@@ -160,10 +159,9 @@ export default function ToolsHubPage() {
         title="Investment & Property Calculators | RealHubb"
         description="Access our suite of financial planning tools: Home Loan EMI Calculator, Currency Converter, Home Loan Eligibility, Rental Yield, and Salary Advisor."
       />
-
       <main className="min-h-screen bg-cream">
-        {/* Immersive Header Banner */}
-        <section className="bg-navy pt-28 pb-36 md:pt-32 md:pb-44 page-padding relative overflow-hidden text-white">
+        {/* Header Hero */}
+        <section className="relative bg-navy pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden text-white">
           {/* Background image & gradient overlay */}
           <div className="absolute inset-0 z-0">
             <img
@@ -174,13 +172,12 @@ export default function ToolsHubPage() {
             {/* Smooth linear gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/55 to-navy" />
           </div>
-
-          {/* Golden glow light effects */}
+          
           <div className="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-6xl mx-auto relative z-10 text-center flex flex-col items-center">
-            <span className="text-xs uppercase tracking-[0.25em] text-gold font-semibold bg-gold/10 px-4 py-1.5 rounded-full border border-gold/20 mb-6">
+            <span className="text-xs uppercase tracking-[0.25em] text-gold font-normal bg-gold/10 px-4 py-1.5 rounded-full border border-gold/20 mb-6">
               RealHubb Financial Suite
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-normal text-white max-w-3xl leading-tight">
@@ -236,7 +233,7 @@ export default function ToolsHubPage() {
         </section>
 
         {/* Content Area */}
-        <section className="page-padding relative z-20 -mt-16 md:-mt-20 pb-24 pt-4">
+        <section className="page-padding relative z-20 pb-24 pt-12">
           <div className="max-w-6xl mx-auto">
 
             {/* Dynamic Results Grid */}
@@ -246,7 +243,7 @@ export default function ToolsHubPage() {
                 <div className="space-y-6">
                   <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
                     <span className="w-2.5 h-2.5 rounded-full bg-gold" />
-                    <h2 className="text-sm font-semibold uppercase tracking-wider text-navy/70">
+                    <h2 className="text-sm font-normal uppercase tracking-wider text-navy/70">
                       Home Buying &amp; Budgeting
                     </h2>
                   </div>
@@ -266,7 +263,7 @@ export default function ToolsHubPage() {
                 <div className="space-y-6">
                   <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
                     <span className="w-2.5 h-2.5 rounded-full bg-gold" />
-                    <h2 className="text-sm font-semibold uppercase tracking-wider text-navy/70">
+                    <h2 className="text-sm font-normal uppercase tracking-wider text-navy/70">
                       Investment &amp; Cross-Border Analysis
                     </h2>
                   </div>
@@ -313,7 +310,7 @@ export default function ToolsHubPage() {
 
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="space-y-3 max-w-2xl text-left">
-                    <span className="text-gold text-xs uppercase tracking-wider font-semibold bg-gold/10 border border-gold/20 px-3 py-1 rounded-full inline-block">
+                    <span className="text-gold text-xs uppercase tracking-wider font-normal bg-gold/10 border border-gold/20 px-3 py-1 rounded-full inline-block">
                       Custom Financial Advisory
                     </span>
                     <h3 className="text-2xl md:text-3xl font-heading font-normal">
@@ -325,7 +322,7 @@ export default function ToolsHubPage() {
                   </div>
                   <Link
                     href="/contact-us"
-                    className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold/90 text-navy font-semibold px-6 py-3.5 rounded-xl text-sm transition-all duration-200 hover:scale-105 shrink-0 self-start md:self-auto shadow-md"
+                    className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold/90 text-navy font-normal px-6 py-3.5 rounded-xl text-sm transition-all duration-200 hover:scale-105 shrink-0 self-start md:self-auto shadow-md"
                   >
                     Consult an Advisor <ArrowRight className="w-4 h-4" />
                   </Link>

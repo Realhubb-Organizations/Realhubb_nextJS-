@@ -105,7 +105,12 @@ export function LanguageControl({ dark = false }: { dark?: boolean }) {
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <LanguageSelector currentLang={selectedLang} translating={translating} onLanguageChange={handleLangChange} />
+      <LanguageSelector
+        currentLang={selectedLang}
+        translating={translating}
+        onLanguageChange={handleLangChange}
+        dark={dark}
+      />
       {selectedLang !== "original" && !translating && (
         <div
           className={`flex items-center gap-2 text-xs rounded-xl px-3 py-1.5 ${

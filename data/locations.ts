@@ -711,8 +711,11 @@ export const locations: LocationData[] = [
 ];
 
 export function getLocationBySlug(city: string, areaSlug: string): LocationData | undefined {
+  const decodedAreaSlug = decodeURIComponent(areaSlug).toLowerCase();
   return locations.find(
-    (l) => l.city.toLowerCase() === city.toLowerCase() && l.areaSlug.toLowerCase() === areaSlug.toLowerCase()
+    (l) =>
+      l.city.toLowerCase() === city.toLowerCase() &&
+      decodeURIComponent(l.areaSlug).toLowerCase() === decodedAreaSlug
   );
 }
 

@@ -179,7 +179,7 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
     try {
       setError("");
       await deleteFaq(id);
-      
+
       // Trigger background revalidation instantly
       await revalidateParent();
 
@@ -198,7 +198,7 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
     try {
       setError("");
       await updateFaq(faq.id, { ...faq, published: !faq.published });
-      
+
       // Trigger background revalidation instantly
       await revalidateParent();
 
@@ -227,7 +227,7 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
     <div className="mt-6 border-t border-border pt-6 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+          <h4 className="text-sm font-normal text-foreground flex items-center gap-2">
             <HelpCircle className="h-4 w-4 text-primary" />
             FAQ Section ({faqs.length})
           </h4>
@@ -248,7 +248,7 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
 
       {error === "permission-denied" ? (
         <div className="p-4 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl space-y-2 text-xs">
-          <p className="font-semibold text-amber-800 flex items-center gap-1.5">
+          <p className="font-normal text-amber-800 flex items-center gap-1.5">
             ⚠️ Firebase Permission Error
           </p>
           <p>
@@ -258,7 +258,7 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
             Please go to the <strong>Firebase Console</strong> → <strong>Firestore Database</strong> → <strong>Rules</strong> tab, and add the following match block:
           </p>
           <pre className="bg-white/80 p-2 rounded border border-amber-200/50 font-mono text-[10px] select-all overflow-x-auto">
-{`match /faqs/{document} {
+            {`match /faqs/{document} {
   allow read, write: if request.auth != null;
 }`}
           </pre>
@@ -275,7 +275,7 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
       {showForm && (
         <div className="p-4 bg-muted/40 rounded-xl border border-border space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-foreground">
+            <span className="text-xs font-normal text-foreground">
               {editing ? "Edit FAQ" : "New FAQ"}
             </span>
             <button

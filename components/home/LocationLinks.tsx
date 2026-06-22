@@ -11,7 +11,7 @@ export default function LocationLinks() {
       <div className="page-padding">
         <div className="text-center mb-10">
           <p className="section-overline text-gold mb-2">Locality Guides</p>
-          <h2 className="font-heading text-3xl md:text-4xl text-navy font-normal">
+          <h2 className="font-heading text-3xl md:text-4xl text-navy font-semibold">
             Top Localities in Bangalore
           </h2>
           <p className="text-gray-400 text-sm mt-3 max-w-xl mx-auto">

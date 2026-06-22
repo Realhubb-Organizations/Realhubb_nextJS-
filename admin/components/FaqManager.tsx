@@ -101,7 +101,7 @@ export default function FaqManager() {
         await addFaq(form);
         showToast("FAQ added");
       }
-      
+
       // Trigger background revalidation instantly
       await triggerRevalidate(["/", "/faq", "/about", "/career"]);
 
@@ -119,7 +119,7 @@ export default function FaqManager() {
     try {
       await deleteFaq(id);
       showToast("FAQ deleted");
-      
+
       // Trigger background revalidation instantly
       await triggerRevalidate(["/", "/faq", "/about", "/career"]);
 
@@ -134,7 +134,7 @@ export default function FaqManager() {
   const togglePublish = async (f: AdminFaq) => {
     try {
       await updateFaq(f.id, { ...f, published: !f.published });
-      
+
       // Trigger background revalidation instantly
       await triggerRevalidate(["/", "/faq", "/about", "/career"]);
 
@@ -179,7 +179,7 @@ export default function FaqManager() {
           { label: "Drafts", value: drafts, color: "text-amber-600" },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl border border-slate-200 p-4">
-            <p className={`text-2xl font-semibold ${s.color}`}>{s.value}</p>
+            <p className={`text-2xl font-normal ${s.color}`}>{s.value}</p>
             <p className="text-xs text-slate-400 mt-0.5">{s.label}</p>
           </div>
         ))}
@@ -219,7 +219,7 @@ export default function FaqManager() {
       {showForm && (
         <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-slate-800">
+            <h3 className="font-normal text-slate-800">
               {editing ? "Edit FAQ" : "New FAQ"}
             </h3>
             <button onClick={closeForm} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400">
@@ -303,7 +303,7 @@ export default function FaqManager() {
       {delId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-2xl p-6 shadow-xl max-w-sm w-full mx-4 space-y-4">
-            <h3 className="font-semibold text-slate-800">Delete this FAQ?</h3>
+            <h3 className="font-normal text-slate-800">Delete this FAQ?</h3>
             <p className="text-sm text-slate-500">This action cannot be undone.</p>
             <div className="flex gap-3 justify-end">
               <button onClick={() => setDelId(null)} className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50">Cancel</button>

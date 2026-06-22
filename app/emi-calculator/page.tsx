@@ -70,7 +70,7 @@ const EMICalculatorPage = () => {
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-4xl mx-auto relative z-10 text-center">
-            <span className="text-xs uppercase tracking-[0.25em] text-gold font-semibold bg-gold/10 px-4 py-1.5 rounded-full border border-gold/20 mb-6 inline-block">
+            <span className="text-xs uppercase tracking-[0.25em] text-gold font-normal bg-gold/10 px-4 py-1.5 rounded-full border border-gold/20 mb-6 inline-block">
               RealHubb Financial Suite
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-normal text-white max-w-3xl leading-tight mx-auto">
@@ -93,7 +93,7 @@ const EMICalculatorPage = () => {
                   <div>
                     <div className="flex justify-between mb-1.5">
                       <label className="text-sm font-medium text-gray-700">Loan Amount</label>
-                      <span className="text-sm font-semibold text-gold">
+                      <span className="text-sm font-normal text-gold">
                         {formatCurrency(parseFloat(principal) || 0)}
                       </span>
                     </div>
@@ -117,7 +117,7 @@ const EMICalculatorPage = () => {
                   <div>
                     <div className="flex justify-between mb-1.5">
                       <label className="text-sm font-medium text-gray-700">Interest Rate (p.a.)</label>
-                      <span className="text-sm font-semibold text-gold">{rate}%</span>
+                      <span className="text-sm font-normal text-gold">{rate}%</span>
                     </div>
                     <input
                       type="range"
@@ -139,7 +139,7 @@ const EMICalculatorPage = () => {
                   <div>
                     <div className="flex justify-between mb-1.5">
                       <label className="text-sm font-medium text-gray-700">Loan Tenure</label>
-                      <span className="text-sm font-semibold text-gold">{tenure} yrs</span>
+                      <span className="text-sm font-normal text-gold">{tenure} yrs</span>
                     </div>
                     <input
                       type="range"
@@ -205,19 +205,19 @@ const EMICalculatorPage = () => {
                   <div className="space-y-1 mb-6 text-sm">
                     <div className="flex justify-between items-center py-3 border-b border-gray-100">
                       <span className="text-gray-500">Principal Amount</span>
-                      <span className="font-semibold text-navy">
+                      <span className="font-normal text-navy">
                         {formatCurrency(parseFloat(principal) || 0)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center py-3 border-b border-gray-100">
                       <span className="text-gray-500">Total Interest</span>
-                      <span className="font-semibold text-gold">
+                      <span className="font-normal text-gold">
                         {formatCurrency(totalInterest)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center py-3">
                       <span className="font-medium text-navy">Total Payment</span>
-                      <span className="font-semibold text-navy">
+                      <span className="font-normal text-navy">
                         {formatCurrency(totalPayment)}
                       </span>
                     </div>
@@ -252,7 +252,7 @@ const EMICalculatorPage = () => {
 
             {/* Suite Navigator */}
             <div className="mt-16 bg-white border border-gray-100 rounded-3xl p-6 md:p-8 shadow-sm text-center">
-              <h3 className="text-xs uppercase tracking-[0.2em] text-gold font-semibold mb-5">
+              <h3 className="text-xs uppercase tracking-[0.2em] text-gold font-normal mb-5">
                 RealHubb Financial Suite
               </h3>
               <div className="flex flex-wrap justify-center gap-3">
@@ -262,11 +262,10 @@ const EMICalculatorPage = () => {
                     <Link
                       key={link.name}
                       href={link.href}
-                      className={`px-4 py-2 text-xs md:text-sm font-medium border rounded-xl transition-all duration-200 ${
-                        isCurrent
+                      className={`px-4 py-2 text-xs md:text-sm font-medium border rounded-xl transition-all duration-200 ${isCurrent
                           ? "bg-navy border-navy text-white"
                           : "border-gray-200 text-navy hover:text-gold hover:border-gold"
-                      }`}
+                        }`}
                     >
                       {link.name}
                     </Link>

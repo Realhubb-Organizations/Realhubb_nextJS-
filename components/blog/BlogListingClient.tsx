@@ -93,8 +93,8 @@ export default function BlogListingClient({ posts }: Props) {
                   {selectedCategories.some((c) => c.toLowerCase() === "all")
                     ? "All Categories"
                     : selectedCategories.length === 1
-                    ? selectedCategories[0]
-                    : `${selectedCategories[0]} (+${selectedCategories.length - 1})`}
+                      ? selectedCategories[0]
+                      : `${selectedCategories[0]} (+${selectedCategories.length - 1})`}
                 </span>
                 <ChevronDown className={`w-4 h-4 text-navy/50 group-hover:text-navy transition-transform duration-250 ml-2 shrink-0 ${isOpen ? "rotate-180" : ""}`} />
               </button>
@@ -145,7 +145,7 @@ export default function BlogListingClient({ posts }: Props) {
           {/* Results count info */}
           <div className="flex justify-between items-center mb-6">
             <p className="text-navy/50 text-sm">
-              Showing <span className="text-navy font-semibold">{filtered.length}</span> {filtered.length === 1 ? "article" : "articles"} found
+              Showing <span className="text-navy font-normal">{filtered.length}</span> {filtered.length === 1 ? "article" : "articles"} found
             </p>
           </div>
 
@@ -176,7 +176,7 @@ export default function BlogListingClient({ posts }: Props) {
                           </div>
                         )}
                         <div className="absolute top-3 left-3 flex gap-2">
-                          <span className="px-2 py-0.5 rounded-full text-[10px] bg-navy text-white uppercase tracking-wider font-semibold">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] bg-navy text-white uppercase tracking-wider font-normal">
                             {post.category}
                           </span>
                         </div>
@@ -219,7 +219,7 @@ export default function BlogListingClient({ posts }: Props) {
                   setSearch("");
                   setSelectedCategories(["All"]);
                 }}
-                className="bg-gold text-navy px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold/90 transition-all cursor-pointer"
+                className="bg-gold text-navy px-6 py-2.5 rounded-xl text-sm font-normal hover:bg-gold/90 transition-all cursor-pointer"
               >
                 Clear All Filters
               </button>

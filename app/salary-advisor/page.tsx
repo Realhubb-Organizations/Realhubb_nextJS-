@@ -19,13 +19,13 @@ const SalaryAdvisorPage = () => {
   const [experience, setExperience] = useState<string>("3");
 
   const cityData: Record<string, { label: string; rentIndex: number }> = {
-    mumbai:    { label: "Mumbai",    rentIndex: 1.0 },
-    delhi:     { label: "Delhi NCR", rentIndex: 0.85 },
+    mumbai: { label: "Mumbai", rentIndex: 1.0 },
+    delhi: { label: "Delhi NCR", rentIndex: 0.85 },
     bangalore: { label: "Bangalore", rentIndex: 0.80 },
     hyderabad: { label: "Hyderabad", rentIndex: 0.65 },
-    pune:      { label: "Pune",      rentIndex: 0.70 },
-    chennai:   { label: "Chennai",   rentIndex: 0.65 },
-    kolkata:   { label: "Kolkata",   rentIndex: 0.55 },
+    pune: { label: "Pune", rentIndex: 0.70 },
+    chennai: { label: "Chennai", rentIndex: 0.65 },
+    kolkata: { label: "Kolkata", rentIndex: 0.55 },
     ahmedabad: { label: "Ahmedabad", rentIndex: 0.50 },
   };
 
@@ -117,7 +117,7 @@ const SalaryAdvisorPage = () => {
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-4xl mx-auto relative z-10 text-center">
-            <span className="text-xs uppercase tracking-[0.25em] text-gold font-semibold bg-gold/10 px-4 py-1.5 rounded-full border border-gold/20 mb-6 inline-block">
+            <span className="text-xs uppercase tracking-[0.25em] text-gold font-normal bg-gold/10 px-4 py-1.5 rounded-full border border-gold/20 mb-6 inline-block">
               RealHubb Financial Suite
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-normal text-white max-w-3xl leading-tight mx-auto">
@@ -140,7 +140,7 @@ const SalaryAdvisorPage = () => {
                   <div>
                     <div className="flex justify-between mb-1.5">
                       <label className="text-sm font-medium text-gray-700">Annual CTC</label>
-                      <span className="text-sm font-semibold text-gold">
+                      <span className="text-sm font-normal text-gold">
                         {formatLakh(parseFloat(ctc) || 0)}
                       </span>
                     </div>
@@ -191,7 +191,7 @@ const SalaryAdvisorPage = () => {
                   <div>
                     <div className="flex justify-between mb-1.5">
                       <label className="text-sm font-medium text-gray-700">Years of Experience</label>
-                      <span className="text-sm font-semibold text-gold">{experience} yrs</span>
+                      <span className="text-sm font-normal text-gold">{experience} yrs</span>
                     </div>
                     <input
                       type="range"
@@ -224,9 +224,9 @@ const SalaryAdvisorPage = () => {
 
                   {/* Salary breakdown */}
                   <div className="space-y-1 text-xs sm:text-sm">
-                    <p className="font-semibold text-navy text-xs uppercase tracking-wider mb-2">Salary Breakdown</p>
+                    <p className="font-normal text-navy text-xs uppercase tracking-wider mb-2">Salary Breakdown</p>
                     {[
-                      { label: "Gross Monthly", value: r.monthly, color: "text-navy font-semibold" },
+                      { label: "Gross Monthly", value: r.monthly, color: "text-navy font-normal" },
                       { label: "Basic Salary (40%)", value: r.basic, color: "text-gray-500" },
                       { label: "House Rent Allowance (HRA)", value: r.hra, color: "text-gray-500" },
                       { label: "PF Deduction (Provident Fund)", value: -r.pf, color: "text-orange-500" },
@@ -243,7 +243,7 @@ const SalaryAdvisorPage = () => {
 
                   {/* Living Costs Estimate */}
                   <div className="space-y-1 text-xs sm:text-sm pt-2">
-                    <p className="font-semibold text-navy text-xs uppercase tracking-wider mb-2">Estimated Expenses in {cityData[city]?.label}</p>
+                    <p className="font-normal text-navy text-xs uppercase tracking-wider mb-2">Estimated Expenses in {cityData[city]?.label}</p>
                     {[
                       { label: "Rent / PG Accommodation", value: r.rentEstimate },
                       { label: "Food & Groceries", value: r.foodEstimate },
@@ -257,13 +257,13 @@ const SalaryAdvisorPage = () => {
                     ))}
                     <div className="flex justify-between items-center py-2 font-medium">
                       <span className="text-navy">Total Living Cost</span>
-                      <span className="font-semibold text-navy">{formatCurrency(r.totalLiving)}</span>
+                      <span className="font-normal text-navy">{formatCurrency(r.totalLiving)}</span>
                     </div>
                   </div>
 
                   {/* Savings & Affordability Advice */}
                   <div className="space-y-4 pt-2">
-                    <div className="flex justify-between items-center text-xs sm:text-sm font-semibold text-navy border-t border-gray-200 pt-3">
+                    <div className="flex justify-between items-center text-xs sm:text-sm font-normal text-navy border-t border-gray-200 pt-3">
                       <span>Monthly Surplus</span>
                       <span className={r.savingsEstimate >= 0 ? "text-green-600" : "text-red-500"}>
                         {formatCurrency(r.savingsEstimate)}
@@ -299,7 +299,7 @@ const SalaryAdvisorPage = () => {
                     {/* Affordability Advice Box */}
                     {r.savingsEstimate > 0 && (
                       <div className="bg-gold/10 border border-gold/20 rounded-xl p-4 text-center">
-                        <p className="text-xs text-navy font-semibold mb-1">Affordability Advisor</p>
+                        <p className="text-xs text-navy font-normal mb-1">Affordability Advisor</p>
                         <p className="text-[11px] text-gray-500 leading-relaxed font-light mb-3">
                           Based on your monthly surplus of <strong>{formatCurrency(r.savingsEstimate)}</strong>, you could easily support an EMI for a home loan of up to <strong>{formatLakh(r.savingsEstimate * 100)}</strong>!
                         </p>
@@ -318,7 +318,7 @@ const SalaryAdvisorPage = () => {
 
             {/* Suite Navigator */}
             <div className="mt-16 bg-white border border-gray-100 rounded-3xl p-6 md:p-8 shadow-sm text-center">
-              <h3 className="text-xs uppercase tracking-[0.2em] text-gold font-semibold mb-5">
+              <h3 className="text-xs uppercase tracking-[0.2em] text-gold font-normal mb-5">
                 RealHubb Financial Suite
               </h3>
               <div className="flex flex-wrap justify-center gap-3">
@@ -328,11 +328,10 @@ const SalaryAdvisorPage = () => {
                     <Link
                       key={link.name}
                       href={link.href}
-                      className={`px-4 py-2 text-xs md:text-sm font-medium border rounded-xl transition-all duration-200 ${
-                        isCurrent
+                      className={`px-4 py-2 text-xs md:text-sm font-medium border rounded-xl transition-all duration-200 ${isCurrent
                           ? "bg-navy border-navy text-white"
                           : "border-gray-200 text-navy hover:text-gold hover:border-gold"
-                      }`}
+                        }`}
                     >
                       {link.name}
                     </Link>

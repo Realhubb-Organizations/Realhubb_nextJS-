@@ -1,47 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-
-/**
- * SSR guard — returns false on the server and true after hydration.
- * Prevents the "flash of hidden content" where SSR renders visible HTML
- * but the Framer Motion initial state (opacity:0) briefly shows before animating.
- */
-function useIsClient() {
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => setIsClient(true), []);
-  return isClient;
-}
-
-// ── Animation variants ───────────────────────────────────────────────────────
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      // 80ms between each card — fast enough to feel live, slow enough to read
-      staggerChildren: 0.08,
-    },
-  },
-};
-
-// Explicit tuple type so TypeScript accepts the bezier values
-const EASE: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
-
-const cardVariants = {
-  hidden: { opacity: 0, x: -40 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.6,
-      ease: EASE,
-    },
-  },
-};
-
-// ── RevealGrid ───────────────────────────────────────────────────────────────
+import { useEffect, useRef, useState } from "react";
 
 interface GridProps {
   children: React.ReactNode;
@@ -49,61 +8,89 @@ interface GridProps {
 }
 
 /**
- * RevealGrid — stagger container.
- * Applies the grid CSS via `className`. Wrap each card in <RevealCard>.
- *
- * Scroll trigger fires when the grid is 80px inside the viewport from the
- * bottom — cards are clearly visible before animation begins.
+ * RevealGrid — stagger container using CSS transitions + IntersectionObserver.
+ * No framer-motion dependency.
  */
 export function RevealGrid({ children, className }: GridProps) {
-  const isClient = useIsClient();
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
-  // Before hydration: render children without any motion wrapper so there is
-  // no flash of invisible content caused by framer-motion's initial state.
-  if (!isClient) {
-    return <div className={className}>{children}</div>;
-  }
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -80px 0px", threshold: 0 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <motion.div
-      className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{
-        once: true,
-        // Negative bottom margin — animation fires only when the grid is
-        // at least 80px inside the visible viewport from the bottom.
-        // Cards are already in clear sight before the animation begins.
-        margin: "0px 0px -80px 0px",
-      }}
-      variants={containerVariants}
-    >
+    <div ref={ref} className={className} data-reveal-visible={visible ? "true" : "false"}>
       {children}
-    </motion.div>
+    </div>
   );
 }
-
-// ── RevealCard ───────────────────────────────────────────────────────────────
 
 interface CardProps {
   children: React.ReactNode;
   className?: string;
+  index?: number;
 }
 
 /**
- * RevealCard — individual card wrapper.
- * Must be a direct child of <RevealGrid>.
- * Slides in from the left with a smooth ease-out curve.
+ * RevealCard — individual card wrapper, slides in from left with stagger.
  */
-export function RevealCard({ children, className }: CardProps) {
+export function RevealCard({ children, className, index = 0 }: CardProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Check if parent RevealGrid is already visible
+    const parent = el.closest("[data-reveal-visible]");
+    if (parent?.getAttribute("data-reveal-visible") === "true") {
+      setTimeout(() => setVisible(true), index * 80);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setVisible(true), index * 80);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -80px 0px", threshold: 0 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [index]);
+
+  const combinedClassName = className
+    ? `${className} transition-all duration-700 opacity-100 translate-x-0 lg:opacity-0 lg:-translate-x-10`
+    : "transition-all duration-700 opacity-100 translate-x-0 lg:opacity-0 lg:-translate-x-10";
+
   return (
-    <motion.div
-      className={className}
-      variants={cardVariants}
-      // Ensure the card stays in its natural position in the layout
-      style={{ willChange: "transform, opacity" }}
+    <div
+      ref={ref}
+      className={combinedClassName}
+      style={{
+        opacity: visible ? 1 : undefined,
+        transform: visible ? "none" : undefined,
+        transition: visible
+          ? `opacity 0.6s cubic-bezier(0.25,0.46,0.45,0.94) ${index * 80}ms, transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94) ${index * 80}ms`
+          : undefined,
+        willChange: visible ? undefined : "transform, opacity",
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

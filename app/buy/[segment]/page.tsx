@@ -4,6 +4,7 @@ import { buySegmentMetadata } from "@/lib/seo";
 import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
 import { getAllProperties } from "@/lib/firestoreServerService";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+import { properties as staticProperties } from "@/data/properties";
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 
@@ -100,6 +101,15 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
     { name: label, url: `${SITE_URL}/buy/${segment}` },
   ];
 
+  const segmentImages: Record<string, string> = {
+    "2bhk-flats-bangalore": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80",
+    "3bhk-flats-bangalore": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80",
+    "villas-bangalore": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=80",
+    "luxury-apartments-bangalore": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80",
+    "plots-bangalore": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80",
+  };
+  const bgImage = segmentImages[segment] ?? "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80";
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }} />
@@ -107,24 +117,43 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqs)) }} />
       )}
 
-      <div className="pt-20">
-        <div className="bg-navy py-14 page-padding">
-          <BreadcrumbNav items={breadcrumbs} dark />
-          <h1 className="font-heading text-3xl md:text-5xl text-white font-normal mt-4">
-            {label} for Sale 2026
-          </h1>
-          <p className="text-white/60 text-base mt-3 max-w-xl">
-            Verified RERA-registered properties · Zero brokerage · Free site visit
-          </p>
+      <div className="pt-20 bg-cream min-h-screen">
+        <div className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src={bgImage}
+              alt={label}
+              className="w-full h-full object-cover opacity-40 filter brightness-95"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
+          </div>
+
+          {/* Symmetrical branding glows */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="max-w-7xl mx-auto relative z-10">
+            <BreadcrumbNav items={breadcrumbs} dark />
+
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal mt-4 leading-tight animate-fadeIn">
+              {label} for Sale <span className="text-gold">2026</span>
+            </h1>
+            <p className="text-white/80 text-base md:text-lg leading-relaxed max-w-xl font-light mt-3 animate-fadeIn">
+              Verified RERA-registered properties · Zero brokerage · Free site visit
+            </p>
+          </div>
         </div>
 
         <div className="page-padding py-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-10">
+          <div className="lg:col-span-2 space-y-8">
             {/* Intro */}
-            <p className="text-gray-500 text-sm leading-relaxed">{intro}</p>
+            <div className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
+              <p className="text-gray-500 text-sm leading-relaxed font-light">{intro}</p>
+            </div>
 
             {/* Properties */}
-            <section>
+            <section className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
               <h2 className="font-heading text-2xl text-navy font-normal mb-6">
                 Available {label}
               </h2>
@@ -135,7 +164,7 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
                   ))}
                 </div>
               ) : (
-                <div className="bg-cream rounded-2xl p-8 text-center">
+                <div className="bg-cream/40 border border-dashed border-gray-200 rounded-2xl p-8 text-center">
                   <p className="text-gray-400 text-sm mb-4">
                     New listings loading. Contact us for the latest {label} options.
                   </p>
@@ -147,11 +176,11 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
             </section>
 
             {/* Buying guide */}
-            <section className="bg-cream rounded-2xl p-6">
-              <h2 className="font-heading text-xl text-navy font-normal mb-4">
+            <section className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
+              <h2 className="font-heading text-2xl text-navy font-normal mb-6">
                 Buying Guide Checklist
               </h2>
-              <ul className="space-y-2 text-sm text-gray-500">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
                   "Verify RERA registration at the official state RERA website",
                   "Check builder's track record: on-time delivery, quality, complaints",
@@ -162,9 +191,9 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
                   "Check possession timeline in writing with penalty clauses",
                   "Calculate total cost: base price + GST + registration + maintenance",
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <span className="text-gold mt-0.5 shrink-0">✓</span>
-                    {item}
+                  <li key={item} className="flex items-start gap-3 text-sm text-gray-500 font-light hover:text-gold transition-colors duration-200">
+                    <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -172,18 +201,25 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
 
             {/* FAQs */}
             {faqs.length > 0 && (
-              <section>
+              <section className="bg-white border border-gray-150/80 rounded-3xl p-6 md:p-8 shadow-sm">
                 <h2 className="font-heading text-2xl text-navy font-normal mb-6">
                   Frequently Asked Questions
                 </h2>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {faqs.map((faq) => (
-                    <details key={faq.question} className="bg-white border border-gray-100 rounded-xl p-4 group">
-                      <summary className="text-navy text-sm font-normal cursor-pointer list-none flex justify-between">
-                        {faq.question}
-                        <span className="text-gold ml-4 shrink-0">▾</span>
+                    <details
+                      key={faq.question}
+                      className="border border-gray-150/80 rounded-2xl p-5 group transition-all duration-300 hover:border-gold/30"
+                    >
+                      <summary className="text-navy text-sm md:text-base font-normal cursor-pointer list-none flex justify-between items-center select-none">
+                        <span>{faq.question}</span>
+                        <span className="w-8 h-8 rounded-full bg-gold/10 text-gold flex items-center justify-center group-open:rotate-180 transition-transform duration-300 shrink-0 ml-4">
+                          ▾
+                        </span>
                       </summary>
-                      <p className="text-gray-400 text-sm mt-3 leading-relaxed">{faq.answer}</p>
+                      <p className="text-gray-500 text-sm mt-4 leading-relaxed font-light border-t border-gray-100 pt-4">
+                        {faq.answer}
+                      </p>
                     </details>
                   ))}
                 </div>
@@ -195,9 +231,10 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
           <div>
             <div className="sticky top-24 space-y-4">
               <InstantCallbackForm city={config?.city ? config.city.charAt(0).toUpperCase() + config.city.slice(1) : undefined} />
-              <div className="bg-navy rounded-2xl p-5">
-                <p className="section-overline text-gold mb-3">Similar Searches</p>
-                <ul className="space-y-2 text-sm">
+              <div className="bg-[#00274D] border border-gold/30 rounded-3xl p-6 relative overflow-hidden shadow-lg">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-2xl pointer-events-none" />
+                <p className="font-heading text-lg text-gold font-normal mb-4 relative z-10">Similar Searches</p>
+                <ul className="space-y-3 relative z-10">
                   {[
                     { label: "2BHK Flats in Bangalore", href: "/buy/2bhk-flats-bangalore" },
                     { label: "3BHK Flats in Bangalore", href: "/buy/3bhk-flats-bangalore" },
@@ -207,8 +244,12 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
                     .filter((l) => l.href !== `/buy/${segment}`)
                     .map((l) => (
                       <li key={l.href}>
-                        <Link href={l.href} className="text-white/60 hover:text-gold transition-colors">
-                          {l.label} →
+                        <Link
+                          href={l.href}
+                          className="flex items-center justify-between text-white/70 hover:text-gold text-sm font-light transition-colors group"
+                        >
+                          <span>{l.label}</span>
+                          <span className="text-xs transition-transform group-hover:translate-x-1">→</span>
                         </Link>
                       </li>
                     ))}

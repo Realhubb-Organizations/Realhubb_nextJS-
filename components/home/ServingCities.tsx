@@ -60,7 +60,6 @@ export default function ServingCities() {
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  priority
                 />
 
                 {/* Gradient Overlay */}
@@ -69,7 +68,7 @@ export default function ServingCities() {
                 {/* Content Container */}
                 <div className="absolute inset-0 p-8 flex flex-col justify-between z-20">
                   {/* Top: Projects Badge */}
-                  <span className="self-start bg-navy/80 border border-white/10 text-[#D7A764] rounded px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold shadow-sm">
+                  <span className="self-start bg-navy/80 border border-white/10 text-[#D7A764] rounded px-2.5 py-1 text-[10px] uppercase tracking-wider font-normal shadow-sm">
                     {city.projectCount} Projects
                   </span>
 
