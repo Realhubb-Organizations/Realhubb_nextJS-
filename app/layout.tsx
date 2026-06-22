@@ -78,7 +78,7 @@ export default function RootLayout({
       </head>
       <body className="bg-cream font-body text-navy antialiased flex flex-col min-h-screen">
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 min-h-[85vh]">{children}</main>
         <Footer />
         <ChatWidget />
         <LeadPopup />

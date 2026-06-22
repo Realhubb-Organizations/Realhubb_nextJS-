@@ -11,9 +11,9 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: "/projects", destination: "/projects/ongoing", permanent: true },
-      { source: "/ongoing-projects", destination: "/projects/ongoing", permanent: true },
-      { source: "/upcoming-projects", destination: "/projects/upcoming", permanent: true },
+      { source: "/projects", destination: "/projects/ongoing/bangalore", permanent: true },
+      { source: "/ongoing-projects", destination: "/projects/ongoing/bangalore", permanent: true },
+      { source: "/upcoming-projects", destination: "/projects/upcoming/bangalore", permanent: true },
       { source: "/contact", destination: "/contact-us", permanent: true },
       { source: "/tools/emi-calculator", destination: "/emi-calculator", permanent: true },
       { source: "/tools/home-loan-eligibility", destination: "/home-loan-eligibility", permanent: true },

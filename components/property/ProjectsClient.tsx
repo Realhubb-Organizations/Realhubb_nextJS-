@@ -64,8 +64,7 @@ export default function ProjectsClient({
 
   const navigateTo = useCallback(
     (type: string, city: string) => {
-      const base =
-        city === "all" ? `/projects/${type}` : `/projects/${type}/${city}`;
+      const base = `/projects/${type}/${city}`;
       router.push(base);
     },
     [router]
