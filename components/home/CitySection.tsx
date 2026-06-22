@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { useProperties } from "@/hooks/useProperties";
+import type { Property } from "@/types/property";
 import PropertyCard from "@/components/property/PropertyCard";
 
 type CityTab = "all" | "bangalore" | "hyderabad" | "chennai";
@@ -15,9 +15,12 @@ const tabs: { label: string; value: CityTab }[] = [
   { label: "Chennai", value: "chennai" },
 ];
 
-export default function CitySection() {
+interface Props {
+  properties: Property[];
+}
+
+export default function CitySection({ properties }: Props) {
   const [activeCity, setActiveCity] = useState<CityTab>("all");
-  const { properties, loading } = useProperties();
 
   const filtered =
     activeCity === "all"
@@ -56,13 +59,7 @@ export default function CitySection() {
         </div>
 
         {/* Property grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-gray-100 rounded-2xl h-80 animate-pulse" />
-            ))}
-          </div>
-        ) : filtered.length ? (
+        {filtered.length ? (
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCity}

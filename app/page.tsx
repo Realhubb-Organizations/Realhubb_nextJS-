@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { buildMetadata } from "@/lib/seo";
-import { getFeaturedProperties, getLatestBlogPosts, getAllDevelopers, getPublishedFaqsByPage } from "@/lib/firestoreServerService";
+import { getFeaturedProperties, getLatestBlogPosts, getAllDevelopers, getPublishedFaqsByPage, getAllProperties } from "@/lib/firestoreServerService";
 import { properties as staticProperties } from "@/data/properties";
 import { blogPosts as staticBlogPosts } from "@/data/blog";
 import { developers as staticDevelopers } from "@/data/developers";
@@ -88,6 +88,24 @@ function HomeFaqsSkeleton() {
   );
 }
 
+function CitySectionSkeleton() {
+  return (
+    <section className="py-20 bg-cream">
+      <div className="page-padding animate-pulse">
+        <div className="text-center mb-10">
+          <p className="section-overline text-gold mb-2">Explore by Location</p>
+          <div className="h-10 bg-gray-200 rounded-lg w-1/3 mx-auto mb-6" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-gray-200 rounded-2xl h-80" />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Wrapper Components to Fetch Data
 async function FeaturedPropertiesWrapper() {
   let featured = staticProperties.filter((p) => p.featured);
@@ -141,6 +159,16 @@ async function HomeFaqsWrapper() {
   return <HomeFaqs faqs={homeFaqs} />;
 }
 
+async function CitySectionWrapper() {
+  let properties: any[] = [];
+  try {
+    properties = await getAllProperties();
+  } catch (err) {
+    console.error("Error fetching properties for CitySection:", err);
+  }
+  return <CitySection properties={properties} />;
+}
+
 export default function HomePage() {
   return (
     <>
@@ -151,7 +179,10 @@ export default function HomePage() {
         <FeaturedPropertiesWrapper />
       </Suspense>
       
-      <CitySection />
+      <Suspense fallback={<CitySectionSkeleton />}>
+        <CitySectionWrapper />
+      </Suspense>
+      
       <LocationLinks />
       
       <Suspense fallback={<DeveloperStripSkeleton />}>
