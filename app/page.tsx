@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { buildMetadata } from "@/lib/seo";
 import { getFeaturedProperties, getLatestBlogPosts, getAllDevelopers, getPublishedFaqsByPage } from "@/lib/firestoreServerService";
 import { properties as staticProperties } from "@/data/properties";
@@ -17,8 +18,6 @@ import ToolsPromo from "@/components/home/ToolsPromo";
 import HomeFaqs from "@/components/home/HomeFaqs";
 import ContactCTA from "@/components/home/ContactCTA";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = buildMetadata({
   title: "RealHubb — Real Estate Bangalore, Hyderabad & Chennai",
   // 135 chars ✅
@@ -31,47 +30,147 @@ export const metadata: Metadata = buildMetadata({
   geoPlacename: "Bangalore",
 });
 
-export default async function HomePage() {
-  const [firestoreFeatured, firestoreBlog, firestoreDevelopers, firestoreFaqs] = await Promise.allSettled([
-    getFeaturedProperties(),
-    getLatestBlogPosts(3),
-    getAllDevelopers(),
-    getPublishedFaqsByPage("home"),
-  ]);
+// Skeletons
+function FeaturedPropertiesSkeleton() {
+  return (
+    <div className="py-20 bg-white">
+      <div className="page-padding">
+        <div className="h-10 bg-gray-100 rounded-lg w-1/3 mb-10 animate-pulse" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-gray-100 rounded-2xl h-80 animate-pulse" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  const featured =
-    firestoreFeatured.status === "fulfilled" && firestoreFeatured.value.length > 0
-      ? firestoreFeatured.value
-      : staticProperties.filter((p) => p.featured);
+function DeveloperStripSkeleton() {
+  return (
+    <div className="py-12 bg-white/50 border-y border-gray-100">
+      <div className="page-padding flex items-center justify-between gap-6 overflow-hidden">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="h-10 bg-gray-100 rounded-lg w-28 animate-pulse shrink-0" />
+        ))}
+      </div>
+    </div>
+  );
+}
 
-  const blogPosts =
-    firestoreBlog.status === "fulfilled" && firestoreBlog.value.length > 0
-      ? firestoreBlog.value
-      : staticBlogPosts.filter((p) => p.published).slice(0, 3);
+function BlogPreviewSkeleton() {
+  return (
+    <div className="py-20 bg-white">
+      <div className="page-padding">
+        <div className="h-10 bg-gray-100 rounded-lg w-1/4 mb-10 animate-pulse" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-gray-100 rounded-2xl h-64 animate-pulse" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  const developers =
-    firestoreDevelopers.status === "fulfilled" && firestoreDevelopers.value.length > 0
-      ? firestoreDevelopers.value
-      : staticDevelopers;
+function HomeFaqsSkeleton() {
+  return (
+    <div className="py-20 bg-cream">
+      <div className="page-padding max-w-4xl mx-auto">
+        <div className="h-10 bg-gray-200 rounded-lg w-1/3 mx-auto mb-10 animate-pulse" />
+        <div className="space-y-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-16 bg-gray-200 rounded-xl animate-pulse" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  const homeFaqs =
-    firestoreFaqs.status === "fulfilled"
-      ? firestoreFaqs.value
-      : [];
+// Wrapper Components to Fetch Data
+async function FeaturedPropertiesWrapper() {
+  let featured = staticProperties.filter((p) => p.featured);
+  try {
+    const data = await getFeaturedProperties();
+    if (data && data.length > 0) {
+      featured = data;
+    }
+  } catch (err) {
+    console.error("Error fetching featured properties:", err);
+  }
+  return <FeaturedProperties properties={featured} />;
+}
 
+async function DeveloperStripWrapper() {
+  let developers = staticDevelopers;
+  try {
+    const data = await getAllDevelopers();
+    if (data && data.length > 0) {
+      developers = data;
+    }
+  } catch (err) {
+    console.error("Error fetching developers:", err);
+  }
+  return <DeveloperStrip developers={developers} />;
+}
+
+async function BlogPreviewWrapper() {
+  let blogPosts = staticBlogPosts.filter((p) => p.published).slice(0, 3);
+  try {
+    const data = await getLatestBlogPosts(3);
+    if (data && data.length > 0) {
+      blogPosts = data;
+    }
+  } catch (err) {
+    console.error("Error fetching blog posts:", err);
+  }
+  return <BlogPreview posts={blogPosts} />;
+}
+
+async function HomeFaqsWrapper() {
+  let homeFaqs: any[] = [];
+  try {
+    const data = await getPublishedFaqsByPage("home");
+    if (data) {
+      homeFaqs = data;
+    }
+  } catch (err) {
+    console.error("Error fetching homepage FAQs:", err);
+  }
+  return <HomeFaqs faqs={homeFaqs} />;
+}
+
+export default function HomePage() {
   return (
     <>
       <HeroSection />
       <ServingCities />
-      <FeaturedProperties properties={featured} />
+      
+      <Suspense fallback={<FeaturedPropertiesSkeleton />}>
+        <FeaturedPropertiesWrapper />
+      </Suspense>
+      
       <CitySection />
       <LocationLinks />
-      <DeveloperStrip developers={developers} />
+      
+      <Suspense fallback={<DeveloperStripSkeleton />}>
+        <DeveloperStripWrapper />
+      </Suspense>
+      
       <WhyRealHubb />
       <TestimonialsStrip />
-      <BlogPreview posts={blogPosts} />
+      
+      <Suspense fallback={<BlogPreviewSkeleton />}>
+        <BlogPreviewWrapper />
+      </Suspense>
+      
       <ToolsPromo />
-      <HomeFaqs faqs={homeFaqs} />
+      
+      <Suspense fallback={<HomeFaqsSkeleton />}>
+        <HomeFaqsWrapper />
+      </Suspense>
+      
       <ContactCTA />
     </>
   );

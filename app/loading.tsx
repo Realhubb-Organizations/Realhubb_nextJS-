@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-cream">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-cream animate-fade-in-delay">
       <div className="relative flex flex-col items-center justify-center">
         {/* Soft pulsing outer golden glow ring */}
         <div className="absolute w-36 h-36 rounded-full border border-gold/10 animate-ping opacity-45" />
