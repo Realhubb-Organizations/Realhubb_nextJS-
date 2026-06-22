@@ -26,9 +26,15 @@ interface LanguageSelectorProps {
   currentLang: string;
   translating: boolean;
   onLanguageChange: (code: string, label: string) => void;
+  dark?: boolean;
 }
 
-export default function LanguageSelector({ currentLang, translating, onLanguageChange }: LanguageSelectorProps) {
+export default function LanguageSelector({
+  currentLang,
+  translating,
+  onLanguageChange,
+  dark = false,
+}: LanguageSelectorProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -48,15 +54,25 @@ export default function LanguageSelector({ currentLang, translating, onLanguageC
         type="button"
         onClick={() => setOpen((o) => !o)}
         disabled={translating}
-        className="flex items-center gap-2 min-w-[130px] border border-gold/30 hover:border-gold rounded-full px-4 py-1.5 text-sm text-navy transition-colors disabled:opacity-60"
+        className={`flex items-center gap-2 min-w-[130px] border rounded-full px-4 py-1.5 text-sm transition-all duration-200 disabled:opacity-60 shadow-sm ${
+          dark
+            ? "border-white/30 hover:border-white text-white bg-white/5 hover:bg-white/10"
+            : "border-gold/30 hover:border-gold text-navy bg-white hover:bg-cream/40"
+        }`}
       >
         {translating ? (
           <Loader2 className="h-4 w-4 animate-spin text-gold" />
         ) : (
-          <Globe className="h-4 w-4 text-gold" />
+          <Globe className="h-4 w-4 text-gold shrink-0" />
         )}
-        <span className="flex-1 text-left">{translating ? "Translating…" : currentLabel}</span>
-        {!translating && <ChevronDown className="h-3 w-3 opacity-50" />}
+        <span className="flex-1 text-left font-light">{translating ? "Translating…" : currentLabel}</span>
+        {!translating && (
+          <ChevronDown
+            className={`h-3 w-3 shrink-0 transition-transform duration-300 ${
+              dark ? "text-white/60" : "text-navy/50"
+            } ${open ? "rotate-180" : ""}`}
+          />
+        )}
       </button>
 
       {open && (
