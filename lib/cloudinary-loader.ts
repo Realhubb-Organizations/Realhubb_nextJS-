@@ -8,16 +8,11 @@ export default function cloudinaryLoader({ src, width, quality }: ImageLoaderPro
 
   // External URLs (like postimg, unsplash, istock, ftcdn)
   if (src.startsWith("http") && !src.includes("res.cloudinary.com")) {
-    const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    if (cloud) {
-      return `https://res.cloudinary.com/${cloud}/image/fetch/w_${width},q_${quality ?? 75},f_auto/${encodeURIComponent(src)}`;
-    }
-    const separator = src.includes("?") ? "&" : "?";
-    return `${src}${separator}w=${width}`;
+    const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dr0fl3ak5";
+    return `https://res.cloudinary.com/${cloud}/image/fetch/w_${width},q_${quality ?? 75},f_auto/${encodeURIComponent(src)}`;
   }
 
-  const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  if (!cloud) return src;
+  const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dr0fl3ak5";
   // If already a full Cloudinary URL, extract the path after /upload/
   if (src.includes("res.cloudinary.com")) {
     const uploadIdx = src.indexOf("/upload/");

@@ -6,8 +6,8 @@ export type CloudinaryFolder =
   | "gallery";
 
 export const CLOUDINARY_CONFIG = {
-  cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "",
-  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? "",
+  cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dr0fl3ak5",
+  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "realhubb",
 };
 
 export const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`;
@@ -23,8 +23,8 @@ export interface CloudinaryUploadResponse {
 }
 
 export function optimizeUrl(url: string, transforms = "w_800,q_75,f_auto"): string {
-  const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  if (!cloud || !url) return url;
+  const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dr0fl3ak5";
+  if (!url) return url;
   if (url.includes("res.cloudinary.com")) {
     const uploadIdx = url.indexOf("/upload/");
     if (uploadIdx !== -1) {
