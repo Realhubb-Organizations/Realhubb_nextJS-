@@ -4,9 +4,10 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import SEO from "@/components/seo/SEO";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
+import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
+import { cn } from "@/lib/utils";
 import {
-  Star, Quote, ArrowRight, CheckCircle,
-  MapPin, Home, Users, TrendingUp, ThumbsUp, Building2,
+  Star, Quote, CheckCircle, MapPin, Home, Users, TrendingUp, ThumbsUp, Building2,
 } from "lucide-react";
 
 const REVIEWS = [
@@ -35,7 +36,7 @@ const CATEGORIES = [
 const CITIES = ["All Cities", "Bangalore", "Hyderabad", "Chennai"];
 
 const Stars = ({ rating }: { rating: number }) => (
-  <div className="flex gap-0.5">
+  <div className="flex gap-0.5 shrink-0">
     {[1, 2, 3, 4, 5].map((s) => (
       <Star key={s} size={14} style={{ fill: s <= rating ? "#D7A764" : "transparent", color: s <= rating ? "#D7A764" : "#d1d5db", flexShrink: 0 }} />
     ))}
@@ -44,50 +45,53 @@ const Stars = ({ rating }: { rating: number }) => (
 
 const Avatar = ({ initials, color }: { initials: string; color: string }) => (
   <div
-    className="w-11 h-11 rounded-full flex items-center justify-center text-xs font-normal shrink-0"
-    style={{ background: `${color}22`, border: `2px solid ${color}44`, color: color, letterSpacing: 0.5 }}
+    className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-heading font-medium shrink-0 shadow-inner border"
+    style={{ background: `${color}12`, borderColor: `${color}30`, color: color }}
   >
     {initials}
   </div>
 );
 
 const ReviewCard = ({ r }: { r: (typeof REVIEWS)[0] }) => (
-  <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 flex flex-col h-full relative overflow-hidden">
-    {/* Gold top accent */}
-    <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#D7A764]" />
-
-    {/* Stars + badges */}
-    <div className="flex items-center justify-between mb-4 mt-1">
+  <div className="group flex flex-col h-full bg-white rounded-2xl p-6 border border-gray-100 hover:border-gold/30 shadow-sm hover:shadow-lg transition-all">
+    {/* Header: Stars & Badges */}
+    <div className="flex items-center justify-between mb-4">
       <Stars rating={r.rating} />
       <div className="flex gap-2">
         {r.verified && (
-          <span className="inline-flex items-center gap-1 text-[10px] font-normal text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5">
-            <CheckCircle size={10} /> Verified
+          <span className="px-2.5 py-0.5 rounded-full text-[9px] font-normal uppercase tracking-wider bg-green-50 text-green-700 border border-green-200/50">
+            Verified
           </span>
         )}
-        <span className="text-[10px] font-normal text-[#D7A764] bg-[#D7A764]/10 border border-[#D7A764]/20 rounded-full px-2.5 py-0.5">
+        <span className="px-2.5 py-0.5 rounded-full text-[9px] font-normal uppercase tracking-wider bg-gold/5 text-gold border border-gold/20">
           Google
         </span>
       </div>
     </div>
 
-    {/* Quote */}
-    <Quote size={18} className="text-[#D7A764] opacity-40 mb-3 shrink-0" />
-    <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-5 italic">
-      "{r.review}"
-    </p>
+    {/* Quote Icon & Content */}
+    <div className="relative mb-5 flex-1 flex flex-col justify-start">
+      <Quote size={20} className="text-gold/20 absolute -top-1.5 -left-1 pointer-events-none" />
+      <p className="text-gray-500 font-body font-light text-sm leading-relaxed pl-5 italic">
+        &ldquo;{r.review}&rdquo;
+      </p>
+    </div>
 
-    {/* Author */}
-    <div className="border-t border-gray-100 pt-4 flex items-center gap-3">
-      <Avatar initials={r.avatar} color={r.avatarColor} />
-      <div className="flex-1 min-w-0">
-        <p className="font-normal text-[#00274D] text-sm">{r.name}</p>
-        <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
-          <MapPin size={10} className="shrink-0" />
-          {r.city} · {r.role}
-        </p>
+    {/* Author Info */}
+    <div className="flex items-center justify-between pt-4 border-t border-gray-50 mt-auto">
+      <div className="flex items-center gap-3">
+        <Avatar initials={r.avatar} color={r.avatarColor} />
+        <div>
+          <h4 className="font-heading text-navy text-sm font-medium group-hover:text-gold transition-colors">
+            {r.name}
+          </h4>
+          <p className="text-[10px] text-gray-400 font-body flex items-center gap-1.5 mt-0.5">
+            <MapPin className="w-3 h-3 text-gold/80" />
+            <span>{r.city} · {r.role}</span>
+          </p>
+        </div>
       </div>
-      <p className="text-[11px] text-gray-400 shrink-0">{r.date}</p>
+      <span className="text-[10px] text-gray-400 font-body">{r.date}</span>
     </div>
   </div>
 );
@@ -96,10 +100,72 @@ const TestimonialsPage = () => {
   const [category, setCategory] = useState("all");
   const [city, setCity]         = useState("All Cities");
 
+  // Calculate review counts per category based on active city
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    CATEGORIES.forEach((c) => {
+      counts[c.key] = REVIEWS.filter((r) => {
+        const cityMatch = city === "All Cities" || r.city.toLowerCase() === city.toLowerCase();
+        const catMatch = c.key === "all" || r.category.toLowerCase() === c.key.toLowerCase();
+        return cityMatch && catMatch;
+      }).length;
+    });
+    return counts;
+  }, [city]);
+
+  // Calculate review counts per city based on active category
+  const cityCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    CITIES.forEach((c) => {
+      counts[c] = REVIEWS.filter((r) => {
+        const cityMatch = c === "All Cities" || r.city.toLowerCase() === c.toLowerCase();
+        const catMatch = category === "all" || r.category.toLowerCase() === category.toLowerCase();
+        return cityMatch && catMatch;
+      }).length;
+    });
+    return counts;
+  }, [category]);
+
+  const handleCityChange = (selectedCity: string) => {
+    setCity(selectedCity);
+    
+    // Auto fallback to 'all' if the selected category has 0 reviews in the selected city
+    const nextCategoryCounts: Record<string, number> = {};
+    CATEGORIES.forEach((cat) => {
+      nextCategoryCounts[cat.key] = REVIEWS.filter((r) => {
+        const cityMatch = selectedCity === "All Cities" || r.city.toLowerCase() === selectedCity.toLowerCase();
+        const catMatch = cat.key === "all" || r.category.toLowerCase() === cat.key.toLowerCase();
+        return cityMatch && catMatch;
+      }).length;
+    });
+
+    if (category !== "all" && (!nextCategoryCounts[category] || nextCategoryCounts[category] === 0)) {
+      setCategory("all");
+    }
+  };
+
+  const handleCategoryChange = (selectedCategory: string) => {
+    setCategory(selectedCategory);
+
+    // Auto fallback to 'All Cities' if the selected city has 0 reviews in the selected category
+    const nextCityCounts: Record<string, number> = {};
+    CITIES.forEach((c) => {
+      nextCityCounts[c] = REVIEWS.filter((r) => {
+        const cityMatch = c === "All Cities" || r.city.toLowerCase() === c.toLowerCase();
+        const catMatch = selectedCategory === "all" || r.category.toLowerCase() === selectedCategory.toLowerCase();
+        return cityMatch && catMatch;
+      }).length;
+    });
+
+    if (city !== "All Cities" && (!nextCityCounts[city] || nextCityCounts[city] === 0)) {
+      setCity("All Cities");
+    }
+  };
+
   const filtered = useMemo(() =>
     REVIEWS.filter((r) => {
-      const catMatch  = category === "all" || r.category === category;
-      const cityMatch = city === "All Cities" || r.city === city;
+      const catMatch  = category === "all" || r.category.toLowerCase() === category.toLowerCase();
+      const cityMatch = city === "All Cities" || r.city.toLowerCase() === city.toLowerCase();
       return catMatch && cityMatch;
     }), [category, city]);
 
@@ -128,58 +194,176 @@ const TestimonialsPage = () => {
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }} />
 
-      <div className="min-h-screen bg-[#faf6f1]">
+      <div className="min-h-screen bg-cream">
 
-        {/* ── HERO ── */}
-        <section className="pt-32 pb-20 bg-[#00274D]">
-          <div className="px-8 md:px-14 lg:px-20 xl:px-28">
+        {/* ── IMMERSIVE HEADER BANNER ── */}
+        <section className="bg-navy pt-32 pb-28 md:pt-36 md:pb-36 page-padding relative overflow-hidden text-white">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80"
+              alt="Testimonials"
+              className="w-full h-full object-cover opacity-35"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/60 to-navy/20" />
+          </div>
+
+          {/* Subtle background glow */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto relative z-10">
             <FadeInOnScroll direction="up">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#D7A764]/10 border border-[#D7A764]/20 text-[#D7A764] text-xs font-normal mb-5">
-                <Star size={13} style={{ fill: "#D7A764", color: "#D7A764" }} />
-                Verified Google Reviews
-              </div>
-              <h1 className="text-4xl md:text-[52px] font-normal text-white leading-tight mb-4 max-w-3xl">
-                What our customers say about{" "}
-                <span className="text-[#D7A764]">RealHubb.</span>
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal leading-tight animate-fadeIn">
+                Customer <span className="text-gold">Testimonials</span>
               </h1>
-              <p className="text-white/60 text-base leading-relaxed max-w-2xl mb-10">
-                Genuine reviews from verified home buyers, investors, and tenants — no paid reviews, no fabricated stories.
-              </p>
-
-              {/* Stats cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl">
-                {[
-                  { top: avgRating, mid: "Average Rating", sub: "out of 5.0 stars",           icon: <Star size={16} style={{ fill: "#D7A764", color: "#D7A764" }} /> },
-                  { top: `${REVIEWS.length}+`, mid: "Verified Reviews", sub: "on Google",     icon: <ThumbsUp size={16} className="text-[#D7A764]" /> },
-                  { top: `${fivePct}%`, mid: "5-Star Reviews", sub: `${fiveStars} of ${REVIEWS.length} total`, icon: <CheckCircle size={16} className="text-green-400" /> },
-                  { top: "3", mid: "Cities Served", sub: "BLR · HYD · CHN",                  icon: <MapPin size={16} className="text-[#D7A764]" /> },
-                ].map((s, i) => (
-                  <div key={i} className="bg-white/10 border border-white/10 rounded-2xl p-4 text-center">
-                    <div className="flex justify-center mb-2">{s.icon}</div>
-                    <p className="text-2xl font-normal text-white leading-none">{s.top}</p>
-                    <p className="text-xs font-normal text-white/70 mt-1.5">{s.mid}</p>
-                    <p className="text-[10px] text-white/40 mt-0.5">{s.sub}</p>
-                  </div>
-                ))}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-white/60 text-xs md:text-sm font-light">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold" />
+                  Verified Google Reviews
+                </span>
+                <span className="hidden md:inline text-white/30">•</span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold" />
+                  100% Honest Feedback
+                </span>
+                <span className="hidden md:inline text-white/30">•</span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold" />
+                  Real Homebuyer Stories
+                </span>
               </div>
             </FadeInOnScroll>
           </div>
         </section>
 
-        {/* ── WHY TRUST ── */}
-        <section className="py-16 bg-[#faf6f1]">
-          <div className="px-8 md:px-14 lg:px-20 xl:px-28">
+        {/* ── FLOATING DASHBOARD & FILTERS BAR ── */}
+        <div className="page-padding relative z-20 -mt-12 md:-mt-16">
+          <div className="max-w-7xl mx-auto bg-white border border-gray-100 rounded-3xl p-6 md:p-8 shadow-xl space-y-6">
+            
+            {/* Top Row: Metric Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pb-6 border-b border-gray-100">
+              {[
+                { value: avgRating, label: "Average Rating", sub: "out of 5.0 stars", icon: <Star size={16} className="text-[#D7A764]" style={{ fill: "#D7A764" }} /> },
+                { value: `${REVIEWS.length}+`, label: "Verified Reviews", sub: "on Google", icon: <ThumbsUp size={16} className="text-[#D7A764]" /> },
+                { value: `${fivePct}%`, label: "5-Star Reviews", sub: `${fiveStars} of ${REVIEWS.length} total`, icon: <CheckCircle size={16} className="text-green-500" /> },
+                { value: "3", label: "Cities Served", sub: "BLR • HYD • CHN", icon: <MapPin size={16} className="text-[#D7A764]" /> },
+              ].map((stat, i) => (
+                <div key={i} className="flex flex-col items-center text-center animate-fadeIn">
+                  <div className="flex items-center gap-1.5 justify-center mb-1">
+                    {stat.icon}
+                    <span className="font-heading text-2xl font-normal text-navy">{stat.value}</span>
+                  </div>
+                  <span className="text-[10px] tracking-wider uppercase text-navy/70 font-semibold font-body">{stat.label}</span>
+                  <span className="text-[9px] text-gray-400 font-body mt-0.5">{stat.sub}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Row: Selector Switches */}
+            <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch lg:items-center">
+              
+              {/* Category switches (sliding switcher style) */}
+              <div className="flex flex-wrap bg-gray-50 p-1.5 rounded-xl self-start border border-gray-100">
+                {CATEGORIES.map((c) => (
+                  <button
+                    key={c.key}
+                    onClick={() => handleCategoryChange(c.key)}
+                    className={cn(
+                      "px-4 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer",
+                      category === c.key
+                        ? "bg-navy text-white shadow-sm"
+                        : "text-navy/60 hover:text-navy"
+                    )}
+                  >
+                    {c.label} ({categoryCounts[c.key] ?? 0})
+                  </button>
+                ))}
+              </div>
+
+              {/* City selector tabs */}
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                <span className="text-xs uppercase tracking-wider text-gray-400 font-semibold font-body">Select City:</span>
+                <div className="flex flex-wrap gap-5">
+                  {CITIES.map((c) => {
+                    const isSelected = city === c;
+                    return (
+                      <button
+                        key={c}
+                        onClick={() => handleCityChange(c)}
+                        className={cn(
+                          "text-sm font-semibold tracking-wide uppercase transition-all relative pb-1.5 cursor-pointer",
+                          isSelected ? "text-gold" : "text-navy/60 hover:text-navy"
+                        )}
+                      >
+                        {c} ({cityCounts[c] ?? 0})
+                        {isSelected && (
+                          <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold rounded-full" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── REVIEWS GRID CONTAINER ── */}
+        <section className="pb-20 pt-12 bg-cream page-padding">
+          <div className="max-w-7xl mx-auto">
+            
+            {/* Results Header Count */}
+            <div className="flex justify-between items-center mb-6">
+              <p className="text-navy/50 text-sm font-body font-light">
+                Showing <span className="text-navy font-normal">{filtered.length}</span> verified customer review{filtered.length !== 1 ? "s" : ""}
+                {category !== "all" && <> for <span className="font-normal text-navy capitalize">{category}</span></>}
+                {city !== "All Cities" && <> in <span className="font-normal text-navy">{city}</span></>}
+              </p>
+            </div>
+
+            {filtered.length > 0 ? (
+              <RevealGrid key={`${category}-${city}`} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filtered.map((review) => (
+                  <RevealCard key={review.id}>
+                    <ReviewCard r={review} />
+                  </RevealCard>
+                ))}
+              </RevealGrid>
+            ) : (
+              <div className="text-center bg-white border border-gray-100 rounded-3xl py-20 px-6 shadow-sm max-w-lg mx-auto">
+                <div className="w-16 h-16 bg-cream rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Star className="h-8 w-8 text-gold" style={{ fill: "none" }} />
+                </div>
+                <h3 className="font-heading text-xl text-navy font-normal mb-2">No Reviews Found</h3>
+                <p className="text-gray-400 text-sm max-w-xs mx-auto mb-6">
+                  We couldn't find any verified client reviews matching your current selection.
+                </p>
+                <button
+                  onClick={() => { setCategory("all"); setCity("All Cities") }}
+                  className="bg-gold text-navy px-6 py-2.5 rounded-xl text-sm font-normal hover:bg-gold/90 transition-all cursor-pointer"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ── WHY TRUST / STORY ── */}
+        <section className="py-16 bg-cream page-padding">
+          <div className="max-w-7xl mx-auto">
             <FadeInOnScroll direction="up">
-              <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm">
-                <p className="text-[#D7A764] text-[10px] tracking-[0.28em] uppercase font-normal mb-3">
+              <div className="bg-white border border-gray-100 rounded-3xl p-8 md:p-10 shadow-sm">
+                <p className="text-[#D7A764] text-xs uppercase tracking-wider font-semibold font-body mb-2">
                   Our Story
                 </p>
-                <h2 className="text-2xl font-normal text-[#00274D] mb-6">
-                  Why customers across India trust <span className="text-[#D7A764]">RealHubb</span>
+                <h2 className="font-heading text-2xl md:text-3xl text-navy font-normal mb-6">
+                  Why customers across India trust <span className="text-gold">RealHubb</span>
                 </h2>
-                <div className="grid md:grid-cols-2 gap-6 text-gray-500 text-sm leading-relaxed">
+                <div className="grid md:grid-cols-2 gap-8 text-gray-500 text-sm md:text-base leading-relaxed font-body font-light">
                   <p>
-                    <strong className="text-[#00274D]">Realhubb Ventures Private Limited</strong> is a
+                    <strong className="text-navy font-normal">Realhubb Ventures Private Limited</strong> is a
                     RERA-compliant real estate advisory firm based in Bangalore, helping
                     property buyers, investors, and tenants find verified homes across
                     Bangalore, Hyderabad, and Chennai. Founded by seasoned real estate
@@ -188,10 +372,10 @@ const TestimonialsPage = () => {
                   </p>
                   <p>
                     Unlike traditional brokers, RealHubb acts as a{" "}
-                    <strong className="text-[#00274D]">trusted channel partner</strong> — meaning
+                    <strong className="text-navy font-normal">trusted channel partner</strong> — meaning
                     buyers pay zero brokerage while receiving expert guidance, legal
                     documentation support, and personalised site visits. RealHubb maintains a consistent{" "}
-                    <strong className="text-[#D7A764]">4.8+ star rating</strong> on Google Reviews.
+                    <strong className="text-gold font-normal">4.8+ star rating</strong> on Google Reviews.
                   </p>
                 </div>
               </div>
@@ -199,136 +383,67 @@ const TestimonialsPage = () => {
           </div>
         </section>
 
-        {/* ── FILTERS ── */}
-        <section className="pb-6 bg-[#faf6f1]">
-          <div className="px-8 md:px-14 lg:px-20 xl:px-28">
+        {/* ── THE REALHUBB DIFFERENCE ── */}
+        <section className="py-20 bg-cream page-padding">
+          <div className="max-w-7xl mx-auto">
             <FadeInOnScroll direction="up">
-              <div className="flex flex-col md:flex-row gap-4 mb-4 items-start md:items-center">
-                <div className="flex flex-wrap gap-2">
-                  {CATEGORIES.map((c) => (
-                    <button key={c.key} type="button" onClick={() => setCategory(c.key)} aria-pressed={category === c.key}
-                      className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
-                        category === c.key
-                          ? "bg-[#00274D] text-white border-[#00274D]"
-                          : "bg-white border-gray-200 text-gray-500 hover:border-[#D7A764]/50 hover:text-[#D7A764]"
-                      }`}>
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-2 md:ml-auto">
-                  {CITIES.map((c) => (
-                    <button key={c} type="button" onClick={() => setCity(c)} aria-pressed={city === c}
-                      className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
-                        city === c
-                          ? "bg-[#00274D] text-white border-[#00274D]"
-                          : "bg-white border-gray-200 text-gray-500 hover:border-[#D7A764]/50 hover:text-[#D7A764]"
-                      }`}>
-                      {c}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <p className="text-xs text-gray-400 mb-8">
-                Showing <span className="font-normal text-[#00274D]">{filtered.length}</span>{" "}
-                review{filtered.length !== 1 ? "s" : ""}
-                {category !== "all" && <> in <span className="font-normal text-[#D7A764] capitalize">{category}</span></>}
-                {city !== "All Cities" && <> from <span className="font-normal text-[#D7A764]">{city}</span></>}
-              </p>
-            </FadeInOnScroll>
-          </div>
-        </section>
-
-        {/* ── REVIEWS GRID ── */}
-        <section className="pb-20 bg-[#faf6f1]">
-          <div className="px-8 md:px-14 lg:px-20 xl:px-28">
-            {filtered.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {filtered.map((review, index) => (
-                  <FadeInOnScroll key={review.id} delay={index * 55} direction="up">
-                    <ReviewCard r={review} />
-                  </FadeInOnScroll>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-24">
-                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-                  <Star className="h-10 w-10 text-[#D7A764]" style={{ fill: "none" }} />
-                </div>
-                <h3 className="text-xl font-normal text-[#00274D] mb-2">No Reviews Found</h3>
-                <p className="text-gray-400 text-sm mb-4">Try a different filter combination.</p>
-                <button
-                  onClick={() => { setCategory("all"); setCity("All Cities") }}
-                  className="px-6 py-2.5 rounded-full border border-[#D7A764] text-[#D7A764] text-sm font-normal hover:bg-[#D7A764] hover:text-[#00274D] transition-colors"
-                >
-                  Clear Filters
-                </button>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* ── WHY TRUST STRIP ── */}
-        <section className="py-24 bg-[#00274D]">
-          <div className="px-8 md:px-14 lg:px-20 xl:px-28">
-            <FadeInOnScroll direction="up">
-              <p className="text-[#D7A764] text-[10px] tracking-[0.28em] uppercase font-normal mb-3 text-center">
+              <p className="text-gold text-xs uppercase tracking-wider font-semibold font-body mb-2 text-center">
                 The RealHubb Difference
               </p>
-              <h2 className="text-3xl md:text-[40px] font-normal text-white leading-tight mb-10 text-center">
-                Why customers keep <span className="text-[#D7A764]">coming back.</span>
+              <h2 className="font-heading text-3xl text-navy font-normal mb-12 text-center">
+                Why customers keep <span className="text-gold">coming back.</span>
               </h2>
             </FadeInOnScroll>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+            <RevealGrid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { icon: <CheckCircle className="h-5 w-5 text-[#D7A764]" />, title: "100% Verified & Transparent Reviews", desc: "Every review is from a genuine RealHubb customer. We display honest feedback — positive and constructive alike — because our reputation is built on truth." },
-                { icon: <TrendingUp className="h-5 w-5 text-[#D7A764]" />, title: "Expert-Led Property Advisory", desc: "Our team brings over 17 years of combined real estate experience across Bangalore, Hyderabad, and Chennai." },
-                { icon: <Home className="h-5 w-5 text-[#D7A764]" />, title: "Zero Brokerage. Full Support.", desc: "Buyers pay absolutely zero brokerage when purchasing through RealHubb. Our advice is always in your best interest." },
-                { icon: <Users className="h-5 w-5 text-[#D7A764]" />, title: "NRI & Remote Buyer Friendly", desc: "RealHubb serves NRI buyers and remote investors with virtual site tours, end-to-end documentation handling, and cross-timezone availability." },
-                { icon: <Building2 className="h-5 w-5 text-[#D7A764]" />, title: "Only RERA-Verified Projects", desc: "Every project recommended by RealHubb is RERA-registered. Legal due diligence is our default — not an optional add-on." },
-                { icon: <Star className="h-5 w-5 text-[#D7A764]" style={{ fill: "none" }} />, title: "Consistent 4.8+ Google Rating", desc: "RealHubb maintains one of the highest customer satisfaction ratings among real estate advisory firms in South India." },
+                { icon: <CheckCircle className="h-5 w-5 text-gold" />, title: "100% Verified Reviews", desc: "Every review is from a genuine RealHubb customer. We display honest feedback — positive and constructive alike." },
+                { icon: <TrendingUp className="h-5 w-5 text-gold" />, title: "Expert-Led Advisory", desc: "Our team brings over 17 years of combined real estate experience across Bangalore, Hyderabad, and Chennai." },
+                { icon: <Home className="h-5 w-5 text-gold" />, title: "Zero Brokerage. Full Support.", desc: "Buyers pay absolutely zero brokerage when purchasing through RealHubb. Our advice is always in your best interest." },
+                { icon: <Users className="h-5 w-5 text-gold" />, title: "NRI & Remote Buyer Friendly", desc: "RealHubb serves NRI buyers and remote investors with virtual site tours, end-to-end documentation handling." },
+                { icon: <Building2 className="h-5 w-5 text-gold" />, title: "Only RERA-Verified Projects", desc: "Every project recommended by RealHubb is RERA-registered. Legal due diligence is our default." },
+                { icon: <Star className="h-5 w-5 text-gold" style={{ fill: "none" }} />, title: "4.8+ Google Rating", desc: "RealHubb maintains one of the highest customer satisfaction ratings among real estate advisory firms." },
               ].map((item, i) => (
-                <FadeInOnScroll key={i} delay={i * 60} direction="up">
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/8 transition-colors duration-200">
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mb-4">
+                <RevealCard key={i}>
+                  <div className="h-full bg-white border border-gray-100 rounded-2xl p-6 md:p-8 hover:border-gold/30 hover:shadow-lg transition-all flex flex-col group">
+                    <div className="w-10 h-10 rounded-full bg-gold/5 flex items-center justify-center mb-5 group-hover:bg-gold/10 transition-colors">
                       {item.icon}
                     </div>
-                    <h3 className="text-white font-normal text-sm mb-2">{item.title}</h3>
-                    <span className="block h-px w-8 bg-[#D7A764] mb-3" />
-                    <p className="text-white/50 text-xs leading-relaxed">{item.desc}</p>
+                    <h3 className="text-navy font-heading font-medium text-base mb-2 group-hover:text-gold transition-colors">{item.title}</h3>
+                    <span className="block h-px w-8 bg-gold mb-4" />
+                    <p className="text-gray-500 font-body font-light text-sm leading-relaxed">{item.desc}</p>
                   </div>
-                </FadeInOnScroll>
+                </RevealCard>
               ))}
-            </div>
+            </RevealGrid>
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section className="py-20 bg-[#faf6f1]">
-          <div className="px-8 md:px-14 lg:px-20 xl:px-28">
+        {/* ── CALL TO ACTION ── */}
+        <section className="py-20 bg-cream page-padding">
+          <div className="max-w-4xl mx-auto">
             <FadeInOnScroll direction="up">
-              <div className="bg-white rounded-2xl p-10 shadow-sm text-center">
-                <p className="text-[#D7A764] text-[10px] tracking-[0.28em] uppercase font-normal mb-3">
+              <div className="bg-white border border-gray-100 rounded-3xl p-10 md:p-16 text-center shadow-sm hover:shadow-lg transition-shadow duration-300">
+                <p className="text-gold text-xs uppercase tracking-wider font-semibold font-body mb-2">
                   Start Your Journey
                 </p>
-                <h2 className="text-2xl font-normal text-[#00274D] mb-3">
-                  Ready to write your own <span className="text-[#D7A764]">RealHubb success story?</span>
+                <h2 className="font-heading text-2xl md:text-3xl text-navy font-normal mb-3">
+                  Ready to write your own <span className="text-gold">RealHubb success story?</span>
                 </h2>
-                <p className="text-gray-500 text-sm mb-8 max-w-xl mx-auto">
+                <p className="text-gray-500 font-body font-light text-sm md:text-base leading-relaxed mb-8 max-w-xl mx-auto">
                   Join hundreds of satisfied home buyers, investors, and tenants across Bangalore, Hyderabad,
                   and Chennai who found their perfect property through RealHubb.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
                     href="/projects/ongoing"
-                    className="px-8 py-3 rounded-full bg-[#00274D] hover:bg-[#001d3d] text-white font-normal text-sm flex items-center justify-center gap-2 transition-colors duration-200"
+                    className="px-8 py-3.5 rounded-full bg-navy hover:bg-navy/95 text-white font-body font-medium text-xs tracking-wider uppercase shadow-md transition-all duration-200 cursor-pointer text-center"
                   >
                     Browse Verified Properties
-                    <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
                     href="/contact-us"
-                    className="px-8 py-3 rounded-full border border-[#D7A764] text-[#D7A764] hover:bg-[#D7A764] hover:text-[#00274D] font-normal text-sm text-center transition-colors duration-200"
+                    className="px-8 py-3.5 rounded-full border border-gold text-gold hover:bg-gold hover:text-navy font-body font-medium text-xs tracking-wider uppercase transition-all duration-200 cursor-pointer text-center"
                   >
                     Talk to an Expert
                   </Link>
