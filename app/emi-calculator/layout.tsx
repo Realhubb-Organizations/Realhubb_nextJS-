@@ -11,7 +11,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Calculate your monthly home loan EMI instantly. Enter loan amount, interest rate & tenure. Free EMI calculator for Bangalore home buyers.",
   keywords:
-    "emi calculator, home loan emi calculator, emi calculator bangalore, monthly emi calculator, home loan calculator india",
+    "emi calculator, home loan emi calculator, emi calculator bangalore, home loan calculator india",
   canonical: `${SITE_URL}/emi-calculator`,
   geoRegion: "IN-KA",
   geoPlacename: "Bangalore",

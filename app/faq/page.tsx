@@ -13,6 +13,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Answers to common questions about buying property in Bangalore, RERA verification, home loans and RealHubb's zero-brokerage advisory service.",
   canonical: `${SITE_URL}/faq`,
+  keywords: "real estate faq, property buying questions, RERA verification, home loan queries, real estate guide",
 });
 
 export default async function FaqPage() {

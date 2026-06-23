@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 
 interface Props {
   images: string[];
+  propertyName?: string;
 }
 
-export default function HeroBackgroundSlideshow({ images }: Props) {
+export default function HeroBackgroundSlideshow({ images, propertyName }: Props) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function HeroBackgroundSlideshow({ images }: Props) {
         >
           <img
             src={src}
-            alt=""
+            alt={propertyName ? `${propertyName} slideshow image ${i + 1}` : "Property background gallery view"}
             className="w-full h-full object-cover filter brightness-95"
           />
         </div>

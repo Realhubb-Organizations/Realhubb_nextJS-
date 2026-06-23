@@ -11,7 +11,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Convert USD, GBP, AED, EUR to Indian Rupees for property purchases. Free currency converter for NRI buyers in Bangalore, Hyderabad & Chennai.",
   keywords:
-    "currency converter india property, nri property calculator, usd to inr property, aed to inr property, nri home buyer calculator",
+    "currency converter, nri property calculator, usd to inr, aed to inr, nri home buyer calculator",
   canonical: `${SITE_URL}/currency-calculator`,
   geoRegion: "IN-KA",
   geoPlacename: "Bangalore",

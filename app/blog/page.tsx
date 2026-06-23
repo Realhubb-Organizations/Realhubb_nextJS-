@@ -11,6 +11,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Expert real estate insights for Bangalore, Hyderabad & Chennai. Buying guides, market reports, investment tips and locality reviews from RealHubb.",
   canonical: `${SITE_URL}/blog`,
+  keywords: "real estate blog, bangalore real estate, hyderabad property trends, home buying guide",
 });
 
 export const dynamic = "force-dynamic";

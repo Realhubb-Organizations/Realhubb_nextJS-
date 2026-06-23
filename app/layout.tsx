@@ -27,11 +27,10 @@ export const metadata: Metadata = {
     default: "RealHubb — Real Estate in Bangalore, Hyderabad & Chennai",
     template: "%s | RealHubb",
   },
-  // 148 chars — within 150-155 target
   description:
-    "Trusted real estate channel partner in Bangalore, Hyderabad & Chennai. Verified RERA properties. Zero brokerage. Expert advisors. Free site visit.",
+    "RealHubb is a trusted real estate partner in Bangalore, Hyderabad & Chennai. Discover verified RERA properties & flats with zero brokerage and free site visits.",
   keywords:
-    "real estate bangalore, flats in bangalore, apartments bangalore, property bangalore, buy flat bangalore, real estate hyderabad, real estate chennai",
+    "real estate bangalore, flats in bangalore, apartments bangalore, hyderabad, chennai",
   authors: [{ name: PUBLISHER, url: SITE_URL }],
   openGraph: {
     type: "website",

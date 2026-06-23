@@ -79,23 +79,11 @@ export default function Header() {
     setDropdown(null);
   }, [pathname]);
 
-  const lightPages = [
-    "/tools",
-    "/emi-calculator",
-    "/currency-calculator",
-    "/home-loan-eligibility",
-    "/rental-yield-calculator",
-    "/salary-advisor",
-    "/privacy",
-    "/terms"
-  ];
-  const isLightPage = lightPages.includes(pathname) || pathname.startsWith("/admin");
-
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled || isLightPage
+        scrolled || pathname !== "/"
           ? "bg-navy/95 backdrop-blur-md shadow-lg py-2"
           : "bg-transparent py-3"
       )}
@@ -202,7 +190,7 @@ export default function Header() {
             aria-label="Chat on WhatsApp"
             className="flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
           >
-            <Image src="/whatsapp.png" alt="" width={24} height={24} unoptimized className="w-5 h-5" />
+            <Image src="/whatsapp.png" alt="WhatsApp icon" width={24} height={24} unoptimized className="w-5 h-5" />
           </a>
           <Link
             href="/contact-us"
@@ -258,7 +246,7 @@ export default function Header() {
             onClick={trackWhatsApp}
             className="mt-2 flex items-center gap-2 text-white/80 text-sm hover:text-gold transition-colors"
           >
-            <Image src="/whatsapp.png" alt="" width={20} height={20} unoptimized className="w-4 h-4" />
+            <Image src="/whatsapp.png" alt="WhatsApp icon" width={20} height={20} unoptimized className="w-4 h-4" />
             Chat on WhatsApp
           </a>
           <Link

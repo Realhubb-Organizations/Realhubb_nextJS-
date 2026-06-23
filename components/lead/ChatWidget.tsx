@@ -123,7 +123,7 @@ export default function ChatWidget() {
                 onClick={trackWhatsApp}
                 aria-label="Chat on WhatsApp"
               >
-                <Image src="/whatsapp.png" alt="" width={20} height={20} unoptimized className="w-5 h-5" />
+                <Image src="/whatsapp.png" alt="WhatsApp icon" width={20} height={20} unoptimized className="w-5 h-5" />
               </a>
               <button
                 onClick={() => setOpen(false)}

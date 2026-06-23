@@ -3,6 +3,7 @@ import { buildMetadata } from "@/lib/seo";
 import { getAllProperties } from "@/lib/firestoreServerService";
 import { breadcrumbSchema } from "@/lib/structuredData";
 import ProjectsClient from "@/components/property/ProjectsClient";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 
 type Params = Promise<{ type: string; city: string }>;
@@ -79,8 +80,9 @@ export default async function ProjectsCityPage({
           <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
           
-          <div className="max-w-7xl mx-auto relative z-10">
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal leading-tight animate-fadeIn">
+          <div className="max-w-7xl mx-auto relative z-10 animate-fadeIn">
+            <Breadcrumbs items={breadcrumbs} light />
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal leading-tight">
               {typeLabel} Projects in <span className="text-gold">{cityLabel}</span>
             </h1>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 text-white/60 text-xs md:text-sm font-light">

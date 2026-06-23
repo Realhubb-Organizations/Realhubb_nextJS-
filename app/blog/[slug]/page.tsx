@@ -20,6 +20,7 @@ import {
   BlogTranslationProvider,
   TranslatedContent,
 } from "@/components/blog/TranslatableArticle";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 type Params = Promise<{ slug: string }>;
 
@@ -38,6 +39,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     publishedAt: post.publishedAt,
     metaTitle: post.metaTitle,
     metaDescription: post.metaDescription,
+    keywords: post.tags && post.tags.length > 0 ? post.tags.join(", ") : undefined,
   });
 }
 
@@ -80,6 +82,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
       <BlogTranslationProvider post={{ title: post.title, excerpt: post.excerpt, content: post.content }}>
         <div className="pt-20">
+          <div className="page-padding max-w-7xl mx-auto pt-6">
+            <Breadcrumbs items={breadcrumbs} />
+          </div>
           <BlogReaderWrapper
             post={{
               title: post.title,

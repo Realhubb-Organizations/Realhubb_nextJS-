@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { TranslatedTitle, TranslatedExcerpt, LanguageControl } from "./TranslatableArticle";
 import CommentSection from "./CommentSection";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
+import { companyInfo } from "@/data/company";
 
 interface HeadingItem {
   text: string;
@@ -364,8 +365,10 @@ export default function BlogReaderWrapper({
             {/* Inline Table of Contents for Mobile or non-expanded layouts */}
             {headings.length > 0 && (
               <div className={cn(
-                "mb-8 p-5 bg-white border border-gray-150/80 rounded-2xl shadow-sm",
-                readMode ? "xl:hidden bg-stone-900/40 border-white/5 text-stone-300" : ""
+                "mb-8 p-5 rounded-2xl shadow-sm border",
+                readMode
+                  ? "xl:hidden bg-stone-900/40 border-white/5 text-stone-300"
+                  : "bg-white border-gray-150/80 text-navy"
               )}>
                 <button
                   onClick={() => setShowTocMobile((prev) => !prev)}
@@ -430,10 +433,10 @@ export default function BlogReaderWrapper({
                     <span
                       key={tag}
                       className={cn(
-                        "px-3 py-1 bg-white border border-gray-200 text-navy/70 rounded-xl text-xs transition-all shadow-sm cursor-pointer select-none",
+                        "px-3 py-1 rounded-xl text-xs transition-all shadow-sm cursor-pointer select-none border",
                         readMode
                           ? "bg-stone-900 border-white/5 text-stone-300 hover:border-gold hover:text-gold"
-                          : "hover:border-gold hover:text-gold hover:shadow-md hover:-translate-y-0.5"
+                          : "bg-white border-gray-200 text-navy/70 hover:border-gold hover:text-gold hover:shadow-md hover:-translate-y-0.5"
                       )}
                     >
                       #{tag}
@@ -444,15 +447,65 @@ export default function BlogReaderWrapper({
             )}
 
             {/* Author details card */}
-            <div className={cn("mt-8 bg-cream rounded-2xl p-5 flex items-center gap-4", readMode ? "bg-stone-900/30 border border-white/5" : "")}>
-              <div className="w-10 h-10 bg-navy rounded-full flex items-center justify-center text-gold font-heading text-lg shrink-0 font-normal">
-                {post.author[0]}
-              </div>
-              <div>
-                <p className={cn("text-navy text-sm font-medium", readMode ? "text-stone-200" : "")}>{post.author}</p>
-                <p className="text-gray-400 text-xs">Real Estate Expert · RealHubb Ventures</p>
-              </div>
-            </div>
+            {(() => {
+              const member = companyInfo.team.find(
+                (t) => t.name.toLowerCase() === post.author.toLowerCase()
+              );
+              return (
+                <div
+                  className={cn(
+                    "mt-10 rounded-2xl p-6 border flex flex-col sm:flex-row items-start gap-5",
+                    readMode
+                      ? "bg-stone-900/30 border-white/5 text-stone-300"
+                      : "bg-white border-gray-150 shadow-sm"
+                  )}
+                >
+                  {/* Photo or Initials */}
+                  {member && member.image ? (
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      width={64}
+                      height={64}
+                      className="w-16 h-16 rounded-full object-cover shrink-0 border border-gray-100 shadow-sm"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 bg-navy rounded-full flex items-center justify-center text-gold font-heading text-2xl shrink-0 font-normal shadow-sm">
+                      {post.author[0]}
+                    </div>
+                  )}
+
+                  {/* Details */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <div>
+                        <p className={cn("text-base font-semibold leading-none", readMode ? "text-stone-100" : "text-navy")}>
+                          {post.author}
+                        </p>
+                        <p className={cn("text-xs mt-1", readMode ? "text-stone-400" : "text-gray-400")}>
+                          {member ? member.designation : "Real Estate Expert"} · RealHubb Ventures
+                        </p>
+                      </div>
+                      {member && member.linkedin && (
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-gold border border-gold/30 hover:bg-gold hover:text-navy px-3 py-1 rounded-full transition-all flex items-center gap-1 cursor-pointer"
+                        >
+                          LinkedIn
+                        </a>
+                      )}
+                    </div>
+                    <p className={cn("text-xs font-light leading-relaxed mt-2.5", readMode ? "text-stone-300" : "text-gray-500")}>
+                      {member && member.bio
+                        ? member.bio
+                        : `${post.author} is a seasoned real estate advisor at RealHubb, dedicated to helping families find their dream homes in Bangalore, Hyderabad, and Chennai.`}
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Read Mode bottom actions */}
             {readMode && (

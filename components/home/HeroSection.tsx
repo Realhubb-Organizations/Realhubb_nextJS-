@@ -52,6 +52,7 @@ export default function HeroSection() {
   const [city, setCity] = useState("Bangalore");
   const [propertyType, setPropertyType] = useState("");
   const [budget, setBudget] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const router = useRouter();
@@ -114,6 +115,7 @@ export default function HeroSection() {
     const params = new URLSearchParams();
     if (propertyType) params.set("type", propertyType);
     if (budget) params.set("price", budget);
+    if (searchQuery.trim()) params.set("q", searchQuery.trim());
     const qs = params.toString();
     router.push(`/projects/ongoing/${city.toLowerCase()}${qs ? `?${qs}` : ""}`);
   };
@@ -253,6 +255,24 @@ export default function HeroSection() {
                     {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                   <ChevronDown className="w-3.5 h-3.5 text-gray-400 absolute right-0 pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Locality/Project Keyword Input */}
+              <div className="mb-4">
+                <label htmlFor="hero-keyword-input" className="block text-[9px] font-normal tracking-[0.18em] uppercase text-gray-400 mb-1.5">
+                  Locality, Project or Builder
+                </label>
+                <div className="relative flex items-center border-b border-gray-200 pb-2">
+                  <Search className="w-3.5 h-3.5 text-[#D7A764] mr-2 shrink-0" />
+                  <input
+                    id="hero-keyword-input"
+                    type="text"
+                    placeholder="e.g. Whitefield, Prestige"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="w-full bg-transparent text-[#00274D] font-medium text-sm focus:outline-none placeholder-gray-300"
+                  />
                 </div>
               </div>
 

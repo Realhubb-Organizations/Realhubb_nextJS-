@@ -132,10 +132,12 @@ Koramangala remains a **BUY** rating. Limited new supply, high demand, and conti
 
 **Best buy**: 3BHK apartments in Koramangala 4th Block and 5th Block offer the best combination of appreciation and rental yield.
 
-Contact RealHubb advisor Srikanth B for property recommendations in Koramangala.`,
+Contact RealHubb advisor Srikanth B for property recommendations in Koramangala.
+
+> **Official Citation:** Market pricing and historical performance metrics cited in this report align with locality valuation updates compiled by [National Housing Bank (NHB) RESIDEX](https://residex.nhb.org.in/). Consult official trends on the [NHB Portal](https://residex.nhb.org.in/).`,
     coverImage: "",
     category: "Market Report",
-    author: "RealHubb Team",
+    author: "Mr. Srikanth Baddila",
     readTime: "6 min read",
     publishedAt: "2026-02-01",
     published: true,
@@ -259,10 +261,12 @@ RERA (Real Estate Regulatory Authority) is a statutory body that:
 - No escrow account details provided
 - Possession date not committed in writing
 
-RealHubb assists buyers with complete RERA verification for every property.`,
+RealHubb assists buyers with complete RERA verification for every property.
+
+> **Official Citation:** For official project verifications and regulatory complaints, refer to the [Karnataka Real Estate Regulatory Authority (K-RERA)](https://rera.karnataka.gov.in). Standard guidelines and registration criteria can be reviewed on the [RERA Karnataka Portal](https://rera.karnataka.gov.in).`,
     coverImage: "",
     category: "Legal",
-    author: "RealHubb Team",
+    author: "Sanjeev Ranjan Singh",
     readTime: "7 min read",
     publishedAt: "2026-03-01",
     published: true,
@@ -338,10 +342,12 @@ Use our [EMI Calculator](/emi-calculator) for personalised calculations.
 4. **Negotiate processing fees** — most banks will waive or reduce for good profiles
 5. **Apply before 31st March** for year-end bank targets
 
-RealHubb's loan assistance team can connect you with the best lenders. Contact us for a free consultation.`,
+RealHubb's loan assistance team can connect you with the best lenders. Contact us for a free consultation.
+
+> **Official Citation:** Home loan frameworks and interest rate benchmark directives are regulated by the [Reserve Bank of India (RBI)](https://www.rbi.org.in). Explore regulatory mandates on the [RBI official website](https://www.rbi.org.in).`,
     coverImage: "",
     category: "Finance",
-    author: "RealHubb Team",
+    author: "Sanjeev Ranjan Singh",
     readTime: "8 min read",
     publishedAt: "2026-03-15",
     published: true,

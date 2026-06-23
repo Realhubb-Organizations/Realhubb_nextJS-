@@ -38,7 +38,7 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
         )}
 
         {/* Status + featured badges — top left */}
-        <div className="absolute top-3 left-3 flex gap-2">
+        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
           <span
             className={`px-2 py-0.5 rounded-full text-[10px] font-normal uppercase tracking-wider ${
               p.projectType === "upcoming"
@@ -47,6 +47,9 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
             }`}
           >
             {p.projectType === "upcoming" ? "Upcoming" : "Ongoing"}
+          </span>
+          <span className="px-2 py-0.5 rounded-full text-[10px] bg-navy/70 text-white uppercase tracking-wider">
+            {p.type.charAt(0).toUpperCase() + p.type.slice(1)}
           </span>
           {p.featured && (
             <span className="px-2 py-0.5 rounded-full text-[10px] bg-white/90 text-navy uppercase tracking-wider">

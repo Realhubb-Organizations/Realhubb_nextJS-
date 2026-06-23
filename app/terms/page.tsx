@@ -3,7 +3,12 @@ import { buildMetadata } from "@/lib/seo";
 import { company } from "@/data/company";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
-export const metadata: Metadata = buildMetadata({ title: "Terms of Service | RealHubb", description: "Terms of service for RealHubb Ventures — your rights, obligations, and our service terms.", canonical: `${SITE_URL}/terms` });
+export const metadata: Metadata = buildMetadata({
+  title: "Terms of Service | RealHubb",
+  description: "Terms of service for RealHubb Ventures — your rights, obligations, and our service terms.",
+  canonical: `${SITE_URL}/terms`,
+  keywords: "terms of service, real estate terms, property advisory terms, RealHubb user agreement",
+});
 
 export default function TermsPage() {
   return (

@@ -31,9 +31,9 @@ export const dynamic = "force-dynamic";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
-  title: "About RealHubb Ventures | Real Estate Channel Partner in Bangalore",
-  description: "RealHubb Ventures Pvt. Ltd. is a trusted real estate channel partner in Bangalore. We help buyers find verified RERA-approved properties in Bangalore, Hyderabad & Chennai with expert advisory and site visits.",
-  keywords: "about RealHubb, RealHubb Ventures Pvt Ltd, real estate channel partner Bangalore, property consultants Bangalore, RERA approved properties, property advisory Bangalore",
+  title: "About RealHubb Ventures | Real Estate Advisor Bangalore",
+  description: "RealHubb Ventures is a trusted real estate partner. We help buyers find verified RERA properties in Bangalore, Hyderabad & Chennai with expert advisory.",
+  keywords: "about RealHubb, RealHubb Ventures, real estate partner Bangalore, RERA approved properties",
   canonical: `${SITE_URL}/about`,
   ogImage: "https://www.realhubb.in/og/about-realhubb.jpg",
   ogType: "website",

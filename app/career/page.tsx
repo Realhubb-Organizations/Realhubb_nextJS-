@@ -23,7 +23,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Join RealHubb Ventures — Bangalore's fastest-growing real estate channel partner. Open positions for sales, telesales and digital marketing roles.",
   keywords:
-    "real estate jobs bangalore, sales executive jobs bangalore, telesales jobs bangalore, digital marketing jobs bangalore, realhubb careers",
+    "real estate jobs bangalore, sales executive jobs, digital marketing jobs, realhubb careers",
   canonical: `${SITE_URL}/career`,
 });
 

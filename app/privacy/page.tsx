@@ -3,7 +3,12 @@ import { buildMetadata } from "@/lib/seo";
 import { company } from "@/data/company";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
-export const metadata: Metadata = buildMetadata({ title: "Privacy Policy | RealHubb", description: "RealHubb Ventures privacy policy — how we collect, use, and protect your personal information.", canonical: `${SITE_URL}/privacy` });
+export const metadata: Metadata = buildMetadata({
+  title: "Privacy Policy | RealHubb",
+  description: "RealHubb Ventures privacy policy — how we collect, use, and protect your personal information.",
+  canonical: `${SITE_URL}/privacy`,
+  keywords: "privacy policy, data protection, privacy terms, RealHubb policy",
+});
 
 export default function PrivacyPage() {
   return (

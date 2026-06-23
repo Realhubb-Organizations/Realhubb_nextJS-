@@ -11,7 +11,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Calculate annual rental yield and net ROI for any property in Bangalore, Hyderabad or Chennai. Find which areas give best rental returns in 2026.",
   keywords:
-    "rental yield calculator, rental yield bangalore, property roi calculator, rental income calculator, best rental yield bangalore 2026",
+    "rental yield calculator, property roi calculator, rental income, best rental yield bangalore",
   canonical: `${SITE_URL}/rental-yield-calculator`,
   geoRegion: "IN-KA",
   geoPlacename: "Bangalore",

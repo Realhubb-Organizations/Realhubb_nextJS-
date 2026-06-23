@@ -10,7 +10,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Find out what property budget you can afford based on your monthly take-home salary. Free salary to property budget calculator for Indian home buyers.",
   keywords:
-    "salary to property budget, how much property can i afford, property budget calculator, home buying affordability calculator india",
+    "salary to property budget, how much property can i afford, budget calculator, affordability",
   canonical: `${SITE_URL}/salary-advisor`,
   geoRegion: "IN-KA",
   geoPlacename: "Bangalore",

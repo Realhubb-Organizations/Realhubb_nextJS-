@@ -208,9 +208,9 @@ const TestimonialsPage = () => {
     return (
       <>
         <SEO
-          title="Customer Reviews & Testimonials | RealHubb Real Estate Bangalore, Hyderabad & Chennai"
-          description="Read verified Google reviews and testimonials from RealHubb customers across Bangalore, Hyderabad and Chennai. Real stories from home buyers, tenants and investors about their property journey with Realhubb Ventures Private Limited."
-          keywords="RealHubb reviews, RealHubb testimonials, Realhubb Ventures reviews, real estate reviews Bangalore, property buyer reviews Hyderabad, RealHubb Google reviews, trusted real estate agent Bangalore, property consultant reviews Chennai, best real estate company Bangalore"
+          title="Customer Reviews & Testimonials | RealHubb Real Estate"
+          description="Read verified Google reviews & testimonials from RealHubb customers across Bangalore, Hyderabad & Chennai. Real home buyer and investor stories."
+          keywords="RealHubb reviews, RealHubb testimonials, Google reviews Bangalore, trusted property consultant"
           canonical="https://www.realhubb.in/testimonials"
           image="https://www.realhubb.in/assets/realhubb%20trademark%20logo-DpR5IVGg.png"
         />

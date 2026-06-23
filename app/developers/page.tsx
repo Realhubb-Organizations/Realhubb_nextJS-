@@ -15,6 +15,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Explore projects from Prestige, Godrej, Brigade, Sobha and other top developers. Verified RERA-registered projects. Contact RealHubb for latest pricing.",
   canonical: `${SITE_URL}/developers`,
+  keywords: "real estate builders, property developers bangalore, RERA approved builders, prestige projects",
 });
 
 export const dynamic = "force-dynamic";

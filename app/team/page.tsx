@@ -17,7 +17,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Meet RealHubb's advisors — Sanjeev Ranjan Singh, Srikanth B and more. Expert property consultants across Bangalore, Hyderabad & Chennai.",
   keywords:
-    "Sanjeev Ranjan Singh, Srikanth B, RealHubb team, real estate advisor Bangalore, property advisor RealHubb",
+    "Sanjeev Ranjan Singh, Srikanth B, RealHubb team, real estate advisor Bangalore, property advisor",
   canonical: `${SITE_URL}/team`,
 });
 

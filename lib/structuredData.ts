@@ -1,3 +1,6 @@
+import { companyInfo } from "@/data/company";
+import { ensureISOString } from "@/lib/seo";
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
 export function organizationSchema() {
@@ -109,24 +112,46 @@ export function articleSchema(post: {
   image?: string;
   slug: string;
 }) {
+  const publishedDateISO = ensureISOString(post.publishedAt) ?? post.publishedAt;
+  const modifiedDateISO = ensureISOString(post.updatedAt ?? post.publishedAt) ?? post.publishedAt;
+
+  // Check if the author matches a registered team expert for E-E-A-T Person mapping
+  const matchingMember = companyInfo.team.find(
+    (t) => t.name.toLowerCase() === post.author.toLowerCase()
+  );
+
+  const authorSchema = matchingMember
+    ? {
+        "@type": "Person",
+        name: matchingMember.name,
+        jobTitle: matchingMember.designation,
+        worksFor: {
+          "@type": "Organization",
+          name: "RealHubb Ventures Pvt. Ltd.",
+          url: SITE_URL,
+        },
+        sameAs: matchingMember.linkedin ? [matchingMember.linkedin] : [],
+      }
+    : {
+        "@type": "Organization",
+        name: post.author,
+        url: SITE_URL,
+      };
+
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
     image: post.image,
-    author: {
-      "@type": "Organization",
-      name: post.author,
-      url: SITE_URL,
-    },
+    author: authorSchema,
     publisher: {
       "@type": "Organization",
       name: "RealHubb",
       logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
     },
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt ?? post.publishedAt,
+    datePublished: publishedDateISO,
+    dateModified: modifiedDateISO,
     url: `${SITE_URL}/blog/${post.slug}`,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
     speakable: {

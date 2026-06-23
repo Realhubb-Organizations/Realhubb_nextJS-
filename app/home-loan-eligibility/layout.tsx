@@ -11,7 +11,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Check how much home loan you are eligible for based on your salary. Free home loan eligibility calculator for Bangalore, Hyderabad & Chennai buyers.",
   keywords:
-    "home loan eligibility calculator, home loan eligibility, loan eligibility calculator, how much home loan can i get, home loan india",
+    "home loan eligibility calculator, home loan eligibility, how much home loan can i get, india",
   canonical: `${SITE_URL}/home-loan-eligibility`,
   geoRegion: "IN-KA",
   geoPlacename: "Bangalore",

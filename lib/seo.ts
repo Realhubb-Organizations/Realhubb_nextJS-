@@ -10,7 +10,7 @@ function clampDesc(text: string, maxLen = 155): string {
   if (text.length <= maxLen) return text;
   const cut = text.slice(0, maxLen - 1);
   const lastSpace = cut.lastIndexOf(" ");
-  return (lastSpace > 100 ? cut.slice(0, lastSpace) : cut) + "…";
+  return (lastSpace > 110 ? cut.slice(0, lastSpace) : cut) + "…";
 }
 
 /** Clamp title to maxLen chars. */
@@ -19,6 +19,28 @@ function clampTitle(text: string, maxLen = 60): string {
   const cut = text.slice(0, maxLen - 1);
   const lastSpace = cut.lastIndexOf(" ");
   return (lastSpace > 30 ? cut.slice(0, lastSpace) : cut) + "…";
+}
+
+/** Clamp keywords to under 100 chars, slicing at the last comma if possible. */
+function clampKeywords(text?: string, maxLen = 99): string | undefined {
+  if (!text) return undefined;
+  if (text.length <= maxLen) return text;
+  const cut = text.slice(0, maxLen);
+  const lastComma = cut.lastIndexOf(",");
+  if (lastComma > 30) {
+    return cut.slice(0, lastComma).trim();
+  }
+  return cut.trim();
+}
+
+/** Format YYYY-MM-DD dates to full ISO 8601 strings for search engine/schema parsing. */
+export function ensureISOString(dateStr?: string): string | undefined {
+  if (!dateStr) return undefined;
+  if (dateStr.includes("T")) return dateStr;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return `${dateStr}T00:00:00.000Z`;
+  }
+  return dateStr;
 }
 
 export function buildMetadata(params: {
@@ -55,7 +77,7 @@ export function buildMetadata(params: {
   return {
     title,
     description,
-    keywords: params.keywords,
+    keywords: clampKeywords(params.keywords),
     metadataBase: new URL(SITE_URL),
     alternates: { canonical: url },
     authors: author ? [{ name: author }] : [{ name: PUBLISHER }],
@@ -86,8 +108,8 @@ export function buildMetadata(params: {
       ...(ogType === "article" && author
         ? {
             authors: [author],
-            publishedTime: datePublished,
-            modifiedTime: dateModified,
+            publishedTime: ensureISOString(datePublished),
+            modifiedTime: ensureISOString(dateModified),
           }
         : {}),
     },
@@ -135,7 +157,7 @@ export function propertyMetadata(p: {
   return buildMetadata({
     title,
     description,
-    keywords: `${p.bedrooms} flat in ${p.location}, ${p.city} real estate, ${p.developer} projects, property in ${p.location}, buy flat ${p.city}`,
+    keywords: `${p.bedrooms} flat in ${p.location}, ${p.city} real estate, ${p.developer} projects`,
     canonical: `${SITE_URL}/property/${p.slug}`,
     ogImage: p.image,
     geoRegion: cityToGeoRegion(p.city),
@@ -153,6 +175,7 @@ export function blogMetadata(post: {
   updatedAt?: string;
   metaTitle?: string;
   metaDescription?: string;
+  keywords?: string;
 }): Metadata {
   const rawTitle = post.metaTitle ?? `${post.title} | RealHubb`;
   return buildMetadata({
@@ -164,6 +187,7 @@ export function blogMetadata(post: {
     author: post.author ?? "RealHubb Team",
     datePublished: post.publishedAt,
     dateModified: post.updatedAt ?? post.publishedAt,
+    keywords: post.keywords,
   });
 }
 
@@ -178,7 +202,7 @@ export function locationMetadata(city: string, area?: string): Metadata {
       description: clampDesc(
         `Buy 2BHK, 3BHK flats in ${areaTitle}, ${cityTitle}. RERA verified projects. Zero brokerage. Free site visit. Call RealHubb.`
       ),
-      keywords: `flats in ${areaTitle.toLowerCase()}, apartments ${areaTitle.toLowerCase()} ${cityTitle.toLowerCase()}, 2bhk ${areaTitle.toLowerCase()}, property ${areaTitle.toLowerCase()} for sale`,
+      keywords: `flats in ${areaTitle.toLowerCase()}, apartments ${areaTitle.toLowerCase()}, 2bhk ${areaTitle.toLowerCase()}`,
       canonical: `${SITE_URL}/real-estate/${city}/${area}`,
       geoRegion: cityToGeoRegion(city),
       geoPlacename: areaTitle,
@@ -190,7 +214,7 @@ export function locationMetadata(city: string, area?: string): Metadata {
     description: clampDesc(
       `Verified flats, apartments & villas in ${cityTitle}. RERA registered projects. Zero brokerage. Free site visit with RealHubb.`
     ),
-    keywords: `properties in ${cityTitle.toLowerCase()}, flats in ${cityTitle.toLowerCase()}, apartments ${cityTitle.toLowerCase()}, buy property ${cityTitle.toLowerCase()}`,
+    keywords: `properties in ${cityTitle.toLowerCase()}, flats in ${cityTitle.toLowerCase()}, apartments ${cityTitle.toLowerCase()}`,
     canonical: `${SITE_URL}/real-estate/${city}`,
     geoRegion: cityToGeoRegion(city),
     geoPlacename: cityTitle,
@@ -204,7 +228,7 @@ export function buySegmentMetadata(segment: string): Metadata {
     description: clampDesc(
       `Find verified ${label} from top builders in 2026. RERA registered. Zero brokerage. Book free site visit with RealHubb experts.`
     ),
-    keywords: `${label}, buy ${label}, ${label} price, ${label} bangalore, real estate ${label}`,
+    keywords: `${label}, buy ${label}, ${label} price, real estate ${label}`,
     canonical: `${SITE_URL}/buy/${segment}`,
     geoRegion: "IN-KA",
     geoPlacename: "Bangalore",
@@ -217,7 +241,7 @@ export function developerMetadata(name: string, slug: string): Metadata {
     description: clampDesc(
       `Browse all ${name} residential projects in Bangalore. Ongoing & upcoming apartments and villas. RERA verified. Contact RealHubb.`
     ),
-    keywords: `${name} projects bangalore, ${name} apartments, ${name} villas, ${name.toLowerCase()} real estate`,
+    keywords: `${name} projects, ${name} apartments, ${name} villas, ${name.toLowerCase()} real estate`,
     canonical: `${SITE_URL}/developers/${slug}`,
     geoRegion: "IN-KA",
     geoPlacename: "Bangalore",

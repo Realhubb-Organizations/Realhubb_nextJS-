@@ -12,7 +12,8 @@ interface Props {
 
 export default function SEO({ title, description, keywords, canonical, image }: Props) {
   useEffect(() => {
-    document.title = title;
+    const clampedTitle = title.length <= 60 ? title : title.slice(0, 59) + "…";
+    document.title = clampedTitle;
     
     // Update or create meta description
     let metaDesc = document.querySelector('meta[name="description"]');
@@ -21,7 +22,8 @@ export default function SEO({ title, description, keywords, canonical, image }: 
       metaDesc.setAttribute("name", "description");
       document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute("content", description);
+    const clampedDesc = description.length <= 155 ? description : description.slice(0, 154) + "…";
+    metaDesc.setAttribute("content", clampedDesc);
 
     // Update or create meta keywords
     if (keywords) {
@@ -31,7 +33,13 @@ export default function SEO({ title, description, keywords, canonical, image }: 
         metaKey.setAttribute("name", "keywords");
         document.head.appendChild(metaKey);
       }
-      metaKey.setAttribute("content", keywords);
+      let clampedKeywords = keywords;
+      if (keywords.length > 99) {
+        const cut = keywords.slice(0, 99);
+        const lastComma = cut.lastIndexOf(",");
+        clampedKeywords = lastComma > 30 ? cut.slice(0, lastComma).trim() : cut.trim();
+      }
+      metaKey.setAttribute("content", clampedKeywords);
     }
 
     // Update or create canonical link

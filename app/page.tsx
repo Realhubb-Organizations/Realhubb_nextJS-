@@ -19,6 +19,7 @@ import BlogPreview from "@/components/home/BlogPreview";
 import ToolsPromo from "@/components/home/ToolsPromo";
 import HomeFaqs from "@/components/home/HomeFaqs";
 import ContactCTA from "@/components/home/ContactCTA";
+import HomeSEOContent from "@/components/home/HomeSEOContent";
 
 export const dynamic = "force-dynamic";
 
@@ -40,11 +41,10 @@ const webPage = {
 };
 export const metadata: Metadata = buildMetadata({
   title: "RealHubb — Real Estate Bangalore, Hyderabad & Chennai",
-  // 135 chars ✅
   description:
-    "Find verified flats & apartments in Bangalore, Hyderabad & Chennai. RERA registered. Zero brokerage. Expert advisors. Free site visit.",
+    "Find verified flats & villas in Bangalore, Hyderabad & Chennai. RERA-registered projects, zero brokerage, expert advisory & free site visits. Get started!",
   keywords:
-    "real estate bangalore, flats in bangalore, buy flat bangalore, apartments bangalore, property bangalore hyderabad chennai",
+    "real estate bangalore, flats bangalore, buy flat bangalore, hyderabad, chennai property",
   canonical: SITE_URL,
   geoRegion: "IN-KA",
   geoPlacename: "Bangalore",
@@ -201,19 +201,7 @@ async function HomeFaqsWrapper() {
     console.error("Error fetching homepage FAQs:", err);
     homeFaqs = generalFaq;
   }
-  const faqItems = homeFaqs.map((f) => ({
-    question: f.question,
-    answer: f.answer,
-  }));
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqItems)) }}
-      />
-      <HomeFaqs faqs={homeFaqs} />
-    </>
-  );
+  return <HomeFaqs faqs={homeFaqs} />;
 }
 
 async function CitySectionWrapper() {
@@ -227,6 +215,11 @@ async function CitySectionWrapper() {
 }
 
 export default function HomePage() {
+  const staticFaqItems = generalFaq.map((f) => ({
+    question: f.question,
+    answer: f.answer,
+  }));
+
   return (
     <>
       <script
@@ -236,6 +229,10 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema(homeVideo)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(staticFaqItems)) }}
       />
       <HeroSection />
       <ServingCities />
@@ -262,6 +259,7 @@ export default function HomePage() {
       </Suspense>
       
       <ToolsPromo />
+      <HomeSEOContent />
       
       <Suspense fallback={<HomeFaqsSkeleton />}>
         <HomeFaqsWrapper />

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X, MessageCircle } from "lucide-react";
 import PropertyCard from "@/components/property/PropertyCard";
 import type { Property, PropertyType } from "@/types/property";
 import { cn } from "@/lib/utils";
@@ -96,6 +96,10 @@ export default function ProjectsClient({
     // Featured first
     return [...list].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
   }, [allProperties, activeType, activeCity, filterType, priceRange, search]);
+
+  const featuredFallback = useMemo(() => {
+    return allProperties.filter((p) => p.featured).slice(0, 3);
+  }, [allProperties]);
 
   function handleTypeChange(t: string) {
     setActiveType(t as "ongoing" | "upcoming");
@@ -265,18 +269,50 @@ export default function ProjectsClient({
               ))}
             </div>
           ) : (
-            <div className="text-center bg-white border border-gray-100 rounded-3xl py-24 px-6 shadow-sm">
-              <div className="text-4xl mb-4">🔍</div>
-              <h3 className="font-heading text-xl text-navy font-normal mb-2">No Properties Found</h3>
-              <p className="text-gray-400 text-sm max-w-xs mx-auto mb-6">
-                We couldn't find any properties matching your current filter criteria.
-              </p>
-              <button
-                onClick={clearFilters}
-                className="bg-gold text-navy px-6 py-2.5 rounded-xl text-sm font-normal hover:bg-gold/90 transition-all cursor-pointer"
-              >
-                Clear All Filters
-              </button>
+            <div className="space-y-12 animate-fadeIn">
+              <div className="text-center bg-white border border-gray-100 rounded-3xl py-12 px-6 shadow-sm max-w-2xl mx-auto">
+                <div className="text-4xl mb-4">🔍</div>
+                <h3 className="font-heading text-xl text-navy font-normal mb-2">No Matching Properties Found</h3>
+                <p className="text-gray-400 text-sm max-w-md mx-auto mb-6 leading-relaxed">
+                  We couldn't find any properties in <span className="font-semibold text-navy">{cityTabs.find(c => c.value === activeCity)?.label || activeCity}</span> matching your current search filters.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    onClick={clearFilters}
+                    className="bg-navy text-white px-5 py-2.5 rounded-xl text-sm font-normal hover:bg-navy/90 transition-all cursor-pointer shadow-sm"
+                  >
+                    Clear Search Filters
+                  </button>
+                  <a
+                    href="https://wa.me/919980189914?text=Hi!%20I%20couldn't%20find%20the%20property%20I%20was%20looking%20for%20on%20your%20website.%20Can%20you%20help%20me?"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-gold text-navy px-5 py-2.5 rounded-xl text-sm font-normal hover:bg-gold/90 transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4 shrink-0" />
+                    Chat on WhatsApp
+                  </a>
+                </div>
+              </div>
+
+              {/* Related/Popular Properties Recommendation */}
+              {featuredFallback.length > 0 && (
+                <div className="space-y-6">
+                  <div className="border-t border-gray-100 pt-10">
+                    <h4 className="font-heading text-xl text-navy font-normal text-center mb-2">
+                      Ongoing & Featured <span className="text-gold">Recommendations</span>
+                    </h4>
+                    <p className="text-gray-400 text-xs text-center font-light mb-8">
+                      You might be interested in these handpicked properties from other dynamic projects.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {featuredFallback.map((p) => (
+                      <PropertyCard key={p.id} property={p} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

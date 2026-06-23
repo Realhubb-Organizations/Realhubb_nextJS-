@@ -282,32 +282,62 @@ body.read-mode-active [class*="chat"] {
 }
 
 /* Dark Typography Overrides */
-body.read-mode-active .blog-content {
-  color: #E7E5E4; /* stone-200 */
+body.read-mode-active .blog-content,
+body.read-mode-active .blog-content p,
+body.read-mode-active .blog-content span,
+body.read-mode-active .blog-content li,
+body.read-mode-active .blog-content ul,
+body.read-mode-active .blog-content ol,
+body.read-mode-active .blog-content div,
+body.read-mode-active .blog-content h1,
+body.read-mode-active .blog-content em,
+body.read-mode-active .blog-content i,
+body.read-mode-active .blog-content u,
+body.read-mode-active .blog-content tr,
+body.read-mode-active .blog-content td {
+  color: #E7E5E4 !important;
+  background-color: transparent !important;
 }
 
 body.read-mode-active .blog-content h2,
-body.read-mode-active .blog-content h3 {
+body.read-mode-active .blog-content h3,
+body.read-mode-active .blog-content h4,
+body.read-mode-active .blog-content h5,
+body.read-mode-active .blog-content h6 {
   color: #D7A764 !important; /* gold headings */
+  background-color: transparent !important;
 }
 
-body.read-mode-active .blog-content strong {
+body.read-mode-active .blog-content strong,
+body.read-mode-active .blog-content strong span,
+body.read-mode-active .blog-content b,
+body.read-mode-active .blog-content b span {
   color: #FFFFFF !important;
+  font-weight: 600 !important;
+  background-color: transparent !important;
 }
 
-body.read-mode-active .blog-content blockquote {
-  color: #A8A29E; /* stone-400 */
-  border-left-color: #D7A764;
+body.read-mode-active .blog-content blockquote,
+body.read-mode-active .blog-content blockquote p,
+body.read-mode-active .blog-content blockquote span {
+  color: #A8A29E !important; /* stone-400 */
+  border-left-color: #D7A764 !important;
+  background-color: transparent !important;
 }
 
-body.read-mode-active .blog-content a {
-  color: #E5B264;
-  border-bottom: 1px dashed #E5B264;
-  text-decoration: none;
+body.read-mode-active .blog-content a,
+body.read-mode-active .blog-content a span {
+  color: #E5B264 !important;
+  border-bottom: 1px dashed #E5B264 !important;
+  text-decoration: none !important;
+  background-color: transparent !important;
 }
 
-body.read-mode-active .blog-content a:hover {
-  color: #FFFFFF;
-  border-bottom-style: solid;
+body.read-mode-active .blog-content a:hover,
+body.read-mode-active .blog-content a:hover span {
+  color: #FFFFFF !important;
+  border-bottom-style: solid !important;
+  background-color: transparent !important;
 }
+
 

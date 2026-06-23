@@ -15,6 +15,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Contact RealHubb Ventures for free property advice in Bangalore, Hyderabad & Chennai. Call, WhatsApp or email. Mon–Sat 9am–7pm. Free callback in 15 min.",
   canonical: `${SITE_URL}/contact-us`,
+  keywords: "contact real estate agent, property consultation, RealHubb address, phone, bangalore office",
   geoRegion: "IN-KA",
   geoPlacename: "Bangalore",
 });

@@ -315,7 +315,7 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
                     rel="noopener noreferrer"
                     className="px-8 py-3.5 rounded-full border border-white/20 text-white hover:bg-white/10 font-medium text-sm transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <Image src="/whatsapp.png" alt="" width={16} height={16} unoptimized className="w-4 h-4" />
+                    <Image src="/whatsapp.png" alt="WhatsApp icon" width={16} height={16} unoptimized className="w-4 h-4" />
                     WhatsApp Us
                   </a>
                 </div>

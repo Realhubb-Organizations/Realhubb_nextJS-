@@ -21,6 +21,7 @@ import HeroBackgroundSlideshow from "@/components/property/HeroBackgroundSlidesh
 import EnquiryPopup from "@/components/property/EnquiryPopup";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 type Params = Promise<{ slug: string }>;
 
@@ -134,14 +135,15 @@ export default async function PropertyDetailPage({ params }: { params: Params })
         {/* ── HERO ── */}
         <section className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
           {/* Slideshow Background */}
-          <HeroBackgroundSlideshow images={p.images} />
+          <HeroBackgroundSlideshow images={p.images} propertyName={p.name} />
 
           {/* Symmetrical branding glows */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="max-w-7xl mx-auto relative z-10">
-            <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-4 animate-fadeIn">
+          <div className="max-w-7xl mx-auto relative z-10 animate-fadeIn">
+            <Breadcrumbs items={breadcrumbs} light />
+            <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-4">
               Premium Property Showcase
             </p>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-normal leading-tight mb-4 max-w-3xl animate-fadeIn">
