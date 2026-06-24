@@ -9,6 +9,7 @@ interface CountingNumberProps {
   duration?: number; // duration in ms
   className?: string;
   inView?: boolean;
+  skipAnimation?: boolean;
 }
 
 export default function CountingNumber({
@@ -18,12 +19,19 @@ export default function CountingNumber({
   duration = 2000,
   className = "",
   inView = true,
+  skipAnimation = false,
 }: CountingNumberProps) {
-  const [displayValue, setDisplayValue] = useState(fromNumber);
+  const [displayValue, setDisplayValue] = useState(skipAnimation ? number : fromNumber);
   const elementRef = useRef<HTMLSpanElement>(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(skipAnimation);
 
   useEffect(() => {
+    if (skipAnimation) {
+      setDisplayValue(number);
+      setHasAnimated(true);
+      return;
+    }
+
     if (!inView || hasAnimated) return;
 
     let startTimestamp: number | null = null;
@@ -46,7 +54,7 @@ export default function CountingNumber({
     };
 
     window.requestAnimationFrame(step);
-  }, [number, fromNumber, duration, inView, hasAnimated]);
+  }, [number, fromNumber, duration, inView, hasAnimated, skipAnimation]);
 
   const formatNumber = (val: number) => {
     return val.toLocaleString(undefined, {
@@ -56,8 +64,9 @@ export default function CountingNumber({
   };
 
   return (
-    <span ref={elementRef} className={className}>
+    <span ref={elementRef} className={`${className} tabular-nums`}>
       {formatNumber(displayValue)}
     </span>
   );
 }
+

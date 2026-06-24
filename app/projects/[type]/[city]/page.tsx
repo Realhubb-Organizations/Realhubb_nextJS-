@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { getAllProperties } from "@/lib/firestoreServerService";
-import { breadcrumbSchema } from "@/lib/structuredData";
+import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
 import ProjectsClient from "@/components/property/ProjectsClient";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import FaqSection from "@/components/faq/FaqSection";
+
 
 
 type Params = Promise<{ type: string; city: string }>;
@@ -37,6 +39,27 @@ export async function generateMetadata({
 
 export const dynamic = "force-dynamic";
 
+function getCityFaqs(cityLabel: string) {
+  return [
+    {
+      question: "What is the difference between Ongoing and Upcoming projects?",
+      answer: "Ongoing projects are currently under active construction and have obtained all necessary municipal approvals and a valid RERA registration number. Upcoming projects represent brand-new builder launches that are in the pre-launch or soft-launch phase, which are awaiting final RERA approvals before active construction begins."
+    },
+    {
+      question: "Does RealHubb charge any brokerage or service fees for home buyers?",
+      answer: "No, RealHubb operates on a 100% zero brokerage model. Our consultation, site visits, legal documentation review, and home loan assistance are completely free for property buyers."
+    },
+    {
+      question: `How does RealHubb ensure the properties listed in ${cityLabel} are verified?`,
+      answer: `Every ongoing and upcoming project listed in ${cityLabel} on our portal undergoes a strict title and RERA-compliance verification. We check the builder's track record, legal land clearances, approval certificates, and physical construction progress before listing a project.`
+    },
+    {
+      question: `How do I arrange a free site visit for a project in ${cityLabel}?`,
+      answer: `You can schedule a visit by clicking "Book Free Site Visit" on any property detail page, or by chatting directly with our advisors on WhatsApp. We provide door-step pickup and drop support in ${cityLabel}, and an expert real estate advisor will accompany you to answer all queries.`
+    }
+  ];
+}
+
 export default async function ProjectsCityPage({
   params,
   searchParams,
@@ -64,13 +87,17 @@ export default async function ProjectsCityPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
       />
-      <div className="pt-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(getCityFaqs(cityLabel))) }}
+      />
+      <div className="pt-20 bg-cream min-h-screen">
         <div className="bg-navy pt-20 pb-28 md:pt-24 md:pb-36 page-padding relative overflow-hidden">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
             <img
               src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80"
-              alt=""
+              alt={`${city} Real Estate Projects Banner`}
               className="w-full h-full object-cover opacity-40"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy/75 via-navy/55 to-navy/20" />
@@ -111,6 +138,11 @@ export default async function ProjectsCityPage({
           initialPriceRange={sp.price ?? ""}
           initialSearch={sp.q ?? ""}
         />
+
+        {/* FAQs */}
+        <div className="page-padding py-24 max-w-4xl mx-auto">
+          <FaqSection title={`${typeLabel} Projects FAQs`} icon="🏠" items={getCityFaqs(cityLabel)} />
+        </div>
       </div>
     </>
   );

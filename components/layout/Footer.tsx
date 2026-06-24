@@ -87,9 +87,9 @@ export default function Footer() {
                 <Link href="/team" className="text-white/60 hover:text-gold transition-colors block">
                   Our Team
                 </Link>
-                <span className="block text-white/30 text-[10px] mt-0.5 font-light leading-none">
+                {/* <span className="block text-white/30 text-[10px] mt-0.5 font-light leading-none">
                   incl. {company.advisors.join(", ")}
-                </span>
+                </span> */}
               </li>
               <li><Link href="/career" className="text-white/60 hover:text-gold transition-colors block">Careers</Link></li>
               <li><Link href="/contact-us" className="text-white/60 hover:text-gold transition-colors block">Contact Us</Link></li>

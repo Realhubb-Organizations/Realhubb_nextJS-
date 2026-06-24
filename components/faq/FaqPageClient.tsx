@@ -115,7 +115,11 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
             </p>
 
             {/* Search */}
-            <div className="relative mt-8 max-w-xl mx-auto w-full animate-fadeIn">
+            <form
+              role="search"
+              onSubmit={(e) => e.preventDefault()}
+              className="relative mt-8 max-w-xl mx-auto w-full animate-fadeIn"
+            >
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
               <input
                 type="search"
@@ -130,6 +134,7 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
               />
               {searchQuery && (
                 <button
+                  type="button"
                   onClick={() => setSearchQuery("")}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-navy text-xs transition-colors"
                   aria-label="Clear search"
@@ -137,7 +142,7 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
                   ✕
                 </button>
               )}
-            </div>
+            </form>
           </FadeInOnScroll>
         </div>
       </section>

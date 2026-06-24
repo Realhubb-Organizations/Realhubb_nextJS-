@@ -3,6 +3,7 @@ import { buildMetadata } from "@/lib/seo";
 import { getPublishedFaqs } from "@/lib/firestoreServerService";
 import { faqSchema, breadcrumbSchema, webPageSchema } from "@/lib/structuredData";
 import FaqPageClient from "@/components/faq/FaqPageClient";
+import { generalFaq, propertyFaq, careerFaq } from "@/data/faqData";
 
 export const dynamic = "force-dynamic";
 
@@ -19,12 +20,12 @@ export const metadata: Metadata = buildMetadata({
 export default async function FaqPage() {
   const dbFaqs = await getPublishedFaqs();
 
-  const pagesToCategories: Record<string, { id: string; title: string; icon: string }> = {
-    about: { id: "about", title: "About RealHubb", icon: "🏢" },
-    services: { id: "services", title: "Our Services", icon: "🤝" },
-    buying: { id: "buying", title: "Property Buying", icon: "🏠" },
-    career: { id: "careers", title: "Careers", icon: "💼" },
-    home: { id: "general", title: "General", icon: "✨" },
+  const pagesToCategories: Record<string, { id: string; title: string; icon: string; defaultItems: { question: string; answer: string }[] }> = {
+    about: { id: "about", title: "About RealHubb", icon: "🏢", defaultItems: generalFaq.slice(0, 4) },
+    services: { id: "services", title: "Our Services", icon: "🤝", defaultItems: generalFaq.slice(4) },
+    buying: { id: "buying", title: "Property Buying", icon: "🏠", defaultItems: propertyFaq },
+    career: { id: "careers", title: "Careers", icon: "💼", defaultItems: careerFaq },
+    home: { id: "general", title: "General", icon: "✨", defaultItems: [] },
   };
 
   const grouped: Record<string, typeof dbFaqs> = {};
@@ -36,12 +37,15 @@ export default async function FaqPage() {
 
   const categories = Object.entries(pagesToCategories)
     .map(([key, cat]) => {
-      const items = grouped[key] || [];
+      const dbItems = grouped[key] || [];
+      const items = dbItems.length > 0
+        ? dbItems.map((i) => ({ question: i.question, answer: i.answer }))
+        : cat.defaultItems;
       return {
         id: cat.id,
         title: cat.title,
         icon: cat.icon,
-        items: items.map((i) => ({ question: i.question, answer: i.answer })),
+        items,
       };
     })
     .filter((cat) => cat.items.length > 0);

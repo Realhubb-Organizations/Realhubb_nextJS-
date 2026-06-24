@@ -143,7 +143,7 @@ export default async function AboutPage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-gold hover:bg-gold/90 text-navy font-normal text-sm transition-all duration-200 hover:scale-105 shadow-md"
               >
-                <Image src="/whatsapp.png" alt="" width={16} height={16} unoptimized className="w-4 h-4" />
+                <Image src="/whatsapp.png" alt="WhatsApp icon" width={16} height={16} unoptimized className="w-4 h-4" />
                 Chat with Us
               </a>
             </FadeInOnScroll>

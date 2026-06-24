@@ -145,8 +145,7 @@ export default function HeroSection() {
           />
           <img
             src={POSTER_SRC}
-            alt=""
-            aria-hidden="true"
+            alt="RealHubb home banner background image"
             width={1280}
             height={720}
             fetchPriority="high"
@@ -200,7 +199,7 @@ export default function HeroSection() {
             </h1>
 
             {/* Subtitle */}
-            <p className="speakable-summary text-white/65 text-[15px] max-w-[480px] leading-relaxed">
+            <p className="speakable-summary text-white/85 text-[15px] max-w-[480px] leading-relaxed">
               Discover verified properties across Bangalore, Hyderabad, and Chennai. 
               Find RERA-compliant homes from trusted developers. Enjoy transparent buying 
               and renting support across cities with expert real estate guidance you can rely on. 
@@ -229,7 +228,11 @@ export default function HeroSection() {
 
           {/* ── Right column: search card ── */}
           <div className="flex lg:justify-center">
-            <div className="bg-white rounded-xl shadow-2xl p-5 w-full max-w-[310px]">
+            <form
+              role="search"
+              onSubmit={(e) => { e.preventDefault(); handleSearch(); }}
+              className="bg-white rounded-xl shadow-2xl p-5 w-full max-w-[310px]"
+            >
               {/* Card header */}
               <p className="text-[#D7A764] text-[10px] font-normal tracking-[0.2em] uppercase">
                 01 — Quick Search
@@ -240,7 +243,7 @@ export default function HeroSection() {
 
               {/* City */}
               <div className="mb-4">
-                <label htmlFor="hero-city-select" className="block text-[9px] font-normal tracking-[0.18em] uppercase text-gray-400 mb-1.5">
+                <label htmlFor="hero-city-select" className="block text-[9px] font-semibold tracking-[0.18em] uppercase text-gray-600 mb-1.5">
                   City
                 </label>
                 <div className="relative flex items-center border-b border-gray-200 pb-2">
@@ -260,14 +263,14 @@ export default function HeroSection() {
 
               {/* Locality/Project Keyword Input */}
               <div className="mb-4">
-                <label htmlFor="hero-keyword-input" className="block text-[9px] font-normal tracking-[0.18em] uppercase text-gray-400 mb-1.5">
+                <label htmlFor="hero-keyword-input" className="block text-[9px] font-semibold tracking-[0.18em] uppercase text-gray-600 mb-1.5">
                   Locality, Project or Builder
                 </label>
                 <div className="relative flex items-center border-b border-gray-200 pb-2">
                   <Search className="w-3.5 h-3.5 text-[#D7A764] mr-2 shrink-0" />
                   <input
                     id="hero-keyword-input"
-                    type="text"
+                    type="search"
                     placeholder="e.g. Whitefield, Prestige"
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
@@ -278,7 +281,7 @@ export default function HeroSection() {
 
               {/* Property Type */}
               <div className="mb-4">
-                <label htmlFor="hero-type-select" className="block text-[9px] font-normal tracking-[0.18em] uppercase text-gray-400 mb-1.5">
+                <label htmlFor="hero-type-select" className="block text-[9px] font-semibold tracking-[0.18em] uppercase text-gray-600 mb-1.5">
                   Property Type
                 </label>
                 <div className="relative flex items-center border-b border-gray-200 pb-2">
@@ -298,7 +301,7 @@ export default function HeroSection() {
 
               {/* Budget */}
               <div className="mb-5">
-                <label htmlFor="hero-budget-select" className="block text-[9px] font-normal tracking-[0.18em] uppercase text-gray-400 mb-1.5">
+                <label htmlFor="hero-budget-select" className="block text-[9px] font-semibold tracking-[0.18em] uppercase text-gray-600 mb-1.5">
                   Budget
                 </label>
                 <div className="relative flex items-center border-b border-gray-200 pb-2">
@@ -318,13 +321,13 @@ export default function HeroSection() {
               {/* Search button */}
               <button
                 id="hero-search-button"
-                onClick={handleSearch}
+                type="submit"
                 suppressHydrationWarning={true}
                 className="w-full py-3.5 rounded-full bg-[#D7A764] hover:bg-[#c4954a] text-[#00274D] font-normal text-sm tracking-wide transition-all duration-200 hover:scale-[1.02] shadow-md cursor-pointer"
               >
                 Search Properties
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -356,21 +359,24 @@ export default function HeroSection() {
             </span>
 
             {/* Big stat value */}
-            <div className="text-[36px] lg:text-[48px] xl:text-[56px] font-normal text-[#D7A764] leading-none tracking-tight">
-              <CountingNumber
-                fromNumber={0}
-                number={parseInt(stat.value.replace(/[^0-9]/g, ""), 10) || 0}
-                decimalPlaces={0}
-                duration={2000}
-                inView={statsInView}
-              />
-              {stat.value.replace(/[0-9]/g, "")}
+            <div className="flex items-baseline text-[36px] lg:text-[48px] xl:text-[56px] font-normal text-[#D7A764] leading-none tracking-tight">
+              <div className="inline-block min-w-[2.2rem] sm:min-w-[3rem] lg:min-w-[4rem]">
+                <CountingNumber
+                  fromNumber={0}
+                  number={parseInt(stat.value.replace(/[^0-9]/g, ""), 10) || 0}
+                  decimalPlaces={0}
+                  duration={2000}
+                  inView={statsInView}
+                  skipAnimation={isMobile || prefersReducedMotion}
+                />
+              </div>
+              <span>{stat.value.replace(/[0-9]/g, "")}</span>
             </div>
 
             {/* Label with leading dash */}
             <div className="flex items-center gap-2.5 mt-3">
               <span className="h-px w-5 bg-[#D7A764] shrink-0" />
-              <p className="text-[10px] tracking-[0.22em] uppercase text-[#D7A764]/75 font-medium">
+              <p className="text-[10px] tracking-[0.22em] uppercase text-[#D7A764] font-medium">
                 {stat.label}
               </p>
             </div>

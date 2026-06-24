@@ -42,7 +42,7 @@ export default function ServingCities() {
           <h2 className="font-heading text-3xl md:text-4xl text-navy font-normal">
             Real Estate Services in Bangalore, Hyderabad, and Chennai
           </h2>
-          <p className="text-gray-500 text-sm max-w-3xl mx-auto mt-4 leading-relaxed">
+          <p className="text-gray-600 text-sm max-w-3xl mx-auto mt-4 leading-relaxed">
             RealHubb is a trusted real estate platform helping home buyers, investors, and tenants
             find verified RERA-approved properties in Bangalore, Hyderabad, and Chennai. Browse residential
             apartments, premium villas, and plotted developments across India's fastest-growing real estate
@@ -80,7 +80,7 @@ export default function ServingCities() {
                     <h3 className="text-white font-heading text-2xl font-normal group-hover:text-gold transition-colors">
                       {city.name}
                     </h3>
-                    <p className="text-white/70 text-xs mt-2 max-w-[260px] leading-relaxed">
+                    <p className="text-white/90 text-xs mt-2 max-w-[260px] leading-relaxed">
                       {city.description}
                     </p>
                     <div className="mt-4 flex items-center gap-1.5 text-xs text-gold font-normal">

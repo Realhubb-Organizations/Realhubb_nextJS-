@@ -32,9 +32,9 @@ export default function FaqAccordion({ items }: Props) {
               className="w-full flex items-center justify-between px-6 py-5 text-left focus:outline-none group"
               aria-expanded={isOpen}
             >
-              <span className="text-navy font-heading text-[15px] sm:text-base font-normal pr-4 group-hover:text-gold transition-colors duration-200">
+              <h3 className="text-navy font-heading text-[15px] sm:text-base font-normal pr-4 group-hover:text-gold transition-colors duration-200">
                 {item.question}
-              </span>
+              </h3>
               <div
                 className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",

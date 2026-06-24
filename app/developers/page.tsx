@@ -3,10 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import { getAllDevelopers } from "@/lib/firestoreServerService";
-import { breadcrumbSchema } from "@/lib/structuredData";
+import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
+import FaqSection from "@/components/faq/FaqSection";
 
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
+
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 
@@ -19,6 +21,25 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export const dynamic = "force-dynamic";
+
+const developerFaqs = [
+  {
+    question: "Who are the top real estate developers partnered with RealHubb?",
+    answer: "RealHubb partners with India's most trusted and reputed Grade-A developers, including Prestige Group, Godrej Properties, Brigade Group, Sobha Limited, Birla Estates, Puravankara, and Tata Housing."
+  },
+  {
+    question: "How does RealHubb verify the developers and their projects?",
+    answer: "Every developer and project on our platform undergoes a rigorous due diligence process. We verify RERA registration status, land titles, municipal approvals, construction quality history, and the builder's track record of timely delivery."
+  },
+  {
+    question: "Do I get better deals or discounts by booking through RealHubb instead of directly with the developer?",
+    answer: "Yes, because of our institutional partnerships and high transaction volumes with top builders, we are often able to negotiate exclusive pricing, launch offers, and flexible payment plans that are not directly available to individual buyers. Additionally, we charge zero brokerage."
+  },
+  {
+    question: "Is RealHubb an official channel partner for these builders?",
+    answer: "Yes, RealHubb Ventures Pvt. Ltd. is an officially authorized and RERA-registered channel partner for all the developers listed on our website, ensuring all bookings and transactions are fully compliant and builder-certified."
+  }
+];
 
 export default async function DevelopersPage() {
   const devs = await getAllDevelopers().catch(() => []);
@@ -33,6 +54,10 @@ export default async function DevelopersPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(developerFaqs)) }}
       />
       <div className="pt-20 bg-cream min-h-screen">
         {/* Immersive Header Banner */}
@@ -123,6 +148,11 @@ export default async function DevelopersPage() {
               </RevealCard>
             ))}
           </RevealGrid>
+        </div>
+
+        {/* FAQs */}
+        <div className="page-padding pb-24 max-w-4xl mx-auto">
+          <FaqSection title="Developer Partner FAQs" icon="🏢" items={developerFaqs} />
         </div>
       </div>
     </>
