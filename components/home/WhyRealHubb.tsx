@@ -30,7 +30,7 @@ export default function WhyRealHubb() {
     <section className="py-20 bg-cream">
       <div className="page-padding">
         <div className="text-center mb-12">
-          <p className="section-overline text-gold mb-2">Why Choose Us</p>
+          <p className="section-overline text-gold-800 mb-2">Why Choose Us</p>
           <h2 className="font-heading text-3xl md:text-4xl text-navy font-normal">
             Why 1,000+ Families Trust RealHubb
           </h2>
@@ -46,7 +46,7 @@ export default function WhyRealHubb() {
                     <Icon className="w-6 h-6 text-navy group-hover:text-gold transition-colors" />
                   </div>
                   <h3 className="font-heading text-lg text-navy font-normal mb-2">{usp.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{usp.desc}</p>
+                  <p className="text-slate-500 text-sm leading-relaxed">{usp.desc}</p>
                 </div>
               </RevealCard>
             );

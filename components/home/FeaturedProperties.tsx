@@ -15,14 +15,14 @@ export default function FeaturedProperties({ properties }: Props) {
       <div className="page-padding">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="section-overline text-gold mb-2">Handpicked for You</p>
+            <p className="section-overline text-gold-800 mb-2">Handpicked for You</p>
             <h2 className="font-heading text-3xl md:text-4xl text-navy font-normal">
               Featured Properties
             </h2>
           </div>
           <Link
             href="/projects/ongoing"
-            className="hidden md:block text-sm text-navy/60 hover:text-gold transition-colors border-b border-navy/20 hover:border-gold pb-0.5"
+            className="hidden md:block text-sm text-navy/75 hover:text-gold-800 transition-colors border-b border-navy/25 hover:border-gold-800 pb-0.5"
           >
             View All Properties →
           </Link>

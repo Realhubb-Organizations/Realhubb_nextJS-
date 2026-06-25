@@ -20,7 +20,7 @@ export default function DeveloperStrip({ developers }: Props) {
       {/* Header */}
       <div className="page-padding text-center mb-10">
         <p className="section-overline text-gold mb-2">Trusted Developer Partners</p>
-        <p className="text-white/40 text-xs">
+        <p className="text-white/70 text-xs">
           We work exclusively with RERA-verified, track-record-proven builders
         </p>
       </div>
@@ -76,7 +76,7 @@ export default function DeveloperStrip({ developers }: Props) {
       <div className="page-padding mt-10 text-center">
         <Link
           href="/developers"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-gold text-sm transition-colors group/link"
+          className="inline-flex items-center gap-2 text-white/75 hover:text-gold text-sm transition-colors group/link"
         >
           View all{" "}
           <span className="text-gold font-normal">{developers.length}+</span>{" "}

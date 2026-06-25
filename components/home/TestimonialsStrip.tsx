@@ -59,7 +59,7 @@ export default function TestimonialsStrip() {
                 <div>
                   <p className="text-white text-sm font-normal">{t.name}</p>
                   <p className="text-gold text-xs">{t.city}</p>
-                  <p className="text-white/40 text-xs">{t.property}</p>
+                  <p className="text-white/70 text-xs">{t.property}</p>
                 </div>
               </div>
             </RevealCard>

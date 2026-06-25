@@ -38,7 +38,7 @@ export default function ServingCities() {
 
         {/* Header section with rich SEO content */}
         <div className="text-center mb-16">
-          <p className="section-overline text-gold mb-2">02 — Cities</p>
+          <p className="section-overline text-gold-800 mb-2">02 — Cities</p>
           <h2 className="font-heading text-3xl md:text-4xl text-navy font-normal">
             Real Estate Services in Bangalore, Hyderabad, and Chennai
           </h2>

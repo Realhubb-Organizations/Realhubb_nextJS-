@@ -24,7 +24,7 @@ export default function Footer() {
                 style={{ aspectRatio: "200 / 65" }}
               />
             </Link>
-            <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-sm">
+            <p className="text-white/75 text-sm leading-relaxed mb-6 max-w-sm">
               Your trusted RERA-compliant real estate channel partner across Bangalore, Hyderabad &amp; Chennai.
               Verified properties. Zero brokerage. Expert advisor support.
             </p>
@@ -47,11 +47,11 @@ export default function Footer() {
           <div className="col-span-1">
             <p className="section-overline text-gold mb-4">Properties by City</p>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/real-estate/bangalore" className="text-white/60 hover:text-gold transition-colors block">Flats in Bangalore</Link></li>
-              <li><Link href="/real-estate/hyderabad" className="text-white/60 hover:text-gold transition-colors block">Flats in Hyderabad</Link></li>
-              <li><Link href="/real-estate/chennai" className="text-white/60 hover:text-gold transition-colors block">Flats in Chennai</Link></li>
-              <li><Link href="/projects/ongoing/bangalore" className="text-white/60 hover:text-gold transition-colors block">Ongoing — Bangalore</Link></li>
-              <li><Link href="/projects/upcoming/bangalore" className="text-white/60 hover:text-gold transition-colors block">Upcoming — Bangalore</Link></li>
+              <li><Link href="/real-estate/bangalore" className="text-white/75 hover:text-gold transition-colors block">Flats in Bangalore</Link></li>
+              <li><Link href="/real-estate/hyderabad" className="text-white/75 hover:text-gold transition-colors block">Flats in Hyderabad</Link></li>
+              <li><Link href="/real-estate/chennai" className="text-white/75 hover:text-gold transition-colors block">Flats in Chennai</Link></li>
+              <li><Link href="/projects/ongoing/bangalore" className="text-white/75 hover:text-gold transition-colors block">Ongoing — Bangalore</Link></li>
+              <li><Link href="/projects/upcoming/bangalore" className="text-white/75 hover:text-gold transition-colors block">Upcoming — Bangalore</Link></li>
             </ul>
           </div>
 
@@ -59,11 +59,11 @@ export default function Footer() {
           <div className="col-span-1">
             <p className="section-overline text-gold mb-4">Popular Localities</p>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/real-estate/bangalore/koramangala" className="text-white/60 hover:text-gold transition-colors block">Koramangala</Link></li>
-              <li><Link href="/real-estate/bangalore/whitefield" className="text-white/60 hover:text-gold transition-colors block">Whitefield</Link></li>
-              <li><Link href="/real-estate/bangalore/hsr-layout" className="text-white/60 hover:text-gold transition-colors block">HSR Layout</Link></li>
-              <li><Link href="/real-estate/bangalore/yelahanka" className="text-white/60 hover:text-gold transition-colors block">Yelahanka</Link></li>
-              <li><Link href="/real-estate/hyderabad/gachibowli" className="text-white/60 hover:text-gold transition-colors block">Gachibowli</Link></li>
+              <li><Link href="/real-estate/bangalore/koramangala" className="text-white/75 hover:text-gold transition-colors block">Koramangala</Link></li>
+              <li><Link href="/real-estate/bangalore/whitefield" className="text-white/75 hover:text-gold transition-colors block">Whitefield</Link></li>
+              <li><Link href="/real-estate/bangalore/hsr-layout" className="text-white/75 hover:text-gold transition-colors block">HSR Layout</Link></li>
+              <li><Link href="/real-estate/bangalore/yelahanka" className="text-white/75 hover:text-gold transition-colors block">Yelahanka</Link></li>
+              <li><Link href="/real-estate/hyderabad/gachibowli" className="text-white/75 hover:text-gold transition-colors block">Gachibowli</Link></li>
             </ul>
           </div>
 
@@ -71,11 +71,11 @@ export default function Footer() {
           <div className="col-span-1">
             <p className="section-overline text-gold mb-4">Property Types</p>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/buy/2bhk-flats-bangalore" className="text-white/60 hover:text-gold transition-colors block">2BHK Flats in Bangalore</Link></li>
-              <li><Link href="/buy/3bhk-flats-bangalore" className="text-white/60 hover:text-gold transition-colors block">3BHK Flats in Bangalore</Link></li>
-              <li><Link href="/buy/luxury-apartments-bangalore" className="text-white/60 hover:text-gold transition-colors block">Luxury Apartments</Link></li>
-              <li><Link href="/buy/villas-bangalore" className="text-white/60 hover:text-gold transition-colors block">Villas in Bangalore</Link></li>
-              <li><Link href="/buy/plots-bangalore" className="text-white/60 hover:text-gold transition-colors block">Plots in Bangalore</Link></li>
+              <li><Link href="/buy/2bhk-flats-bangalore" className="text-white/75 hover:text-gold transition-colors block">2BHK Flats in Bangalore</Link></li>
+              <li><Link href="/buy/3bhk-flats-bangalore" className="text-white/75 hover:text-gold transition-colors block">3BHK Flats in Bangalore</Link></li>
+              <li><Link href="/buy/luxury-apartments-bangalore" className="text-white/75 hover:text-gold transition-colors block">Luxury Apartments</Link></li>
+              <li><Link href="/buy/villas-bangalore" className="text-white/75 hover:text-gold transition-colors block">Villas in Bangalore</Link></li>
+              <li><Link href="/buy/plots-bangalore" className="text-white/75 hover:text-gold transition-colors block">Plots in Bangalore</Link></li>
             </ul>
           </div>
 
@@ -83,19 +83,19 @@ export default function Footer() {
           <div className="col-span-1">
             <p className="section-overline text-gold mb-4">Company</p>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/about" className="text-white/60 hover:text-gold transition-colors block">About Us</Link></li>
+              <li><Link href="/about" className="text-white/75 hover:text-gold transition-colors block">About Us</Link></li>
               <li>
-                <Link href="/team" className="text-white/60 hover:text-gold transition-colors block">
+                <Link href="/team" className="text-white/75 hover:text-gold transition-colors block">
                   Our Team
                 </Link>
                 {/* <span className="block text-white/30 text-[10px] mt-0.5 font-light leading-none">
                   incl. {company.advisors.join(", ")}
                 </span> */}
               </li>
-              <li><Link href="/career" className="text-white/60 hover:text-gold transition-colors block">Careers</Link></li>
-              <li><Link href="/contact-us" className="text-white/60 hover:text-gold transition-colors block">Contact Us</Link></li>
-              <li><Link href="/blog" className="text-white/60 hover:text-gold transition-colors block">Blog</Link></li>
-              <li><Link href="/faq" className="text-white/60 hover:text-gold transition-colors block">FAQ</Link></li>
+              <li><Link href="/career" className="text-white/75 hover:text-gold transition-colors block">Careers</Link></li>
+              <li><Link href="/contact-us" className="text-white/75 hover:text-gold transition-colors block">Contact Us</Link></li>
+              <li><Link href="/blog" className="text-white/75 hover:text-gold transition-colors block">Blog</Link></li>
+              <li><Link href="/faq" className="text-white/75 hover:text-gold transition-colors block">FAQ</Link></li>
             </ul>
           </div>
 
@@ -103,19 +103,19 @@ export default function Footer() {
           <div className="col-span-1">
             <p className="section-overline text-gold mb-4">Free Tools</p>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/tools" className="text-white/60 hover:text-gold transition-colors font-medium block">All Tools Hub</Link></li>
-              <li><Link href="/emi-calculator" className="text-white/60 hover:text-gold transition-colors block">EMI Calculator</Link></li>
-              <li><Link href="/currency-calculator" className="text-white/60 hover:text-gold transition-colors block">Currency Converter</Link></li>
-              <li><Link href="/home-loan-eligibility" className="text-white/60 hover:text-gold transition-colors block">Loan Eligibility</Link></li>
-              <li><Link href="/rental-yield-calculator" className="text-white/60 hover:text-gold transition-colors block">Rental Yield</Link></li>
-              <li><Link href="/salary-advisor" className="text-white/60 hover:text-gold transition-colors block">Salary Advisor</Link></li>
+              <li><Link href="/tools" className="text-white/75 hover:text-gold transition-colors font-medium block">All Tools Hub</Link></li>
+              <li><Link href="/emi-calculator" className="text-white/75 hover:text-gold transition-colors block">EMI Calculator</Link></li>
+              <li><Link href="/currency-calculator" className="text-white/75 hover:text-gold transition-colors block">Currency Converter</Link></li>
+              <li><Link href="/home-loan-eligibility" className="text-white/75 hover:text-gold transition-colors block">Loan Eligibility</Link></li>
+              <li><Link href="/rental-yield-calculator" className="text-white/75 hover:text-gold transition-colors block">Rental Yield</Link></li>
+              <li><Link href="/salary-advisor" className="text-white/75 hover:text-gold transition-colors block">Salary Advisor</Link></li>
             </ul>
           </div>
 
         </div>
 
         {/* Contact strip */}
-        <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-white/60">
+        <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-white/75">
           <a href={`tel:${company.phone}`} className="flex items-center gap-2 hover:text-gold transition-colors">
             <Phone className="w-4 h-4 shrink-0 text-gold" />
             <span>{company.phone}</span>
@@ -132,7 +132,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10 page-padding py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
+      <div className="border-t border-white/10 page-padding py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/70">
         <p>
           © {year} {company.name}. All rights reserved. RERA: {company.rera}
         </p>
