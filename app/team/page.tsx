@@ -7,7 +7,7 @@ import { personSchema, breadcrumbSchema } from "@/lib/structuredData";
 
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 

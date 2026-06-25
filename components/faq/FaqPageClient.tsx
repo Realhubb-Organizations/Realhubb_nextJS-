@@ -152,8 +152,8 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
         <div className="page-padding max-w-7xl mx-auto flex flex-col lg:flex-row gap-10">
           {/* Category Selector Column — Desktop Sidebar (Sticky, Open List) */}
           <aside className="hidden lg:block w-64 shrink-0">
-            <div className="sticky top-28 space-y-2.5 z-20">
-              <p className="section-overline text-gray-400 mb-3 px-1 text-left block">
+            <div className="sticky top-28 max-h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide space-y-2.5 z-20 pb-4">
+              <p className="section-overline text-gray-400 mb-3 px-1 text-left block sticky top-0 bg-cream py-1 z-30">
                 Category
               </p>
 

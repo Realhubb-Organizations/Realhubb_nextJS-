@@ -75,13 +75,13 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // 24-hour cache for public folder assets (images, fonts, icons)
+      // 1-year immutable cache for public folder assets (images, fonts, icons)
       {
         source: "/(.+\\.(?:ico|png|jpg|jpeg|gif|webp|avif|svg|woff|woff2|ttf|otf|eot))",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=86400, stale-while-revalidate=604800",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

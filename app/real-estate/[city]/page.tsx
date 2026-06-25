@@ -28,7 +28,7 @@ export async function generateStaticParams() {
   return ["bangalore", "hyderabad", "chennai"].map((city) => ({ city }));
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function CityHubPage({ params }: { params: Params }) {
   const { city } = await params;

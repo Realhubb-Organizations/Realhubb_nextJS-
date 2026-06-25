@@ -16,7 +16,7 @@ export const metadata: Metadata = buildMetadata({
   ogImage: `${SITE_URL}/og/gallery.jpg`,
 });
 
-const galleryFaqs = [
+export const galleryFaqs = [
   {
     question: "What is shown in the RealHubb media gallery?",
     answer: "The RealHubb media gallery showcases visual highlights from our team milestones, builder launch events, property site visits, client handovers, awards ceremonies, and community outreach programs."

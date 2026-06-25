@@ -56,7 +56,7 @@ const segmentConfig: Record<
   },
 };
 
-const segmentFaqs: Record<string, { question: string; answer: string }[]> = {
+export const segmentFaqs: Record<string, { question: string; answer: string }[]> = {
   "2bhk-flats-bangalore": [
     { question: "What is the price range for 2BHK flats in Bangalore?", answer: "2BHK flats in Bangalore range from ₹40 Lakh (Electronic City, Yelahanka) to ₹1.5 Crore (Koramangala, HSR Layout, Indiranagar). The average price for a 1,200 sq.ft 2BHK is ₹75–85 Lakh." },
     { question: "Which area is best for buying a 2BHK in Bangalore?", answer: "For investment: Electronic City and Yelahanka offer highest rental yields (4–5%). For end-use near IT parks: Whitefield and Sarjapur Road. For premium lifestyle: Koramangala and HSR Layout." },
@@ -75,7 +75,7 @@ export async function generateStaticParams() {
   return Object.keys(segmentConfig).map((segment) => ({ segment }));
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function BuySegmentPage({ params }: { params: Params }) {
   const { segment } = await params;

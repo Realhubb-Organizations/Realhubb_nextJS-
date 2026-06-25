@@ -34,7 +34,7 @@ export async function generateStaticParams() {
   return locations.map((l) => ({ city: l.city, area: l.areaSlug }));
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function AreaPage({ params }: { params: Params }) {
   const { city, area } = await params;

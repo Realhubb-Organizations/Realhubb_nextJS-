@@ -48,7 +48,7 @@ export async function generateStaticParams() {
   return fireStoreSlugs.map((slug) => ({ slug }));
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;

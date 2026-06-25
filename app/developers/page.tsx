@@ -20,9 +20,9 @@ export const metadata: Metadata = buildMetadata({
   keywords: "real estate builders, property developers bangalore, RERA approved builders, prestige projects",
 });
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
-const developerFaqs = [
+export const developerFaqs = [
   {
     question: "Who are the top real estate developers partnered with RealHubb?",
     answer: "RealHubb partners with India's most trusted and reputed Grade-A developers, including Prestige Group, Godrej Properties, Brigade Group, Sobha Limited, Birla Estates, Puravankara, and Tata Housing."

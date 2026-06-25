@@ -21,7 +21,7 @@ import HomeFaqs from "@/components/home/HomeFaqs";
 import ContactCTA from "@/components/home/ContactCTA";
 import HomeSEOContent from "@/components/home/HomeSEOContent";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 

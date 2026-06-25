@@ -21,6 +21,7 @@ export default function Footer() {
                 height={65}
                 unoptimized
                 className="h-12 w-auto"
+                style={{ aspectRatio: "200 / 65" }}
               />
             </Link>
             <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-sm">

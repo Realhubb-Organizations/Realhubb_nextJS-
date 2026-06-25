@@ -15,9 +15,9 @@ export const metadata: Metadata = buildMetadata({
   keywords: "real estate blog, bangalore real estate, hyderabad property trends, home buying guide",
 });
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
-const blogFaqs = [
+export const blogFaqs = [
   {
     question: "What topics does the RealHubb Blog cover?",
     answer: "Our blog covers a wide range of real estate topics including home buying guides, legal and documentation advice (such as RERA guidelines, stamp duty, khata transfer), home loan eligibility tips, investment market reports, interior design ideas, and locality/neighborhood analysis across Bangalore, Hyderabad, and Chennai."
