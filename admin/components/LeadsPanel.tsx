@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { FileText, Mail, Phone, Briefcase, Calendar, Download } from 'lucide-react';
+import { FileText, Mail, Phone, Briefcase, Calendar, Download, RefreshCw } from 'lucide-react';
 
 interface Lead {
   id: string;
@@ -21,43 +19,68 @@ interface Lead {
 export default function LeadsPanel() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchLeads = async () => {
+    try {
+      setLoading(true);
+      setError(false);
+      const res = await fetch('/api/leads');
+      if (!res.ok) throw new Error('Failed to fetch leads');
+      const data = await res.json();
+      if (data.success && data.leads) {
+        const resumesOnly = data.leads.filter((lead: Lead) => lead.type === 'career');
+        setLeads(resumesOnly);
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (err) {
+      console.error('Error loading resumes from API:', err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const q = query(collection(db, 'leads'), orderBy('timestamp', 'desc'));
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const leadsData = snapshot.docs
-          .map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          } as Lead))
-          .filter((lead) => lead.type === "career");
-        setLeads(leadsData);
-        setLoading(false);
-      },
-      (err) => {
-        console.error("Error loading resumes from Firestore:", err);
-        setLoading(false);
-      }
-    );
-
-    return () => unsubscribe();
+    fetchLeads();
   }, []);
 
   if (loading) {
     return (
       <div className="p-8 flex items-center justify-center">
-        <div className="text-muted-foreground">Loading resumes…</div>
+        <div className="flex items-center gap-3 text-slate-400 text-sm">
+          <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+          </svg>
+          Loading resumes…
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 mb-4">
-        <FileText className="h-5 w-5 text-primary" />
-        <h2 className="text-lg font-normal">Resumes ({leads.length})</h2>
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-600 text-sm">
+          Failed to load resumes from the server. Please try again.
+        </div>
+      )}
+
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <div className="flex items-center gap-2">
+          <FileText className="h-5 w-5 text-primary" />
+          <h2 className="text-lg font-normal">Resumes ({leads.length})</h2>
+        </div>
+        <button
+          onClick={fetchLeads}
+          disabled={loading}
+          className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-600 transition shrink-0"
+          title="Refresh Resumes List"
+        >
+          <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+        </button>
       </div>
 
       {leads.length === 0 ? (

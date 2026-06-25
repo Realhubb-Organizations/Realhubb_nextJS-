@@ -3,10 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { organizationSchema, webSiteSchema } from "@/lib/structuredData";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import ChatWidget from "@/components/lead/ChatWidget";
-import LeadPopup from "@/components/lead/LeadPopup";
+import ClientLayoutWrapper from "./ClientLayoutWrapper";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -114,11 +111,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-cream font-body text-navy antialiased flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 min-h-[85vh]">{children}</main>
-        <Footer />
-        <ChatWidget />
-        <LeadPopup />
+        <ClientLayoutWrapper>
+          {children}
+        </ClientLayoutWrapper>
 
         {/* Google Analytics 4 */}
         <Script

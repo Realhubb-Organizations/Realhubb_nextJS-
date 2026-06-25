@@ -53,18 +53,13 @@ async function test() {
     const app = getAdminApp();
     if (!app) return;
     const db = admin.firestore(app);
-    console.log("Attempting to connect to collection 'properties'...");
-    const snap = await db.collection("properties").get();
-    console.log(`Connected successfully! Found ${snap.size} properties.`);
-    
-    // Check other collections
-    for (const coll of ["properties", "blogPosts", "developers", "team", "faqs"]) {
-      const s = await db.collection(coll).get();
-      console.log(`Collection '${coll}': ${s.size} documents.`);
-      if (s.size > 0) {
-        console.log(`Sample doc from ${coll}:`, s.docs[0].id, JSON.stringify(s.docs[0].data()).slice(0, 100));
-      }
-    }
+    console.log("Querying 'leads' collection...");
+    const snap = await db.collection("leads").get();
+    console.log(`Found ${snap.size} leads.`);
+    snap.docs.forEach((doc) => {
+      const data = doc.data();
+      console.log(`ID: ${doc.id} | Name: ${data.name} | Type: ${data.type} | ResumeUrl: ${data.resumeUrl}`);
+    });
   } catch (err) {
     console.error("Connection failed with error:", err);
   }

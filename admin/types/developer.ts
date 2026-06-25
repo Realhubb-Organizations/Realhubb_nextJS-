@@ -9,6 +9,7 @@ export interface AdminDeveloper {
   awards: string[];
   experience: string;
   featured: boolean;
+  cities?: string[];
 }
 
 export const EMPTY_DEVELOPER: Omit<AdminDeveloper, "id"> = {
@@ -21,4 +22,5 @@ export const EMPTY_DEVELOPER: Omit<AdminDeveloper, "id"> = {
   awards: [],
   experience: "",
   featured: false,
+  cities: [],
 };

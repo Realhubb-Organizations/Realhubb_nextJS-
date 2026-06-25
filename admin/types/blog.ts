@@ -12,6 +12,7 @@ export interface AdminBlogPost {
   publishedAt: string;
   updatedAt: string;
   published: boolean;
+  readTime?: string;
 }
 
 export const EMPTY_BLOG_POST: Omit<AdminBlogPost, "id"> = {
@@ -27,4 +28,5 @@ export const EMPTY_BLOG_POST: Omit<AdminBlogPost, "id"> = {
   publishedAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
   published: false,
+  readTime: "",
 };

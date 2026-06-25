@@ -90,3 +90,25 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    const session = request.cookies.get("realhubb-admin-session");
+    if (!session || session.value !== "1") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const db = getAdminDb();
+    const snap = await db.collection("leads").orderBy("timestamp", "desc").get();
+    
+    const leads = snap.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return NextResponse.json({ success: true, leads });
+  } catch (err) {
+    console.error("Error in GET leads API route:", err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
+  }
+}

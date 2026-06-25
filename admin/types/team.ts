@@ -7,6 +7,7 @@ export interface AdminTeamMember {
   email: string;
   linkedin: string;
   phone: string;
+  order?: number;
 }
 
 export const EMPTY_TEAM_MEMBER: Omit<AdminTeamMember, "id"> = {
@@ -17,4 +18,5 @@ export const EMPTY_TEAM_MEMBER: Omit<AdminTeamMember, "id"> = {
   email: "",
   linkedin: "",
   phone: "",
+  order: 0,
 };

@@ -13,5 +13,6 @@ export { default as LeadsPanel } from './LeadsPanel';
 export { default as ImageUpload } from './ImageUpload';
 export { default as MultiImageUpload } from './MultiImageUpload';
 
+export { default as AnalyticsSection } from './AnalyticsSection';
 export type { ImageUploadProps } from './ImageUpload';
 export type { MultiImageUploadProps } from './MultiImageUpload';
