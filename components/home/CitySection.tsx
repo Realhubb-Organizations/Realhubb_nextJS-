@@ -65,7 +65,7 @@ export default function CitySection({ properties }: Props) {
     <section className="py-20 bg-cream">
       <div className="page-padding">
         <div className="text-center mb-10">
-          <p className="section-overline text-gold-800 mb-2">Explore by Location</p>
+          <p className="section-overline text-gold mb-2">Explore by Location</p>
           <h2 className="font-heading text-3xl md:text-4xl text-navy font-normal">
             Properties by City
           </h2>
@@ -81,7 +81,7 @@ export default function CitySection({ properties }: Props) {
               className={`px-5 py-2 rounded-full text-sm font-normal transition-all ${
                 activeCity === tab.value
                   ? "bg-navy text-white shadow-md"
-                  : "bg-white text-navy/75 hover:bg-navy/5 border border-gray-200"
+                  : "bg-white text-navy/60 hover:bg-navy/5 border border-gray-200"
               }`}
             >
               {tab.label}

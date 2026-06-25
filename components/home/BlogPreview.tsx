@@ -16,14 +16,14 @@ export default function BlogPreview({ posts }: Props) {
       <div className="page-padding">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="section-overline text-gold-800 mb-2">Expert Insights</p>
+            <p className="section-overline text-gold mb-2">Expert Insights</p>
             <h2 className="font-heading text-3xl md:text-4xl text-navy font-normal">
               Real Estate Insights
             </h2>
           </div>
           <Link
             href="/blog"
-            className="hidden md:block text-sm text-navy/75 hover:text-gold-800 transition-colors border-b border-navy/25 hover:border-gold-800 pb-0.5"
+            className="hidden md:block text-sm text-navy/60 hover:text-gold transition-colors border-b border-navy/20 hover:border-gold pb-0.5"
           >
             View All Articles →
           </Link>
@@ -46,20 +46,20 @@ export default function BlogPreview({ posts }: Props) {
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center bg-navy/5">
-                      <span className="section-overline text-gold-800">{post.category}</span>
+                      <span className="section-overline text-gold">{post.category}</span>
                     </div>
                   )}
                 </div>
                 <div className="p-5">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="text-gold-800 text-xs section-overline">{post.category}</span>
+                    <span className="text-gold text-xs section-overline">{post.category}</span>
                     <span className="text-gray-300 text-xs">·</span>
-                    <span className="text-slate-500 text-xs">{post.readTime}</span>
+                    <span className="text-gray-400 text-xs">{post.readTime}</span>
                   </div>
                   <h3 className="font-heading text-navy text-base font-normal group-hover:text-gold transition-colors line-clamp-2 mb-2">
                     {post.title}
                   </h3>
-                  <p className="text-slate-500 text-sm line-clamp-2">{post.excerpt}</p>
+                  <p className="text-gray-400 text-sm line-clamp-2">{post.excerpt}</p>
                 </div>
               </Link>
             </RevealCard>
@@ -67,7 +67,7 @@ export default function BlogPreview({ posts }: Props) {
         </RevealGrid>
 
         <div className="mt-8 text-center md:hidden">
-          <Link href="/blog" className="text-navy/75 text-sm hover:text-gold-800 transition-colors">
+          <Link href="/blog" className="text-navy/60 text-sm hover:text-gold transition-colors">
             Read all articles →
           </Link>
         </div>

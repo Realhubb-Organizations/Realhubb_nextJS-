@@ -69,17 +69,17 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
 
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
-        <p className="section-overline text-gold-800 mb-1">{p.developer}</p>
+        <p className="section-overline text-gold mb-1">{p.developer}</p>
         <h3 className="font-heading text-navy text-lg font-normal group-hover:text-gold transition-colors mb-2 line-clamp-1">
           {p.name}
         </h3>
 
-        <div className="flex items-center gap-1 text-slate-500 text-xs mb-3">
+        <div className="flex items-center gap-1 text-gray-400 text-xs mb-3">
           <MapPin className="w-3.5 h-3.5 shrink-0" />
           <span className="truncate">{p.location}, {p.city.charAt(0).toUpperCase() + p.city.slice(1)}</span>
         </div>
 
-        <div className="flex items-center gap-4 text-xs text-slate-500 mb-4">
+        <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
           {p.bedrooms && (
             <span className="flex items-center gap-1">
               <BedDouble className="w-3.5 h-3.5" /> {p.bedrooms}
@@ -91,7 +91,7 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
             </span>
           )}
           {p.rera && (
-            <span className="flex items-center gap-1 text-green-700">
+            <span className="flex items-center gap-1 text-green-600">
               <Shield className="w-3.5 h-3.5" /> RERA
             </span>
           )}
@@ -101,10 +101,10 @@ export default function PropertyCard({ property: p, imagePriority = false }: Pro
           <div>
             <p className="font-heading text-navy text-lg font-normal">{p.price}</p>
             {p.possession && (
-              <p className="text-slate-500 text-xs">Possession: {p.possession}</p>
+              <p className="text-gray-400 text-xs">Possession: {p.possession}</p>
             )}
           </div>
-          <span className="text-xs text-gold-800 border border-gold-800/30 px-3 py-1 rounded-full group-hover:bg-gold group-hover:border-gold group-hover:text-navy transition-all shrink-0">
+          <span className="text-xs text-gold border border-gold/30 px-3 py-1 rounded-full group-hover:bg-gold group-hover:text-navy transition-all shrink-0">
             View →
           </span>
         </div>

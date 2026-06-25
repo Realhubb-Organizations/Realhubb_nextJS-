@@ -10,11 +10,11 @@ export default function LocationLinks() {
     <section className="py-20 bg-white">
       <div className="page-padding">
         <div className="text-center mb-10">
-          <p className="section-overline text-gold-800 mb-2">Locality Guides</p>
+          <p className="section-overline text-gold mb-2">Locality Guides</p>
           <h2 className="font-heading text-3xl md:text-4xl text-navy font-semibold">
             Top Localities in Bangalore
           </h2>
-          <p className="text-slate-500 text-sm mt-3 max-w-xl mx-auto">
+          <p className="text-gray-400 text-sm mt-3 max-w-xl mx-auto">
             Explore property prices, connectivity, and investment outlook for every major locality.
           </p>
         </div>
@@ -32,7 +32,7 @@ export default function LocationLinks() {
                     {loc.area}
                   </span>
                 </div>
-                <p className="text-slate-500 text-xs">{loc.avgPriceSqft}</p>
+                <p className="text-gray-400 text-xs">{loc.avgPriceSqft}</p>
               </Link>
             </RevealCard>
           ))}
@@ -41,7 +41,7 @@ export default function LocationLinks() {
         <div className="mt-8 text-center">
           <Link
             href="/real-estate/bangalore"
-            className="text-navy/75 text-sm hover:text-gold-800 transition-colors border-b border-navy/25 hover:border-gold-800"
+            className="text-navy/60 text-sm hover:text-gold transition-colors border-b border-navy/20 hover:border-gold"
           >
             Explore all Bangalore localities →
           </Link>

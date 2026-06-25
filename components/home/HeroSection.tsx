@@ -234,7 +234,7 @@ export default function HeroSection() {
               className="bg-white rounded-xl shadow-2xl p-5 w-full max-w-[310px]"
             >
               {/* Card header */}
-              <p className="text-gold-800 text-[10px] font-normal tracking-[0.2em] uppercase">
+              <p className="text-[#D7A764] text-[10px] font-normal tracking-[0.2em] uppercase">
                 01 — Quick Search
               </p>
               <h2 className="text-[#00274D] text-xl font-normal mb-5">
@@ -354,7 +354,7 @@ export default function HeroSection() {
             }`}
           >
             {/* Ordinal number */}
-            <span className="absolute top-0 right-4 text-[11px] text-white/75 font-light tracking-wide">
+            <span className="absolute top-0 right-4 text-[11px] text-white/20 font-light tracking-wide">
               {String(i + 1).padStart(2, "0")}
             </span>
 

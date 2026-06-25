@@ -17,11 +17,11 @@ export default function HomeFaqs({ faqs }: Props) {
     <section className="py-20 bg-cream border-t border-gray-100">
       <div className="page-padding max-w-4xl mx-auto">
         <FadeInOnScroll direction="up">
-          <p className="text-gold-800 text-[10px] tracking-[0.28em] uppercase font-normal mb-3 text-center">
+          <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-3 text-center">
             FAQ
           </p>
           <h2 className="text-3xl md:text-[40px] font-heading font-normal text-navy leading-tight mb-10 text-center">
-            Frequently asked <span className="text-gold-800">questions.</span>
+            Frequently asked <span className="text-gold">questions.</span>
           </h2>
         </FadeInOnScroll>
 

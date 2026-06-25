@@ -9,11 +9,11 @@ export default function HomeSEOContent() {
 
       <div className="page-padding max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <p className="text-gold-800 text-[10px] tracking-[0.28em] uppercase font-normal mb-3">
+          <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-3">
             Real Estate Advisory
           </p>
           <h2 className="font-heading text-3xl md:text-4xl text-navy font-normal">
-            Your Trusted Guide to <span className="text-gold-800">Indian Real Estate</span>
+            Your Trusted Guide to <span className="text-gold">Indian Real Estate</span>
           </h2>
         </div>
 
