@@ -230,7 +230,8 @@ function PushNotificationPanel() {
     setSending(true);
     setResult(null);
     try {
-      const res = await sendNotification({ title, body, url });
+      const token = await auth.currentUser?.getIdToken();
+      const res = await sendNotification({ title, body, url }, token);
       setResult(res);
       setTitle("");
       setBody("");

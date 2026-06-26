@@ -77,6 +77,25 @@ async function translateAny(text: string, target: string): Promise<string> {
 }
 
 export async function POST(request: NextRequest) {
+  // Validate request origin and custom header to prevent abuse as a public proxy
+  const referer = request.headers.get("referer") || "";
+  const origin = request.headers.get("origin") || "";
+  const checkUrl = referer || origin;
+
+  const allowedDomains = [
+    "realhubb.in",
+    "vercel.app",
+    "localhost",
+    "127.0.0.1"
+  ];
+
+  const hasAllowedDomain = allowedDomains.some((dom) => checkUrl.includes(dom));
+  const hasCustomHeader = request.headers.get("x-realhubb-request") === "true";
+
+  if (!hasAllowedDomain || !hasCustomHeader) {
+    return NextResponse.json({ error: "Unauthorized request" }, { status: 403 });
+  }
+
   let body: { text?: string; target?: string };
   try {
     body = await request.json();
@@ -95,17 +114,3 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const text = searchParams.get("text");
-  const target = searchParams.get("target") ?? "en";
-
-  if (!text) return NextResponse.json({ error: "text required" }, { status: 400 });
-
-  try {
-    const translated = await translateAny(text, target);
-    return NextResponse.json({ translated });
-  } catch {
-    return NextResponse.json({ error: "Translation failed" }, { status: 500 });
-  }
-}

@@ -32,7 +32,10 @@ async function translateField(text: string, target: string): Promise<string> {
   if (!text) return text;
   const res = await fetch("/api/translate", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      "x-realhubb-request": "true"
+    },
     body: JSON.stringify({ text, target }),
   });
   if (!res.ok) throw new Error("translate failed");

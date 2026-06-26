@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FileText, Mail, Phone, Briefcase, Calendar, Download, RefreshCw } from 'lucide-react';
+import { auth } from '@/lib/firebase';
 
 interface Lead {
   id: string;
@@ -25,7 +26,12 @@ export default function LeadsPanel() {
     try {
       setLoading(true);
       setError(false);
-      const res = await fetch('/api/leads');
+      const token = await auth.currentUser?.getIdToken();
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const res = await fetch('/api/leads', { headers });
       if (!res.ok) throw new Error('Failed to fetch leads');
       const data = await res.json();
       if (data.success && data.leads) {

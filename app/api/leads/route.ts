@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { getAdminDb } from "@/lib/firebase-admin";
+import { getAdminDb, getAdminAuth } from "@/lib/firebase-admin";
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     // 2. Forward to Google Sheet & Email (Google Apps Script Web App)
     let googleSheetSaved = false;
-    const googleScriptUrl = process.env.GOOGLE_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbyZHMdf-F61QxgHF2Gbx3A_rltJBD7Xn7W_0S6T4e0XuLYFGzKkaxwQ3dlRVTxVkbc_wg/exec"; // Default/Fallback to existing macro if set
+    const googleScriptUrl = process.env.GOOGLE_SCRIPT_URL; // Read strictly from environment
 
     if (googleScriptUrl) {
       try {
@@ -93,8 +93,18 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const session = request.cookies.get("realhubb-admin-session");
-    if (!session || session.value !== "1") {
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const idToken = authHeader.split("Bearer ")[1];
+    const auth = getAdminAuth();
+    
+    try {
+      await auth.verifyIdToken(idToken);
+    } catch (authErr) {
+      console.error("Leads access unauthorized:", authErr);
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import webpush from "web-push";
-import { getAdminDb } from "@/lib/firebase-admin";
+import { getAdminDb, getAdminAuth } from "@/lib/firebase-admin";
 
 webpush.setVapidDetails(
   process.env.VAPID_SUBJECT ?? "mailto:info@realhubb.in",
@@ -10,6 +10,21 @@ webpush.setVapidDetails(
 
 export async function POST(request: NextRequest) {
   try {
+    // 1. Verify Authorization Header
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const idToken = authHeader.split("Bearer ")[1];
+    const auth = getAdminAuth();
+    try {
+      await auth.verifyIdToken(idToken);
+    } catch (authErr) {
+      console.error("Push notification unauthorized:", authErr);
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json() as { title: string; body: string; url?: string };
 
     const db = getAdminDb();

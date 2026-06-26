@@ -4,12 +4,16 @@ export interface NotifPayload {
   url?: string;
 }
 
-export async function sendNotification(payload: NotifPayload) {
+export async function sendNotification(payload: NotifPayload, idToken?: string) {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (idToken) {
+    headers["Authorization"] = `Bearer ${idToken}`;
+  }
   const res = await fetch("/api/send-notification", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify(payload),
   });
 
