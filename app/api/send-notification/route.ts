@@ -2,11 +2,17 @@ import { type NextRequest, NextResponse } from "next/server";
 import webpush from "web-push";
 import { getAdminDb, getAdminAuth } from "@/lib/firebase-admin";
 
-webpush.setVapidDetails(
-  process.env.VAPID_SUBJECT ?? "mailto:info@realhubb.in",
-  process.env.VAPID_PUBLIC_KEY ?? "",
-  process.env.VAPID_PRIVATE_KEY ?? ""
-);
+const VAPID_SUBJECT = process.env.VAPID_SUBJECT ?? "mailto:info@realhubb.in";
+const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY;
+const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY;
+
+if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
+  try {
+    webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
+  } catch (err) {
+    console.error("Error setting VAPID details:", err);
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,6 +32,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json() as { title: string; body: string; url?: string };
+
+    if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
+      console.warn("VAPID keys are not configured. Skipping push notification sending.");
+      return NextResponse.json({
+        sent: 0,
+        expired: 0,
+        warning: "VAPID keys are not configured on the server."
+      });
+    }
 
     const db = getAdminDb();
     const snap = await db.collection("pushSubscriptions").get();
