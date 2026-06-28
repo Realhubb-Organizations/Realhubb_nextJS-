@@ -22,7 +22,6 @@ import AnalyticsSection from "@/admin/components/AnalyticsSection";
 import {
   getProperties, getBlogPosts, getDevelopers, getTeamMembers,
 } from "@/lib/firestoreService";
-import { sendNotification } from "@/lib/sendNotification";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
@@ -208,107 +207,6 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
-// ── Push Notification Panel ────────────────────────────────────────────────────
-function PushNotificationPanel() {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [url, setUrl] = useState("/");
-  const [sending, setSending] = useState(false);
-  const [result, setResult] = useState<{ sent: number; failed: number } | null>(null);
-  const [subCount, setSubCount] = useState<number | null>(null);
-
-  // Count subscribers on mount
-  useEffect(() => {
-    getDocs(collection(db, "pushSubscriptions"))
-      .then((snap) => setSubCount(snap.size))
-      .catch(() => setSubCount(0));
-  }, []);
-
-  const handleSend = async () => {
-    if (!title.trim() || !body.trim()) return;
-    setSending(true);
-    setResult(null);
-    try {
-      const token = await auth.currentUser?.getIdToken();
-      const res = await sendNotification({ title, body, url }, token);
-      setResult(res);
-      setTitle("");
-      setBody("");
-      setUrl("/");
-    } catch (e) {
-      console.error(e);
-      setResult({ sent: 0, failed: -1 });
-    } finally {
-      setSending(false);
-    }
-  };
-
-  return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-5">
-        <div className="flex items-center gap-2">
-          <Bell className="h-4 w-4 text-indigo-500" />
-          <p className="text-sm font-semibold text-slate-700">Send Push Notification</p>
-        </div>
-        {subCount !== null && (
-          <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
-            {subCount} subscriber{subCount !== 1 ? "s" : ""}
-          </span>
-        )}
-      </div>
-
-      <div className="space-y-3">
-        <div>
-          <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block mb-1">Title *</label>
-          <input value={title} onChange={(e) => setTitle(e.target.value)}
-            placeholder="🏠 New Property Alert!"
-            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition" />
-        </div>
-        <div>
-          <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block mb-1">Message *</label>
-          <textarea value={body} onChange={(e) => setBody(e.target.value)}
-            placeholder="Ramky Fortuna — 1,2,3 BHK in Whitefield from ₹79L"
-            rows={2}
-            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition resize-none" />
-        </div>
-        <div>
-          <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block mb-1">Link (URL)</label>
-          <input value={url} onChange={(e) => setUrl(e.target.value)}
-            placeholder="/property/ramky-fortuna-whitefield"
-            className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition" />
-        </div>
-
-        <button
-          onClick={handleSend}
-          disabled={sending || !title.trim() || !body.trim()}
-          className="w-full py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white text-sm font-medium transition flex items-center justify-center gap-2 shadow"
-        >
-          {sending ? (
-            <><Loader2 className="h-4 w-4 animate-spin" /> Sending…</>
-          ) : (
-            <><Bell className="h-4 w-4" /> Send to All Subscribers</>
-          )}
-        </button>
-
-        {result && (
-          <div className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg ${
-            result.failed === -1 ? "bg-red-50 text-red-600" :
-            result.sent > 0 ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
-          }`}>
-            {result.failed === -1 ? (
-              "❌ Failed to send. Check server logs."
-            ) : (
-              <><CheckCircle className="h-4 w-4 shrink-0" /> Sent to {result.sent} device{result.sent !== 1 ? "s" : ""}
-                {result.failed > 0 ? ` · ${result.failed} failed` : ""}</>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 // ── Overview Section ───────────────────────────────────────────────────────────
 interface OverviewProps { onNavigate: (s: Section) => void; }
 
@@ -507,8 +405,8 @@ function OverviewSection({ onNavigate }: OverviewProps) {
         </div>
       </div>
 
-      {/* Content status + Quick actions + Push Notif */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      {/* Content status + Quick actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Content completeness */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-5">
@@ -591,9 +489,6 @@ function OverviewSection({ onNavigate }: OverviewProps) {
             ))}
           </div>
         </div>
-
-        {/* ── Push Notification Panel ── */}
-        <PushNotificationPanel />
       </div>
     </div>
   );
