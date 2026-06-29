@@ -20,7 +20,9 @@ function getAdminApp(): App | null {
     if (privateKey.startsWith("'") && privateKey.endsWith("'")) {
       privateKey = privateKey.substring(1, privateKey.length - 1).trim();
     }
-    // Replace escaped newlines with actual newlines
+    // Replace backslash followed by a newline with just a newline
+    privateKey = privateKey.replace(/\\\r?\n/g, "\n");
+    // Replace literal backslash-n text with actual newlines
     privateKey = privateKey.replace(/\\n/g, "\n");
   }
 
