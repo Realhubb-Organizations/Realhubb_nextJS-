@@ -24,14 +24,34 @@ function getAdminApp(): App | null {
     privateKey = privateKey.replace(/\\n/g, "\n");
   }
 
-  if (!projectId || !clientEmail || !privateKey) return null;
+  if (!projectId || !clientEmail || !privateKey) {
+    console.warn("Firebase Admin setup skipped: missing configurations.", {
+      hasProjectId: !!projectId,
+      hasClientEmail: !!clientEmail,
+      hasPrivateKey: !!privateKey
+    });
+    return null;
+  }
 
   if (getApps().length) return getApps()[0];
 
-  return initializeApp({
-    credential: cert({ projectId, clientEmail, privateKey }),
+  console.log("Initializing Firebase Admin with:", {
     projectId,
+    clientEmail,
+    privateKeyLength: privateKey.length,
+    privateKeyStart: privateKey.substring(0, 30),
+    privateKeyEnd: privateKey.substring(privateKey.length - 30)
   });
+
+  try {
+    return initializeApp({
+      credential: cert({ projectId, clientEmail, privateKey }),
+      projectId,
+    });
+  } catch (error) {
+    console.error("Firebase Admin initialization error:", error);
+    throw error;
+  }
 }
 
 export function getAdminDb(): Firestore {
