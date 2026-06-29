@@ -16,10 +16,7 @@ import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 import CommentSection from "@/components/blog/CommentSection";
 import FaqAccordion from "@/components/faq/FaqAccordion";
 import BlogReaderWrapper from "@/components/blog/BlogReaderWrapper";
-import {
-  BlogTranslationProvider,
-  TranslatedContent,
-} from "@/components/blog/TranslatableArticle";
+import BlogMarkdown from "@/components/blog/BlogMarkdown";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 type Params = Promise<{ slug: string }>;
@@ -80,31 +77,29 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(blogFaqs)) }} />
       )}
 
-      <BlogTranslationProvider post={{ title: post.title, excerpt: post.excerpt, content: post.content }}>
-        <div className="pt-20">
-          <div className="page-padding max-w-7xl mx-auto pt-6">
-            <Breadcrumbs items={breadcrumbs} />
-          </div>
-          <BlogReaderWrapper
-            post={{
-              title: post.title,
-              slug: post.slug,
-              excerpt: post.excerpt,
-              content: post.content,
-              category: post.category,
-              readTime: post.readTime,
-              publishedAt: post.publishedAt,
-              author: post.author,
-              coverImage: coverImage,
-              tags: post.tags,
-            }}
-            blogFaqs={blogFaqs}
-            related={related}
-          >
-            <TranslatedContent />
-          </BlogReaderWrapper>
+      <div className="pt-20">
+        <div className="page-padding max-w-7xl mx-auto pt-6">
+          <Breadcrumbs items={breadcrumbs} />
         </div>
-      </BlogTranslationProvider>
+        <BlogReaderWrapper
+          post={{
+            title: post.title,
+            slug: post.slug,
+            excerpt: post.excerpt,
+            content: post.content,
+            category: post.category,
+            readTime: post.readTime,
+            publishedAt: post.publishedAt,
+            author: post.author,
+            coverImage: coverImage,
+            tags: post.tags,
+          }}
+          blogFaqs={blogFaqs}
+          related={related}
+        >
+          <BlogMarkdown content={post.content} />
+        </BlogReaderWrapper>
+      </div>
     </>
   );
 }

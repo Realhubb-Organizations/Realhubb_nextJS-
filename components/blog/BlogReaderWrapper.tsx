@@ -18,7 +18,6 @@ import {
   Calendar
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { TranslatedTitle, TranslatedExcerpt, LanguageControl } from "./TranslatableArticle";
 import CommentSection from "./CommentSection";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 import { companyInfo } from "@/data/company";
@@ -180,11 +179,6 @@ export default function BlogReaderWrapper({
 
           {/* Controls */}
           <div className="flex items-center gap-4">
-            {/* Language control (Reader mode) */}
-            <div className="hidden sm:block border-r border-white/10 pr-4 scale-90 origin-right">
-              <LanguageControl dark />
-            </div>
-
             {/* Font Size controls */}
             <div className="flex items-center gap-1 border-r border-white/10 pr-4">
               <button
@@ -270,8 +264,12 @@ export default function BlogReaderWrapper({
                 <Calendar className="h-3 w-3" /> {post.publishedAt}
               </span>
             </div>
-            <TranslatedTitle className="speakable-title font-heading text-3xl md:text-4xl text-white font-normal leading-tight" />
-            <TranslatedExcerpt className="speakable-summary text-white/60 text-base mt-4 font-light leading-relaxed" />
+            <h1 className="speakable-title font-heading text-3xl md:text-4xl text-white font-normal leading-tight">
+              {post.title}
+            </h1>
+            <p className="speakable-summary text-white/60 text-base mt-4 font-light leading-relaxed">
+              {post.excerpt}
+            </p>
           </div>
         </div>
       )}
@@ -345,7 +343,9 @@ export default function BlogReaderWrapper({
                 <span className="text-gold font-heading text-xs uppercase tracking-widest font-semibold block mb-3">
                   {post.category}
                 </span>
-                <TranslatedTitle className="speakable-title font-heading text-3xl md:text-4xl lg:text-5xl text-white font-normal leading-tight mb-4" />
+                <h1 className="speakable-title font-heading text-3xl md:text-4xl lg:text-5xl text-white font-normal leading-tight mb-4">
+                  {post.title}
+                </h1>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 text-xs text-stone-400 font-light mt-4">
                   <span className="flex items-center gap-1.5">
                     <User className="h-3.5 w-3.5 text-gold/80" /> {post.author}
@@ -406,16 +406,6 @@ export default function BlogReaderWrapper({
                   className="object-cover"
                   priority
                 />
-              </div>
-            )}
-
-            {/* Inline translation widget (Normal Mode Only) */}
-            {!readMode && (
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6 select-none">
-                <span className="text-xs font-semibold tracking-wider text-navy/40 uppercase">
-                  Translate Article
-                </span>
-                <LanguageControl />
               </div>
             )}
 
