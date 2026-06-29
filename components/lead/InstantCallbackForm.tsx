@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { trackLead } from "@/lib/ga";
+import { submitLead } from "@/lib/leads";
 
 interface Props {
   city?: string;
@@ -18,20 +19,14 @@ export default function InstantCallbackForm({ city }: Props) {
     if (!name.trim() || !phone.trim()) return;
     setLoading(true);
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          phone,
-          city: city || "",
-          type: "callback",
-        }),
+      const res = await submitLead({
+        name,
+        phone,
+        city: city || "",
+        type: "callback",
       });
 
-      if (response.ok) {
+      if (res.success) {
         setSubmitted(true);
         trackLead(city ? `location/${city}` : "generic");
       } else {

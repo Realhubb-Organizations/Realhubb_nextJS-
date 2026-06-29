@@ -1,7 +1,3 @@
-import { type NextRequest, NextResponse } from "next/server";
-
-// Google's free translate_a/single endpoint accepts the text via a `q` query
-// param, so very long blog content has to be chunked before being sent upstream.
 const CHUNK_SIZE = 1800;
 const CONCURRENCY = 6;
 
@@ -53,9 +49,6 @@ const TAG_SPLIT_RE = /(<[^>]+>)/g;
 const IS_TAG_RE = /^<[^>]+>$/;
 const HAS_LETTERS_RE = /\p{L}/u;
 
-// Splits HTML into alternating tag / text segments so only the visible text
-// between tags gets sent to the translator — tag names, attributes (e.g.
-// inline `style`) and entities must survive untouched or markup breaks.
 async function translateHtml(html: string, target: string): Promise<string> {
   const segments = html.split(TAG_SPLIT_RE).filter((s) => s.length > 0);
 
@@ -72,45 +65,6 @@ async function translateHtml(html: string, target: string): Promise<string> {
 
 const LOOKS_LIKE_HTML_RE = /<[a-z][\s\S]*>/i;
 
-async function translateAny(text: string, target: string): Promise<string> {
+export async function translateAny(text: string, target: string): Promise<string> {
   return LOOKS_LIKE_HTML_RE.test(text) ? translateHtml(text, target) : translatePlainText(text, target);
 }
-
-export async function POST(request: NextRequest) {
-  // Validate request origin and custom header to prevent abuse as a public proxy
-  const referer = request.headers.get("referer") || "";
-  const origin = request.headers.get("origin") || "";
-  const checkUrl = referer || origin;
-
-  const allowedDomains = [
-    "realhubb.in",
-    "vercel.app",
-    "localhost",
-    "127.0.0.1"
-  ];
-
-  const hasAllowedDomain = allowedDomains.some((dom) => checkUrl.includes(dom));
-  const hasCustomHeader = request.headers.get("x-realhubb-request") === "true";
-
-  if (!hasAllowedDomain || !hasCustomHeader) {
-    return NextResponse.json({ error: "Unauthorized request" }, { status: 403 });
-  }
-
-  let body: { text?: string; target?: string };
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
-  }
-
-  const { text, target = "en" } = body;
-  if (!text) return NextResponse.json({ error: "text required" }, { status: 400 });
-
-  try {
-    const translated = await translateAny(text, target);
-    return NextResponse.json({ translated });
-  } catch {
-    return NextResponse.json({ error: "Translation failed" }, { status: 500 });
-  }
-}
-

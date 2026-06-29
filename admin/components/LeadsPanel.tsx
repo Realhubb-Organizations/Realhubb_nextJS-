@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { FileText, Mail, Phone, Briefcase, Calendar, Download, RefreshCw } from 'lucide-react';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 
 interface Lead {
   id: string;
@@ -26,22 +27,19 @@ export default function LeadsPanel() {
     try {
       setLoading(true);
       setError(false);
-      const token = await auth.currentUser?.getIdToken();
-      const headers: Record<string, string> = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      const res = await fetch('/api/leads', { headers });
-      if (!res.ok) throw new Error('Failed to fetch leads');
-      const data = await res.json();
-      if (data.success && data.leads) {
-        const resumesOnly = data.leads.filter((lead: Lead) => lead.type === 'career');
-        setLeads(resumesOnly);
-      } else {
-        throw new Error(data.error || 'Unknown error');
-      }
+      
+      const leadsQuery = query(collection(db, 'leads'), orderBy('timestamp', 'desc'));
+      const snap = await getDocs(leadsQuery);
+      
+      const leadsData: Lead[] = snap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Lead));
+
+      const resumesOnly = leadsData.filter((lead: Lead) => lead.type === 'career');
+      setLeads(resumesOnly);
     } catch (err) {
-      console.error('Error loading resumes from API:', err);
+      console.error('Error loading resumes from Firestore:', err);
       setError(true);
     } finally {
       setLoading(false);

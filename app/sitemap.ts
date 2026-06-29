@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllPropertySlugs, getAllBlogSlugs, getAllDeveloperSlugs } from "@/lib/firestoreServerService";
 import { locations } from "@/data/locations";
 
-export const revalidate = 3600;
+export const dynamic = "force-static";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
 

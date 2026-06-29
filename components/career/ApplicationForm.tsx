@@ -5,6 +5,7 @@ import { Loader2, Send } from "lucide-react";
 import { trackLead } from "@/lib/ga";
 import { careerJobs } from "@/data/careerJobs";
 import { uploadRawToCloudinary } from "@/lib/uploadToCloudinary";
+import { submitLead } from "@/lib/leads";
 
 const inputClass =
   "w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold disabled:opacity-60";
@@ -50,24 +51,18 @@ export default function ApplicationForm() {
       }
 
       setUploadProgressMsg("Saving application...");
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          position: formData.position,
-          experience: formData.experience,
-          resumeUrl: resumeUrl || "No file uploaded",
-          coverLetter: formData.coverLetter || "",
-          type: "career",
-        }),
+      const res = await submitLead({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        position: formData.position,
+        experience: formData.experience,
+        resumeUrl: resumeUrl || "No file uploaded",
+        coverLetter: formData.coverLetter || "",
+        type: "career",
       });
 
-      if (response.ok) {
+      if (res.success) {
         trackLead("career");
         setSubmitted(true);
       } else {

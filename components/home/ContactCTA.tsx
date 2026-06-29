@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Phone, ArrowRight, MessageCircle } from "lucide-react";
 import { company } from "@/data/company";
 import { trackLead, trackWhatsApp } from "@/lib/ga";
+import { submitLead } from "@/lib/leads";
 
 export default function ContactCTA() {
   const [name, setName] = useState("");
@@ -16,19 +17,13 @@ export default function ContactCTA() {
     if (!name.trim() || !phone.trim()) return;
     setLoading(true);
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          phone,
-          type: "homepage_cta",
-        }),
+      const res = await submitLead({
+        name,
+        phone,
+        type: "homepage_cta",
       });
 
-      if (response.ok) {
+      if (res.success) {
         setSubmitted(true);
         trackLead("homepage_cta");
       } else {

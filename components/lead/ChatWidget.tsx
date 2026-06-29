@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Bot, X, Send } from "lucide-react";
 import { trackWhatsApp, trackLead } from "@/lib/ga";
+import { submitLead } from "@/lib/leads";
 import { company } from "@/data/company";
 import { generalFaq } from "@/data/faqData";
 import { cn } from "@/lib/utils";
@@ -73,19 +74,13 @@ export default function ChatWidget() {
     if (!name.trim() || !phone.trim()) return;
     setSubmitting(true);
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          phone,
-          type: "chatbot",
-        }),
+      const res = await submitLead({
+        name,
+        phone,
+        type: "chatbot",
       });
 
-      if (response.ok) {
+      if (res.success) {
         setSubmitted(true);
         trackLead("chatbot");
       } else {

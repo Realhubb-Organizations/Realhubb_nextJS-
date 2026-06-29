@@ -1,0 +1,34 @@
+# Next.js Static Export .htaccess Configuration for Hostinger
+RewriteEngine On
+
+# ── 1. Redirects (Migrated from next.config.ts) ──
+RewriteRule ^projects/?$ /projects/ongoing/bangalore [R=301,L]
+RewriteRule ^ongoing-projects/?$ /projects/ongoing/bangalore [R=301,L]
+RewriteRule ^upcoming-projects/?$ /projects/ongoing/bangalore [R=301,L]
+RewriteRule ^contact/?$ /contact-us [R=301,L]
+RewriteRule ^tools/emi-calculator/?$ /emi-calculator [R=301,L]
+RewriteRule ^tools/home-loan-eligibility/?$ /home-loan-eligibility [R=301,L]
+RewriteRule ^tools/rental-yield-calculator/?$ /rental-yield-calculator [R=301,L]
+RewriteRule ^tools/salary-advisor/?$ /salary-advisor [R=301,L]
+RewriteRule ^tools/currency-calculator/?$ /currency-calculator [R=301,L]
+
+# ── 2. Pretty URLs (Remove .html extension from browser address) ──
+# If request is not a directory
+RewriteCond %{REQUEST_FILENAME} !-d
+# If the path with .html extension exists as a file, rewrite internally
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.*?)/?$ $1.html [L]
+
+# ── 3. Fallback for Client-Side Routing (Next.js Dynamic Routing fallback) ──
+# If request is not a directory and is not a file, fallback to 404.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /404.html [L]
+
+# ── 4. Custom Security Headers (Migrated from next.config.ts) ──
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "DENY"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set X-Robots-Tag "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+</IfModule>

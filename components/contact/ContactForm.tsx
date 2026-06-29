@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { trackLead } from "@/lib/ga";
+import { submitLead } from "@/lib/leads";
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", city: "", message: "" });
@@ -12,18 +13,12 @@ export default function ContactForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
-          type: "contact",
-        }),
+      const res = await submitLead({
+        ...form,
+        type: "contact",
       });
 
-      if (response.ok) {
+      if (res.success) {
         setSubmitted(true);
         trackLead("contact-us");
       } else {

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { X, Send, CheckCircle2 } from "lucide-react";
 import { trackLead } from "@/lib/ga";
+import { submitLead } from "@/lib/leads";
 
 export default function LeadPopup() {
   const pathname = usePathname();
@@ -87,18 +88,12 @@ export default function LeadPopup() {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
-          type: "popup",
-        }),
+      const res = await submitLead({
+        ...form,
+        type: "popup",
       });
 
-      if (response.ok) {
+      if (res.success) {
         setSubmitted(true);
         try {
           localStorage.setItem("realhubb_popup_submitted", "true");

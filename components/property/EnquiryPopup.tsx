@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { trackLead } from "@/lib/ga";
+import { submitLead } from "@/lib/leads";
 
 interface Props {
   propertyName: string;
@@ -17,19 +18,13 @@ export default function EnquiryPopup({ propertyName, propertySlug }: Props) {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
-          type: "enquiry",
-          propertyName,
-        }),
+      const res = await submitLead({
+        ...form,
+        type: "enquiry",
+        propertyName,
       });
 
-      if (response.ok) {
+      if (res.success) {
         setSubmitted(true);
         trackLead(`property/${propertySlug}`);
       } else {
