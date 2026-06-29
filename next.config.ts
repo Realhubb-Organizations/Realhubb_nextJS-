@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
   // Enable gzip/Brotli compression for all responses
   compress: true,
   // Remove X-Powered-By header (minor security + saves bytes)
