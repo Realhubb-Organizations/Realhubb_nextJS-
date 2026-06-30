@@ -25,7 +25,18 @@ if (fs.existsSync(envPath)) {
 async function checkTeam() {
   const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
-  const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  let privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
+
+  if (privateKey) {
+    privateKey = privateKey.trim();
+    if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+      privateKey = privateKey.substring(1, privateKey.length - 1).trim();
+    }
+    if (privateKey.startsWith("'") && privateKey.endsWith("'")) {
+      privateKey = privateKey.substring(1, privateKey.length - 1).trim();
+    }
+    privateKey = privateKey.replace(/\\+n/g, "\n").replace(/\\+\r?\n/g, "\n").replace(/\\/g, "");
+  }
 
   if (!projectId || !clientEmail || !privateKey) {
     console.log("Missing credentials.");

@@ -20,10 +20,12 @@ function getAdminApp(): App | null {
     if (privateKey.startsWith("'") && privateKey.endsWith("'")) {
       privateKey = privateKey.substring(1, privateKey.length - 1).trim();
     }
-    // Replace backslash followed by a newline with just a newline
-    privateKey = privateKey.replace(/\\\r?\n/g, "\n");
-    // Replace literal backslash-n text with actual newlines
-    privateKey = privateKey.replace(/\\n/g, "\n");
+    // Replace all combinations of backslash and 'n' with actual newlines (e.g. \n, \\n, \\\n)
+    privateKey = privateKey.replace(/\\+n/g, "\n");
+    // Replace any backslashes followed by actual newlines/carriage returns
+    privateKey = privateKey.replace(/\\+\r?\n/g, "\n");
+    // Clean up any remaining backslashes (since PEM keys have no backslashes)
+    privateKey = privateKey.replace(/\\/g, "");
   }
 
   if (!projectId || !clientEmail || !privateKey) {
