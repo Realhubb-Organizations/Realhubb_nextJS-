@@ -5,8 +5,7 @@ import { Heart } from "lucide-react";
 import CommentForm from "./CommentForm";
 import { hasLiked, markLiked } from "./commentLikes";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbzbSl75EHN1VHLKh7wxgluasooHDXvF4OjaZosm5Ue9-XfnRcLOCUiUVX_TwnBgFkSa/exec";
+const API_URL = "/api/comments";
 
 export interface Comment {
   commentId: string;

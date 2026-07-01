@@ -5,8 +5,7 @@ import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
 import type { Comment } from "./CommentItem";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbzbSl75EHN1VHLKh7wxgluasooHDXvF4OjaZosm5Ue9-XfnRcLOCUiUVX_TwnBgFkSa/exec";
+const API_URL = "/api/comments";
 
 export default function CommentSection({ slug }: { slug: string }) {
   const [comments, setComments] = useState<Comment[]>([]);

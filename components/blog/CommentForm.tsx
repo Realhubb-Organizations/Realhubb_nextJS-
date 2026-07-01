@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbzbSl75EHN1VHLKh7wxgluasooHDXvF4OjaZosm5Ue9-XfnRcLOCUiUVX_TwnBgFkSa/exec";
+const API_URL = "/api/comments";
 
 interface CommentFormProps {
   slug: string;
