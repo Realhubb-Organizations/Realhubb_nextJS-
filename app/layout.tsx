@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import { organizationSchema, webSiteSchema } from "@/lib/structuredData";
 import ClientLayoutWrapper from "./ClientLayoutWrapper";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -98,16 +97,6 @@ export default function RootLayout({
           as="image"
           href="https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4/ik-thumbnail.jpg?tr=w-1280,q-60,f-webp"
           media="(min-width: 1024px)"
-        />
-
-        {/* ── Structured Data ────────────────────────────────────────────── */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}
         />
       </head>
       <body className="bg-cream font-body text-navy antialiased flex flex-col min-h-screen">

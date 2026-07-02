@@ -1,0 +1,16 @@
+echo "🚀 [Pre-Push Hook] Running local type-checks and production build check before push..."
+
+# 1. Type check
+npx tsc --noEmit || {
+  echo "❌ [Pre-Push Hook] TypeScript compiler checks failed. Push aborted."
+  exit 1
+}
+
+# 2. Build compilation check
+npm run build || {
+  echo "❌ [Pre-Push Hook] Production build compilation failed. Push aborted."
+  exit 1
+}
+
+echo "✅ [Pre-Push Hook] All checks passed. Proceeding with push."
+exit 0

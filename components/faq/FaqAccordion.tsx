@@ -32,7 +32,7 @@ export default function FaqAccordion({ items }: Props) {
               className="w-full flex items-center justify-between px-6 py-5 text-left focus:outline-none group"
               aria-expanded={isOpen}
             >
-              <h3 className="text-navy font-heading text-[15px] sm:text-base font-normal pr-4 group-hover:text-gold transition-colors duration-200">
+              <h3 className="speakable-title text-navy font-heading text-[15px] sm:text-base font-normal pr-4 group-hover:text-gold transition-colors duration-200">
                 {item.question}
               </h3>
               <div
@@ -60,7 +60,7 @@ export default function FaqAccordion({ items }: Props) {
               }}
             >
               <div style={{ overflow: "hidden" }}>
-                <div className="px-6 pb-6 pt-1 text-gray-500 text-sm sm:text-base leading-relaxed font-light border-t border-gray-50/50">
+                <div className="speakable-summary px-6 pb-6 pt-1 text-gray-500 text-sm sm:text-base leading-relaxed font-light border-t border-gray-50/50">
                   {item.answer}
                 </div>
               </div>

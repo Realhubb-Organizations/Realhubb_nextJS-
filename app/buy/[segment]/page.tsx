@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buySegmentMetadata } from "@/lib/seo";
-import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
+import { generatePageGraph } from "@/lib/structuredData";
 import { getAllProperties } from "@/lib/firestoreServerService";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
-import { properties as staticProperties } from "@/data/properties";
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 
@@ -112,10 +111,21 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }} />
-      {faqs.length > 0 && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqs)) }} />
-      )}
+      {/* JSON-LD Master Graph */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generatePageGraph({
+              url: `${SITE_URL}/buy/${segment}`,
+              title: `${label} for Sale 2026 | Best Price | RealHubb`,
+              description: intro,
+              breadcrumbs,
+              faq: faqs.length > 0 ? faqs : undefined,
+            })
+          ),
+        }}
+      />
 
       <div className="pt-20 bg-cream min-h-screen">
         <div className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
@@ -212,12 +222,12 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
                       className="border border-gray-150/80 rounded-2xl p-5 group transition-all duration-300 hover:border-gold/30"
                     >
                       <summary className="text-navy text-sm md:text-base font-normal cursor-pointer list-none flex justify-between items-center select-none">
-                        <span>{faq.question}</span>
+                        <span className="speakable-title">{faq.question}</span>
                         <span className="w-8 h-8 rounded-full bg-gold/10 text-gold flex items-center justify-center group-open:rotate-180 transition-transform duration-300 shrink-0 ml-4">
                           ▾
                         </span>
                       </summary>
-                      <p className="text-gray-500 text-sm mt-4 leading-relaxed font-light border-t border-gray-100 pt-4">
+                      <p className="speakable-summary text-gray-500 text-sm mt-4 leading-relaxed font-light border-t border-gray-100 pt-4">
                         {faq.answer}
                       </p>
                     </details>

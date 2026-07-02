@@ -2,44 +2,44 @@ import type { FaqItem, FaqCategory } from "@/types/seo";
 
 export const generalFaq: FaqItem[] = [
   {
-    question: "What is RealHubb Ventures?",
+    question: "How do I verify a builder's JDA status in Bangalore?",
     answer:
-      "RealHubb Ventures Pvt. Ltd. is a leading real estate channel partner operating across Bangalore, Hyderabad, and Chennai. We help buyers find verified, RERA-registered properties from top developers with zero brokerage.",
+      "To verify a Joint Development Agreement (JDA), cross-check the registered JDA document number on the Kaveri 2.0 portal, confirm the landowner share ratio, and verify that the specific flat number is allocated to the developer's share under the supplementary allocation deed.",
   },
   {
-    question: "Is RealHubb RERA registered?",
+    question: "What are the stamp duty and registration charges for buying a flat in Bangalore?",
     answer:
-      "Yes, RealHubb Ventures is RERA registered. We only deal with RERA-approved projects and ensure full transparency in all property transactions.",
+      "In Bangalore (Karnataka), the stamp duty is 5% of the property value, the registration fee is 1%, and surcharge/cess adds about 0.5%. Overall, budget approximately 6.5% of the guidance value or sale agreement value for government registry fees.",
   },
   {
-    question: "What are the charges for RealHubb's services?",
+    question: "How can I check if a new property project is RERA approved?",
     answer:
-      "RealHubb operates on a zero brokerage model for buyers. Our services — property search, site visits, documentation guidance, and home loan assistance — are completely free for buyers.",
+      "Visit the Karnataka RERA website (rera.karnataka.gov.in) or your state's respective RERA portal. Go to the 'Project Status' search tab, enter the project name or builder name, and verify the registration details, timeline, approvals, and any complaints filed.",
   },
   {
-    question: "What cities does RealHubb operate in?",
+    question: "What are the hidden charges over the base property price?",
     answer:
-      "RealHubb currently operates in Bangalore, Hyderabad, and Chennai, covering all major localities and micro-markets in each city.",
+      "Beyond the base cost, developers add mandatory charges: stamp duty & registration (6-7%), GST (5% for under-construction residential properties, 1% for affordable housing, 0% for ready-to-move-in with OC), car parking, corpus fund, advance maintenance, club membership, electricity/water deposit, and legal documentation fees.",
   },
   {
-    question: "How can I book a free site visit through RealHubb?",
+    question: "Is it better to buy a ready-to-move-in flat or an under-construction project?",
     answer:
-      "You can book a free site visit by calling us, sending a WhatsApp message, or filling out the enquiry form on any property page. Our advisor will contact you within 15 minutes.",
+      "Ready-to-move-in properties have zero GST, eliminate construction delay risks, and allow you to inspect the final quality, but cost 15-25% more. Under-construction projects offer flexible payment structures and higher capital appreciation, but require verification of the RERA possession date.",
   },
   {
-    question: "Does RealHubb help with home loans?",
+    question: "Does RealHubb charge any brokerage or service fees for home buyers?",
     answer:
-      "Yes, RealHubb has partnerships with leading banks and NBFCs. We can connect you with home loan advisors for the best rates and fastest approvals.",
+      "No, RealHubb operates on a 100% zero brokerage model. Our end-to-end services—including property search, personalized shortlisting, accompanied site visits, home loan assistance, and legal documentation guidance—are completely free for buyers.",
   },
   {
-    question: "How is the property information on RealHubb verified?",
+    question: "How does RealHubb verify the properties listed on the portal?",
     answer:
-      "Every property listed on RealHubb is personally verified by our team. We check RERA registration, builder credentials, project approvals, and construction quality before listing.",
+      "Every project listed undergoes a detailed screening. We verify RERA registration, cross-reference approved municipal plans (BBMP/BDA/BMRDA), check land title clarity, assess the builder's delivery track record, and monitor construction progress.",
   },
   {
-    question: "Can NRIs use RealHubb's services?",
+    question: "Can NRIs purchase residential properties through RealHubb?",
     answer:
-      "Yes, RealHubb actively works with NRI buyers. We provide virtual site visits, complete documentation support, and power of attorney guidance for overseas buyers.",
+      "Yes, NRIs can buy residential and commercial properties in India under FEMA guidelines. RealHubb provides specialized virtual site walkthroughs, video call verifications, legal Power of Attorney (POA) templates, and banking connections for NRI home loans.",
   },
 ];
 

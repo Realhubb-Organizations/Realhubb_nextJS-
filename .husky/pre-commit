@@ -1,0 +1,5 @@
+# Run local secrets scanner
+node scripts/scan-secrets.js
+
+# Run lint-staged on the modified files
+npx lint-staged

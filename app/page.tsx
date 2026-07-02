@@ -6,7 +6,7 @@ import { properties as staticProperties } from "@/data/properties";
 import { blogPosts as staticBlogPosts } from "@/data/blog";
 import { developers as staticDevelopers } from "@/data/developers";
 import { generalFaq } from "@/data/faqData";
-import { webPageSchema, videoSchema, faqSchema } from "@/lib/structuredData";
+import { generatePageGraph } from "@/lib/structuredData";
 import HeroSection from "@/components/home/HeroSection";
 import ServingCities from "@/components/home/ServingCities";
 import FeaturedProperties from "@/components/home/FeaturedProperties";
@@ -33,12 +33,6 @@ const homeVideo = {
   contentUrl: "https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4",
 };
 
-const webPage = {
-  name: "RealHubb — Real Estate Bangalore, Hyderabad & Chennai",
-  description: "Find verified flats & apartments in Bangalore, Hyderabad & Chennai. RERA registered. Zero brokerage. Expert advisors. Free site visit.",
-  url: SITE_URL,
-  speakableSelectors: [".speakable-title", ".speakable-summary"],
-};
 export const metadata: Metadata = buildMetadata({
   title: "RealHubb — Real Estate Bangalore, Hyderabad & Chennai",
   description:
@@ -189,7 +183,7 @@ async function BlogPreviewWrapper() {
 }
 
 async function HomeFaqsWrapper() {
-  let homeFaqs: any[] = [];
+  let homeFaqs: import("@/types/seo").FaqItem[] = [];
   try {
     const data = await getPublishedFaqsByPage("home");
     if (data && data.length > 0) {
@@ -205,7 +199,7 @@ async function HomeFaqsWrapper() {
 }
 
 async function CitySectionWrapper() {
-  let properties: any[] = [];
+  let properties: import("@/types/property").Property[] = [];
   try {
     properties = await getAllProperties();
   } catch (err) {
@@ -224,15 +218,18 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema(webPage)) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema(homeVideo)) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(staticFaqItems)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generatePageGraph({
+              url: SITE_URL,
+              title: "RealHubb — Real Estate Bangalore, Hyderabad & Chennai",
+              description:
+                "Find verified flats & villas in Bangalore, Hyderabad & Chennai. RERA-registered projects, zero brokerage, expert advisory & free site visits. Get started!",
+              faq: staticFaqItems,
+              video: homeVideo,
+            })
+          ),
+        }}
       />
       <HeroSection />
       <ServingCities />

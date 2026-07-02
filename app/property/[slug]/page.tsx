@@ -9,13 +9,8 @@ import {
   getPropertiesByCity,
   getPublishedFaqsByReference,
 } from "@/lib/firestoreServerService";
-import { properties as staticProperties } from "@/data/properties";
 import { getLocationBySlug } from "@/data/locations";
-import {
-  breadcrumbSchema,
-  propertyListingSchema,
-  faqSchema,
-} from "@/lib/structuredData";
+import { generatePageGraph } from "@/lib/structuredData";
 import PropertyCard from "@/components/property/PropertyCard";
 import HeroBackgroundSlideshow from "@/components/property/HeroBackgroundSlideshow";
 import EnquiryPopup from "@/components/property/EnquiryPopup";
@@ -126,10 +121,31 @@ export default async function PropertyDetailPage({ params }: { params: Params })
 
   return (
     <>
-      {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(propertyListingSchema({ name: p.name, description: p.description, location: p.location, city: p.city, price: p.price, images: p.images, slug: p.slug, rera: p.rera })) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(propertyFaqs)) }} />
+      {/* JSON-LD Master Graph */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generatePageGraph({
+              url: `${SITE_URL}/property/${p.slug}`,
+              title: `${p.name} by ${p.developer} in ${p.location}, ${cityLabel} | RealHubb`,
+              description: p.description,
+              breadcrumbs,
+              faq: propertyFaqs,
+              listing: {
+                name: p.name,
+                description: p.description,
+                location: p.location,
+                city: p.city,
+                price: p.price,
+                images: p.images,
+                slug: p.slug,
+                rera: p.rera,
+              },
+            })
+          ),
+        }}
+      />
 
       <div className="pt-20">
         {/* ── HERO ── */}
@@ -300,12 +316,12 @@ export default async function PropertyDetailPage({ params }: { params: Params })
                       className="border border-gray-150/80 rounded-2xl p-5 group transition-all duration-300 hover:border-gold/30"
                     >
                       <summary className="text-navy text-sm md:text-base font-normal cursor-pointer list-none flex justify-between items-center select-none">
-                        <span>{faq.question}</span>
+                        <span className="speakable-title">{faq.question}</span>
                         <span className="w-8 h-8 rounded-full bg-gold/10 text-gold flex items-center justify-center group-open:rotate-180 transition-transform duration-300 shrink-0 ml-4">
                           ▾
                         </span>
                       </summary>
-                      <p className="text-gray-500 text-sm mt-4 leading-relaxed font-light border-t border-gray-100 pt-4">
+                      <p className="speakable-summary text-gray-500 text-sm mt-4 leading-relaxed font-light border-t border-gray-100 pt-4">
                         {faq.answer}
                       </p>
                     </details>

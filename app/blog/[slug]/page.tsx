@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
 import { blogMetadata } from "@/lib/seo";
 import {
   getBlogPostBySlug,
@@ -9,12 +7,9 @@ import {
   getLatestBlogPosts,
   getPublishedFaqsByReference,
 } from "@/lib/firestoreServerService";
-import { breadcrumbSchema, articleSchema, faqSchema } from "@/lib/structuredData";
+import { generatePageGraph } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
 
-import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
-import CommentSection from "@/components/blog/CommentSection";
-import FaqAccordion from "@/components/faq/FaqAccordion";
 import BlogReaderWrapper from "@/components/blog/BlogReaderWrapper";
 import BlogMarkdown from "@/components/blog/BlogMarkdown";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
@@ -71,11 +66,29 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema({ title: post.title, excerpt: post.excerpt, author: post.author, publishedAt: post.publishedAt, image: post.coverImage, slug: post.slug })) }} />
-      {blogFaqs.length > 0 && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(blogFaqs)) }} />
-      )}
+      {/* JSON-LD Master Graph */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generatePageGraph({
+              url: `${SITE_URL}/blog/${post.slug}`,
+              title: post.metaTitle ?? `${post.title} | RealHubb`,
+              description: post.metaDescription ?? post.excerpt,
+              breadcrumbs,
+              faq: blogFaqs.length > 0 ? blogFaqs : undefined,
+              article: {
+                title: post.title,
+                excerpt: post.excerpt,
+                author: post.author,
+                publishedAt: post.publishedAt,
+                image: post.coverImage,
+                slug: post.slug,
+              },
+            })
+          ),
+        }}
+      />
 
       <div className="pt-20">
         <div className="page-padding max-w-7xl mx-auto pt-6">

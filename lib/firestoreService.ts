@@ -45,7 +45,7 @@ export async function saveProperty(property: Omit<AdminProperty, "id"> | AdminPr
     ...property,
     id,
     updatedAt: serverTimestamp(),
-  } as any;
+  } as Record<string, unknown>;
 
   if (isNew) {
     data.createdAt = serverTimestamp();

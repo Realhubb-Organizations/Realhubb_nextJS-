@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { getAllProperties } from "@/lib/firestoreServerService";
-import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
+import { generatePageGraph } from "@/lib/structuredData";
 import ProjectsClient from "@/components/property/ProjectsClient";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import FaqSection from "@/components/faq/FaqSection";
@@ -83,13 +83,20 @@ export default async function ProjectsCityPage({
 
   return (
     <>
+      {/* JSON-LD Master Graph */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(getCityFaqs(cityLabel))) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generatePageGraph({
+              url: `${SITE_URL}/projects/${type}/${city}`,
+              title: `${typeLabel} Projects in ${cityLabel} 2026 | RealHubb`,
+              description: `Browse ${typeLabel.toLowerCase()} residential projects in ${cityLabel}. Verified by RERA. 2BHK, 3BHK apartments from top builders. Free site visit. Contact RealHubb.`,
+              breadcrumbs,
+              faq: getCityFaqs(cityLabel),
+            })
+          ),
+        }}
       />
       <div className="pt-20 bg-cream min-h-screen">
         <div className="bg-navy pt-20 pb-28 md:pt-24 md:pb-36 page-padding relative overflow-hidden">

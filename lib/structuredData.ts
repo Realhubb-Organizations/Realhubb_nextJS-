@@ -419,3 +419,238 @@ export function builderSchema(dev: {
       : {}),
   };
 }
+
+export interface GraphOptions {
+  url: string;
+  title: string;
+  description: string;
+  breadcrumbs?: { name: string; url: string }[];
+  faq?: { question: string; answer: string }[];
+  video?: {
+    name: string;
+    description: string;
+    thumbnailUrl: string;
+    uploadDate: string;
+    contentUrl: string;
+    embedUrl?: string;
+    duration?: string;
+  };
+  listing?: {
+    name: string;
+    description: string;
+    location: string;
+    city: string;
+    price: string;
+    images: string[];
+    slug: string;
+    rera?: string;
+  };
+  article?: {
+    title: string;
+    excerpt: string;
+    author: string;
+    publishedAt: string;
+    updatedAt?: string;
+    image?: string;
+    slug: string;
+  };
+}
+
+export function generatePageGraph(options: GraphOptions) {
+  const agentId = `${SITE_URL}/#agent`;
+  const websiteId = `${SITE_URL}/#website`;
+  const webpageId = `${options.url}/#webpage`;
+
+  const graph: Record<string, unknown>[] = [
+    {
+      "@type": ["Organization", "RealEstateAgent"],
+      "@id": agentId,
+      "name": "RealHubb Ventures Pvt. Ltd.",
+      "alternateName": "RealHubb",
+      "url": SITE_URL,
+      "logo": `${SITE_URL}/logo.png`,
+      "image": `${SITE_URL}/logo.png`,
+      "description": "RealHubb Ventures is a leading real estate channel partner operating across Bangalore, Hyderabad, and Chennai. Verified properties, RERA registered, zero brokerage.",
+      "telephone": "+919980189914",
+      "priceRange": "₹₹₹",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Ground Floor, 243, 9th Main Rd, HRBR Layout 1st Block, Kalyan Nagar",
+        "addressLocality": "Bengaluru",
+        "addressRegion": "Karnataka",
+        "postalCode": "560043",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "13.0234",
+        "longitude": "77.6486"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Bangalore", "sameAs": "https://en.wikipedia.org/wiki/Bangalore" },
+        { "@type": "City", "name": "Hyderabad", "sameAs": "https://en.wikipedia.org/wiki/Hyderabad" },
+        { "@type": "City", "name": "Chennai", "sameAs": "https://en.wikipedia.org/wiki/Chennai" }
+      ],
+      "knowsAbout": [
+        "RERA Karnataka Compliance",
+        "Real Estate Investment Analytics",
+        "Bangalore Micro-market Appreciation",
+        "Property Documentation",
+        "Joint Development Agreement (JDA) Verification"
+      ],
+      "sameAs": [
+        "https://www.instagram.com/realhubb_ventures",
+        "https://www.facebook.com/Realhubb",
+        "https://www.linkedin.com/company/102738045/admin/dashboard/",
+        "https://youtube.com/@realhubbventures?",
+        "https://twitter.com/realhubb"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      "url": SITE_URL,
+      "name": "RealHubb",
+      "publisher": { "@id": agentId },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": `${SITE_URL}/projects/ongoing/bangalore?q={search_term_string}`
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": webpageId,
+      "url": options.url,
+      "name": options.title,
+      "description": options.description,
+      "isPartOf": { "@id": websiteId },
+      "about": { "@id": agentId },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [".speakable-title", ".speakable-summary"]
+      }
+    }
+  ];
+
+  if (options.breadcrumbs && options.breadcrumbs.length > 0) {
+    graph.push({
+      "@type": "BreadcrumbList",
+      "@id": `${options.url}/#breadcrumb`,
+      "isPartOf": { "@id": webpageId },
+      "itemListElement": options.breadcrumbs.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": item.name,
+        "item": item.url
+      }))
+    });
+  }
+
+  if (options.faq && options.faq.length > 0) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${options.url}/#faq`,
+      "isPartOf": { "@id": webpageId },
+      "mainEntity": options.faq.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    });
+  }
+
+  if (options.video) {
+    graph.push({
+      "@type": "VideoObject",
+      "@id": `${options.url}/#video`,
+      "isPartOf": { "@id": webpageId },
+      "name": options.video.name,
+      "description": options.video.description,
+      "thumbnailUrl": options.video.thumbnailUrl,
+      "uploadDate": options.video.uploadDate,
+      "contentUrl": options.video.contentUrl,
+      ...(options.video.embedUrl ? { "embedUrl": options.video.embedUrl } : {}),
+      ...(options.video.duration ? { "duration": options.video.duration } : {})
+    });
+  }
+
+  if (options.listing) {
+    graph.push({
+      "@type": "RealEstateListing",
+      "@id": `${options.url}/#listing`,
+      "isPartOf": { "@id": webpageId },
+      "name": options.listing.name,
+      "description": options.listing.description,
+      "url": `${SITE_URL}/property/${options.listing.slug}`,
+      "image": options.listing.images,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": options.listing.location,
+        "addressLocality": options.listing.city,
+        "addressCountry": "IN"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": options.listing.price,
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/InStock"
+      },
+      ...(options.listing.rera ? { "identifier": { "@type": "PropertyValue", "name": "RERA", "value": options.listing.rera } } : {})
+    });
+  }
+
+  if (options.article) {
+    const publishedDateISO = ensureISOString(options.article.publishedAt) ?? options.article.publishedAt;
+    const modifiedDateISO = ensureISOString(options.article.updatedAt ?? options.article.publishedAt) ?? options.article.publishedAt;
+
+    // Check if the author matches a registered team expert for E-E-A-T Person mapping
+    const matchingMember = companyInfo.team.find(
+      (t) => t.name.toLowerCase() === options.article!.author.toLowerCase()
+    );
+
+    const authorSchema = matchingMember
+      ? {
+          "@type": "Person",
+          "name": matchingMember.name,
+          "jobTitle": matchingMember.designation,
+          "worksFor": {
+            "@type": "Organization",
+            "name": "RealHubb Ventures Pvt. Ltd.",
+            "url": SITE_URL
+          },
+          "sameAs": matchingMember.linkedin ? [matchingMember.linkedin] : []
+        }
+      : {
+          "@type": "Organization",
+          "name": options.article.author,
+          "url": SITE_URL
+        };
+
+    graph.push({
+      "@type": "Article",
+      "@id": `${options.url}/#article`,
+      "isPartOf": { "@id": webpageId },
+      "headline": options.article.title,
+      "description": options.article.excerpt,
+      "image": options.article.image,
+      "author": authorSchema,
+      "publisher": { "@id": agentId },
+      "datePublished": publishedDateISO,
+      "dateModified": modifiedDateISO,
+      "url": `${SITE_URL}/blog/${options.article.slug}`,
+      "mainEntityOfPage": { "@id": webpageId }
+    });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph
+  };
+}
