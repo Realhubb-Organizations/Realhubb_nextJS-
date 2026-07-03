@@ -10,7 +10,7 @@ import {
   saveBlogPost,
   deleteBlogPost,
 } from '@/lib/firestoreService';
-import { triggerRevalidate, scoreBlogPostSEO } from '@/admin/utils';
+import { triggerRevalidate, scoreBlogPostSEO, sanitizeSlug } from '@/admin/utils';
 
 // Helper to revalidate blog-related pages
 const revalidateBlogPages = async (slug: string) => {
@@ -46,50 +46,59 @@ export default function BlogManager() {
   // Input tag state
   const [newTag, setNewTag] = useState('');
 
-  useEffect(() => {
-    loadPosts();
-  }, []);
-
-  const loadPosts = async () => {
+  async function loadPosts() {
     try {
       setLoading(true);
       const data = await getBlogPosts();
       setPosts(data);
       setError('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to load blog posts');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load blog posts');
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadPosts();
+  }, []);
 
   const handleSave = async () => {
     if (!editing) return;
 
-    if (!editing.title || !editing.slug || !editing.content || !editing.coverImage) {
+    const sanitizedSlug = sanitizeSlug(editing.slug);
+    if (!sanitizedSlug) {
+      setError('Please enter a valid URL slug');
+      return;
+    }
+
+    if (!editing.title || !editing.content || !editing.coverImage) {
       setError('Please fill in all required fields (Title, Slug, Content, Cover Image)');
       return;
     }
 
+    const finalPost = { ...editing, slug: sanitizedSlug };
+
     try {
       setSaving(true);
       setError('');
-      const id = await saveBlogPost(editing);
+      const id = await saveBlogPost(finalPost);
 
       // Trigger background revalidation instantly
-      await revalidateBlogPages(editing.slug);
+      await revalidateBlogPages(sanitizedSlug);
 
       if ('id' in editing && editing.id) {
         setPosts((prev) =>
-          prev.map((p) => (p.id === id ? editing : p))
+          prev.map((p) => (p.id === id ? finalPost : p))
         );
       } else {
-        setPosts((prev) => [...prev, { ...editing, id }]);
+        setPosts((prev) => [...prev, { ...finalPost, id }]);
       }
 
       setEditing(null);
-    } catch (err: any) {
-      setError(err.message || 'Failed to save blog post');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save blog post');
     } finally {
       setSaving(false);
     }
@@ -108,8 +117,8 @@ export default function BlogManager() {
       if (postToDelete) {
         await revalidateBlogPages(postToDelete.slug);
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to delete blog post');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete blog post');
     }
   };
 

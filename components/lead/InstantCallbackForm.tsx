@@ -42,7 +42,7 @@ export default function InstantCallbackForm({ city }: Props) {
   if (submitted) {
     return (
       <div className="bg-green-50 border border-green-200 rounded-2xl p-5 text-center">
-        <p className="text-green-700 font-heading text-base mb-1">We'll call you back!</p>
+        <p className="text-green-700 font-heading text-base mb-1">We&apos;ll call you back!</p>
         <p className="text-green-600 text-xs">
           Our advisor will contact you within 15 minutes.
         </p>
@@ -68,6 +68,7 @@ export default function InstantCallbackForm({ city }: Props) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          suppressHydrationWarning
           className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-gold text-navy placeholder-gray-400"
         />
         <input
@@ -76,11 +77,13 @@ export default function InstantCallbackForm({ city }: Props) {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           required
+          suppressHydrationWarning
           className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-gold text-navy placeholder-gray-400"
         />
         <button
           type="submit"
           disabled={loading}
+          suppressHydrationWarning
           className="w-full bg-navy text-white py-3 rounded-xl text-sm hover:bg-navy/90 transition-colors disabled:opacity-60"
         >
           {loading ? "Sending…" : "Get Free Callback →"}

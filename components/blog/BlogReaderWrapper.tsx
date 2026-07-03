@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback, type ReactNode } from "react";
+import { useState, useEffect, useMemo, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import type { BlogPost } from "@/types/blog";
 import {
   BookOpen,
   Share2,
@@ -41,7 +42,7 @@ interface BlogReaderWrapperProps {
     tags?: string[];
   };
   blogFaqs: { question: string; answer: string }[];
-  related: any[];
+  related: BlogPost[];
   children: ReactNode; // Main translated markdown content
 }
 
@@ -59,9 +60,7 @@ export default function BlogReaderWrapper({
   const [showTocMobile, setShowTocMobile] = useState(false);
 
   // Parse Table of Contents headings from Markdown content
-  const [headings, setHeadings] = useState<HeadingItem[]>([]);
-
-  useEffect(() => {
+  const headings = useMemo(() => {
     const parsedHeadings: HeadingItem[] = [];
     if (post.content) {
       post.content.split("\n").forEach((line) => {
@@ -74,8 +73,8 @@ export default function BlogReaderWrapper({
           parsedHeadings.push({ text, id });
         }
       });
-      setHeadings(parsedHeadings);
     }
+    return parsedHeadings;
   }, [post.content]);
 
   // Track reading scroll progress
@@ -318,6 +317,7 @@ export default function BlogReaderWrapper({
             </div>
             <button
               onClick={toggleReadMode}
+              suppressHydrationWarning
               className="px-4 py-2 bg-gold hover:bg-gold-600 text-navy font-heading text-xs font-medium rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
             >
               <BookOpen className="h-3.5 w-3.5" />

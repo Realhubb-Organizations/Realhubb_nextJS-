@@ -40,12 +40,14 @@ export default function CommentForm({ slug, parentId, onSuccess }: CommentFormPr
   return (
     <div className="mb-4">
       <input
+        suppressHydrationWarning
         className="w-full p-2.5 mb-2 border border-gray-200 rounded-lg text-sm text-navy placeholder-gray-400 focus:outline-none focus:border-gold"
         placeholder="Your name"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
       <textarea
+        suppressHydrationWarning
         className="w-full p-2.5 mb-2 border border-gray-200 rounded-lg text-sm text-navy placeholder-gray-400 focus:outline-none focus:border-gold resize-none"
         placeholder="Write a comment…"
         rows={3}
@@ -56,6 +58,7 @@ export default function CommentForm({ slug, parentId, onSuccess }: CommentFormPr
         type="button"
         onClick={handleSubmit}
         disabled={submitting}
+        suppressHydrationWarning
         className="px-5 py-2 bg-navy text-white text-sm rounded-lg hover:bg-navy/90 transition-colors disabled:opacity-60"
       >
         {submitting ? "Posting…" : "Submit"}

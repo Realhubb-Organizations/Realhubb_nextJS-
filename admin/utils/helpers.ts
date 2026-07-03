@@ -88,6 +88,7 @@ export function generateId(): string {
 /**
  * Debounce function
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
   delay: number
@@ -102,6 +103,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number
@@ -114,4 +116,33 @@ export function throttle<T extends (...args: any[]) => any>(
       setTimeout(() => (inThrottle = false), limit);
     }
   };
+}
+
+/**
+ * Sanitize a URL slug, removing common path prefixes/URLs and keeping only the final slug segment.
+ */
+export function sanitizeSlug(slug: string): string {
+  if (!slug) return "";
+  
+  let path = slug;
+  try {
+    if (slug.startsWith("http://") || slug.startsWith("https://")) {
+      const url = new URL(slug);
+      path = url.pathname;
+    }
+  } catch (e) {
+    // Not a valid URL, treat as path
+  }
+
+  // Get the last non-empty segment of the path
+  const segments = path.split("/").filter(Boolean);
+  const lastSegment = segments[segments.length - 1] || "";
+
+  return lastSegment
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "") // remove special characters
+    .replace(/[\s_]+/g, "-")       // convert spaces and underscores to hyphens
+    .replace(/-+/g, "-")           // collapse consecutive hyphens
+    .replace(/^-+|-+$/g, "");      // trim leading/trailing hyphens
 }

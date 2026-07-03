@@ -11,7 +11,7 @@ import {
   deleteProperty,
   updateProperty,
 } from '@/lib/firestoreService';
-import { triggerRevalidate, scorePropertySEO } from '@/admin/utils';
+import { triggerRevalidate, scorePropertySEO, sanitizeSlug } from '@/admin/utils';
 
 // Helper to revalidate all property-related pages
 const revalidatePropertyPages = async (slug: string, city: string) => {
@@ -43,56 +43,64 @@ export default function PropertyManager() {
   const [cityFilter, setCityFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  useEffect(() => {
-    loadProperties();
-  }, []);
-
-  const loadProperties = async () => {
+  async function loadProperties() {
     try {
       setLoading(true);
       const data = await getProperties();
       setProperties(data);
       setError('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to load properties');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load properties');
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadProperties();
+  }, []);
 
   const handleSave = async () => {
     if (!editing) return;
+
+    const sanitizedSlug = sanitizeSlug(editing.slug);
+    if (!sanitizedSlug) {
+      setError('Please enter a valid URL slug');
+      return;
+    }
 
     if (
       !editing.name ||
       !editing.developer ||
       !editing.location ||
-      !editing.slug ||
       editing.images.length === 0
     ) {
       setError('Please fill in all required fields and upload at least one image');
       return;
     }
 
+    const finalProperty = { ...editing, slug: sanitizedSlug };
+
     try {
       setSaving(true);
       setError('');
-      const id = await saveProperty(editing);
+      const id = await saveProperty(finalProperty);
 
       // Trigger background revalidation instantly
-      await revalidatePropertyPages(editing.slug, editing.city);
+      await revalidatePropertyPages(sanitizedSlug, editing.city);
 
       if ('id' in editing && editing.id) {
         setProperties((prev) =>
-          prev.map((p) => (p.id === id ? editing : p))
+          prev.map((p) => (p.id === id ? finalProperty : p))
         );
       } else {
-        setProperties((prev) => [...prev, { ...editing, id }]);
+        setProperties((prev) => [...prev, { ...finalProperty, id }]);
       }
 
       setEditing(null);
-    } catch (err: any) {
-      setError(err.message || 'Failed to save property');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save property');
     } finally {
       setSaving(false);
     }
@@ -111,8 +119,8 @@ export default function PropertyManager() {
       if (propertyToDelete) {
         await revalidatePropertyPages(propertyToDelete.slug, propertyToDelete.city);
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to delete property');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete property');
     }
   };
 

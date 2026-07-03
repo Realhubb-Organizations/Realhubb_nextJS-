@@ -9,7 +9,7 @@ import {
   saveDeveloper,
   deleteDeveloper,
 } from '@/lib/firestoreService';
-import { triggerRevalidate } from '@/admin/utils';
+import { triggerRevalidate, sanitizeSlug } from '@/admin/utils';
 
 // Helper to revalidate developer-related pages
 const revalidateDeveloperPages = async (slug: string) => {
@@ -36,27 +36,34 @@ export default function DeveloperManager() {
   const [search, setSearch] = useState('');
   const [featuredFilter, setFeaturedFilter] = useState('all');
 
-  useEffect(() => {
-    loadDevelopers();
-  }, []);
-
-  const loadDevelopers = async () => {
+  async function loadDevelopers() {
     try {
       setLoading(true);
       const data = await getDevelopers();
       setDevelopers(data);
       setError('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to load developers');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load developers');
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadDevelopers();
+  }, []);
 
   const handleSave = async () => {
     if (!editing) return;
 
-    if (!editing.name || !editing.slug || !editing.logoUrl) {
+    const sanitizedSlug = sanitizeSlug(editing.slug);
+    if (!sanitizedSlug) {
+      setError('Please enter a valid URL slug');
+      return;
+    }
+
+    if (!editing.name || !editing.logoUrl) {
       setError('Please fill in all required fields (Name, Slug, Logo)');
       return;
     }
@@ -70,16 +77,17 @@ export default function DeveloperManager() {
         ? editing.citiesString.split(',').map(s => s.trim()).filter(Boolean)
         : [];
 
-      const { citiesString, ...developerToSave } = editing;
+      const { citiesString: _, ...developerToSave } = editing;
       const finalDeveloper = {
         ...developerToSave,
+        slug: sanitizedSlug,
         cities: citiesArray,
       } as AdminDeveloper;
 
       const id = await saveDeveloper(finalDeveloper);
 
       // Trigger background revalidation instantly
-      await revalidateDeveloperPages(finalDeveloper.slug);
+      await revalidateDeveloperPages(sanitizedSlug);
 
       if ('id' in finalDeveloper && finalDeveloper.id) {
         setDevelopers((prev) =>
@@ -90,8 +98,8 @@ export default function DeveloperManager() {
       }
 
       setEditing(null);
-    } catch (err: any) {
-      setError(err.message || 'Failed to save developer');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save developer');
     } finally {
       setSaving(false);
     }
@@ -110,8 +118,8 @@ export default function DeveloperManager() {
       if (devToDelete) {
         await revalidateDeveloperPages(devToDelete.slug);
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to delete developer');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete developer');
     }
   };
 
