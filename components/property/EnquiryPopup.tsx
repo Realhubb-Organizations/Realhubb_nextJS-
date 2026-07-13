@@ -26,7 +26,7 @@ export default function EnquiryPopup({ propertyName, propertySlug }: Props) {
 
       if (res.success) {
         setSubmitted(true);
-        trackLead(`property/${propertySlug}`);
+        trackLead(`property/${propertySlug}`, form.phone);
       } else {
         console.error("Submission failed");
       }

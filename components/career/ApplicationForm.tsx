@@ -63,7 +63,7 @@ export default function ApplicationForm() {
       });
 
       if (res.success) {
-        trackLead("career");
+        trackLead("career", formData.phone);
         setSubmitted(true);
       } else {
         setError(true);

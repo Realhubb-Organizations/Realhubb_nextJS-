@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { company } from "@/data/company";
+import { trackCall, trackEmail } from "@/lib/ga";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -116,11 +117,11 @@ export default function Footer() {
 
         {/* Contact strip */}
         <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-white/60">
-          <a href={`tel:${company.phone}`} className="flex items-center gap-2 hover:text-gold transition-colors">
+          <a href={`tel:${company.phone}`} onClick={() => trackCall("footer")} className="flex items-center gap-2 hover:text-gold transition-colors">
             <Phone className="w-4 h-4 shrink-0 text-gold" />
             <span>{company.phone}</span>
           </a>
-          <a href={`mailto:${company.email}`} className="flex items-center gap-2 hover:text-gold transition-colors">
+          <a href={`mailto:${company.email}`} onClick={() => trackEmail("footer")} className="flex items-center gap-2 hover:text-gold transition-colors">
             <Mail className="w-4 h-4 shrink-0 text-gold" />
             <span>{company.email}</span>
           </a>

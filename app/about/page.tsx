@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { getAllTeamMembers, getPublishedFaqsByPage } from "@/lib/firestoreServerService";
 import TeamCard from "@/components/team/TeamCard";
+import TrackedLink from "@/components/lead/TrackedLink";
 import CountingNumber from "@/components/ui/counting_text";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import { personSchema, breadcrumbSchema, webPageSchema, faqSchema } from "@/lib/structuredData";
@@ -131,21 +132,23 @@ export default async function AboutPage() {
                 About RealHubb
               </p>
               <h1 className="speakable-title text-4xl md:text-[56px] font-heading font-normal text-white leading-tight mb-6 max-w-3xl animate-fadeIn">
-                Building India's most <span className="text-gold">trusted</span> real estate platform.
+                Building India&apos;s most <span className="text-gold">trusted</span> real estate platform.
               </h1>
               <p className="speakable-summary text-white/60 text-base leading-relaxed max-w-2xl mb-8 font-light animate-fadeIn">
                 Realhubb Ventures Pvt. Ltd. — a RERA-compliant channel partner connecting thousands
                 of families with verified properties across Bangalore, Hyderabad, and Chennai.
               </p>
-              <a
+              <TrackedLink
                 href={companyInfo.social.whatsapp}
+                kind="whatsapp"
+                context="about_hero"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-gold hover:bg-gold/90 text-navy font-normal text-sm transition-all duration-200 hover:scale-105 shadow-md"
               >
                 <Image src="/whatsapp.png" alt="WhatsApp icon" width={16} height={16} unoptimized className="w-4 h-4" />
                 Chat with Us
-              </a>
+              </TrackedLink>
             </FadeInOnScroll>
           </div>
         </section>
@@ -200,7 +203,7 @@ export default async function AboutPage() {
                   </h2>
                   <span className="block h-0.5 w-16 bg-gold mb-6" />
                   <p className="text-white/85 text-lg font-light leading-relaxed mb-6">
-                    Delivering trusted advisory, absolute transparency, and seamless end-to-end buying experiences across India's top real estate markets.
+                    Delivering trusted advisory, absolute transparency, and seamless end-to-end buying experiences across India&apos;s top real estate markets.
                   </p>
                 </FadeInOnScroll>
               </div>
@@ -213,7 +216,7 @@ export default async function AboutPage() {
                     
                     <p className="text-white/70 text-base leading-relaxed mb-8 font-light relative z-10">
                       At <strong className="text-white font-normal">Realhubb Ventures Pvt. Ltd.</strong>, we take pride in being one of
-                      Bangalore's most trusted channel partners in real estate. With over{" "}
+                      Bangalore&apos;s most trusted channel partners in real estate. With over{" "}
                       <strong className="text-gold font-normal">{companyInfo.stats.yearsExperience} years of experience</strong>, we have
                       helped thousands of families discover their dream homes and investors find
                       profitable opportunities. Our focus on transparency, customer-first service, and
@@ -534,7 +537,7 @@ export default async function AboutPage() {
                         We are immensely proud to announce that <strong className="text-white font-normal">Mr. Sanjeev R Singh</strong> has been
                         officially inducted as a <strong className="text-gold font-normal">CREA(I) Committee Member</strong> — the
                         Confederation of Real Estate Associates India. This prestigious recognition
-                        reflects his outstanding contributions to India's real estate industry and his
+                        reflects his outstanding contributions to India&apos;s real estate industry and his
                         dedication to professionalising the channel partner ecosystem at a national level.
                       </p>
                       <div className="mt-6 flex flex-wrap gap-3 justify-center md:justify-start">

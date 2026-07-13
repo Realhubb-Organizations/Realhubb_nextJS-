@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { TeamMember } from "@/types/team";
 import { Mail, Phone, MessageSquare, Award } from "lucide-react";
 import Image from "next/image";
+import { trackCall } from "@/lib/ga";
 
 interface Props {
   member: TeamMember;
@@ -99,6 +100,7 @@ export default function TeamCard({ member: m, index }: Props) {
                 <a
                   href={`tel:${m.phone}`}
                   title="Call Advisor"
+                  onClick={() => trackCall("team_card")}
                   className="flex-1 bg-white text-navy hover:bg-gold hover:text-navy text-center py-1.5 rounded text-[11px] font-medium transition-colors"
                 >
                   Call

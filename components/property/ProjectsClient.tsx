@@ -6,6 +6,7 @@ import { Search, SlidersHorizontal, X, MessageCircle } from "lucide-react";
 import PropertyCard from "@/components/property/PropertyCard";
 import type { Property, PropertyType } from "@/types/property";
 import { cn } from "@/lib/utils";
+import { trackWhatsApp } from "@/lib/ga";
 
 const cityTabs = [
   { label: "All Cities", value: "all" },
@@ -274,7 +275,7 @@ export default function ProjectsClient({
                 <div className="text-4xl mb-4">🔍</div>
                 <h3 className="font-heading text-xl text-navy font-normal mb-2">No Matching Properties Found</h3>
                 <p className="text-gray-400 text-sm max-w-md mx-auto mb-6 leading-relaxed">
-                  We couldn't find any properties in <span className="font-semibold text-navy">{cityTabs.find(c => c.value === activeCity)?.label || activeCity}</span> matching your current search filters.
+                  We couldn&apos;t find any properties in <span className="font-semibold text-navy">{cityTabs.find(c => c.value === activeCity)?.label || activeCity}</span> matching your current search filters.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <button
@@ -287,6 +288,7 @@ export default function ProjectsClient({
                     href="https://wa.me/919980189914?text=Hi!%20I%20couldn't%20find%20the%20property%20I%20was%20looking%20for%20on%20your%20website.%20Can%20you%20help%20me?"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackWhatsApp("projects_no_results")}
                     className="bg-gold text-navy px-5 py-2.5 rounded-xl text-sm font-normal hover:bg-gold/90 transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2"
                   >
                     <MessageCircle className="w-4 h-4 shrink-0" />

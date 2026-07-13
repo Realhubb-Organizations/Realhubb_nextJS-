@@ -20,7 +20,7 @@ export default function ContactForm() {
 
       if (res.success) {
         setSubmitted(true);
-        trackLead("contact-us");
+        trackLead("contact-us", form.phone);
       } else {
         console.error("Submission failed");
       }
@@ -36,7 +36,7 @@ export default function ContactForm() {
       <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
         <p className="font-heading text-green-700 text-xl mb-2">Message Received!</p>
         <p className="text-green-600 text-sm">
-          We'll contact you within 15 minutes during business hours.
+          We&apos;ll contact you within 15 minutes during business hours.
         </p>
       </div>
     );

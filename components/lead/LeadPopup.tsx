@@ -27,8 +27,9 @@ export default function LeadPopup() {
   const isHomepage = pathname === "/";
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration-safe "has mounted" flag
     setMounted(true);
-    
+
     // Check for query parameter to reset or force test the popup
     let isTest = false;
     if (typeof window !== "undefined") {
@@ -100,7 +101,7 @@ export default function LeadPopup() {
         } catch (e) {
           console.warn("Could not write to localStorage:", e);
         }
-        trackLead("popup_modal");
+        trackLead("popup_modal", form.phone);
         
         // Auto-close popup after 3 seconds of success message
         setTimeout(() => {

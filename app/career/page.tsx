@@ -10,6 +10,7 @@ import JobOpeningsList from "@/components/career/JobOpeningsList";
 import ApplicationForm from "@/components/career/ApplicationForm";
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
+import TrackedLink from "@/components/lead/TrackedLink";
 import {
   DollarSign, TrendingUp, GraduationCap, CalendarDays, Award, Coffee, Heart, MapPin,
 } from "lucide-react";
@@ -213,9 +214,9 @@ export default async function CareerPage() {
 
                 <p className="text-sm text-gray-400 mt-8 text-center font-light">
                   Still have questions?{" "}
-                  <a href={`mailto:${company.email}`} className="text-gold font-normal underline underline-offset-2 hover:text-gold/80 transition-colors">
+                  <TrackedLink href={`mailto:${company.email}`} kind="email" context="career_faq" className="text-gold font-normal underline underline-offset-2 hover:text-gold/80 transition-colors">
                     Email our HR team →
-                  </a>
+                  </TrackedLink>
                 </p>
               </div>
             </FadeInOnScroll>
@@ -242,18 +243,22 @@ export default async function CareerPage() {
                     Our human resources team is here to assist you. Reach out to us with any inquiries about our application process or team culture.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a
+                    <TrackedLink
                       href={`mailto:${company.email}`}
+                      kind="email"
+                      context="career_cta"
                       className="px-8 py-3.5 rounded-full bg-gold hover:bg-gold/90 text-navy font-normal text-sm transition-all duration-200 hover:scale-105 shadow-md flex items-center justify-center gap-2 cursor-pointer"
                     >
                       Email HR Team
-                    </a>
-                    <a
+                    </TrackedLink>
+                    <TrackedLink
                       href={`tel:${company.phone}`}
+                      kind="call"
+                      context="career_cta"
                       className="px-8 py-3.5 rounded-full border border-white/20 text-white hover:bg-white/10 font-medium text-sm transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       Call HR Team
-                    </a>
+                    </TrackedLink>
                   </div>
                 </div>
               </div>

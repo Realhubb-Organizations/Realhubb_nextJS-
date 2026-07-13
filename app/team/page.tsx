@@ -6,6 +6,7 @@ import { company } from "@/data/company";
 import { personSchema, breadcrumbSchema } from "@/lib/structuredData";
 
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
+import TrackedLink from "@/components/lead/TrackedLink";
 
 export const revalidate = 3600;
 
@@ -87,9 +88,9 @@ export default async function TeamPage() {
                   )}
                   <div className="mt-4 flex gap-3">
                     {m.phone && (
-                      <a href={`tel:${m.phone}`} className="flex-1 text-center py-2 bg-navy text-white text-xs rounded-lg hover:bg-navy/90 transition-colors">
+                      <TrackedLink href={`tel:${m.phone}`} kind="call" context="team_page" className="flex-1 text-center py-2 bg-navy text-white text-xs rounded-lg hover:bg-navy/90 transition-colors">
                         Call
-                      </a>
+                      </TrackedLink>
                     )}
                     {m.linkedin && (
                       <a href={m.linkedin} target="_blank" rel="noopener noreferrer"

@@ -5,6 +5,7 @@ import { breadcrumbSchema, webPageSchema } from "@/lib/structuredData";
 import { company } from "@/data/company";
 import ContactForm from "@/components/contact/ContactForm";
 import WhatsAppButton from "@/components/lead/WhatsAppButton";
+import TrackedLink from "@/components/lead/TrackedLink";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
@@ -21,10 +22,10 @@ export const metadata: Metadata = buildMetadata({
 });
 
 const contactItems = [
-  { icon: Phone, label: "Call Us", value: company.phone, href: `tel:${company.phone}` },
-  { icon: Mail, label: "Email Us", value: company.email, href: `mailto:${company.email}` },
-  { icon: MapPin, label: "Office", value: company.address, href: undefined },
-  { icon: Clock, label: "Hours", value: "Mon–Sat, 9am–7pm IST", href: undefined },
+  { icon: Phone, label: "Call Us", value: company.phone, href: `tel:${company.phone}`, kind: "call" as const },
+  { icon: Mail, label: "Email Us", value: company.email, href: `mailto:${company.email}`, kind: "email" as const },
+  { icon: MapPin, label: "Office", value: company.address, href: undefined, kind: "call" as const },
+  { icon: Clock, label: "Hours", value: "Mon–Sat, 9am–7pm IST", href: undefined, kind: "call" as const },
 ];
 
 const breadcrumbs = [
@@ -100,9 +101,9 @@ export default function ContactPage() {
                   <div>
                     <p className="text-xs text-gray-400">{item.label}</p>
                     {item.href ? (
-                      <a href={item.href} className="text-navy text-sm hover:text-gold transition-colors">
+                      <TrackedLink href={item.href} kind={item.kind} context="contact_us_info" className="text-navy text-sm hover:text-gold transition-colors">
                         {item.value}
-                      </a>
+                      </TrackedLink>
                     ) : (
                       <p className="text-navy text-sm">{item.value}</p>
                     )}
@@ -111,7 +112,7 @@ export default function ContactPage() {
               );
             })}
             <div className="pt-2">
-              <WhatsAppButton label="Chat on WhatsApp" />
+              <WhatsAppButton label="Chat on WhatsApp" context="contact_us_info" />
             </div>
           </div>
         </div>

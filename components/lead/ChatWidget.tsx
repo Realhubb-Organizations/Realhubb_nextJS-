@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Bot, X, Send } from "lucide-react";
-import { trackWhatsApp, trackLead } from "@/lib/ga";
+import { trackWhatsApp, trackLead, trackAction } from "@/lib/ga";
 import { submitLead } from "@/lib/leads";
 import { company } from "@/data/company";
 import { generalFaq } from "@/data/faqData";
@@ -63,6 +63,7 @@ export default function ChatWidget() {
         text: "Looks like you've got a few more questions! Share your number below and our advisor will personally reach out to help.",
       });
       setShowLeadForm(true);
+      trackAction("chat_lead_form_shown", "engagement");
     }
 
     setMessages(updatedMessages);
@@ -82,7 +83,7 @@ export default function ChatWidget() {
 
       if (res.success) {
         setSubmitted(true);
-        trackLead("chatbot");
+        trackLead("chatbot", phone);
       } else {
         console.error("Submission failed");
       }
@@ -115,7 +116,7 @@ export default function ChatWidget() {
                 href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={trackWhatsApp}
+                onClick={() => trackWhatsApp("chatbot")}
                 aria-label="Chat on WhatsApp"
               >
                 <Image src="/whatsapp.png" alt="WhatsApp icon" width={20} height={20} unoptimized className="w-5 h-5" />
@@ -200,7 +201,10 @@ export default function ChatWidget() {
       )}
 
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          setOpen(!open);
+          if (!open) trackAction("chat_widget_open", "engagement");
+        }}
         aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
         className="w-14 h-14 rounded-full bg-gold shadow-lg hover:bg-gold/90 hover:scale-110 transition-all duration-200 flex items-center justify-center"

@@ -11,6 +11,7 @@ import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import { company } from "@/data/company";
 import type { BreadcrumbItem, FaqCategory } from "@/types/seo";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+import { trackWhatsApp } from "@/lib/ga";
 
 const WHATSAPP_MESSAGE = "Hi, I have a question about RealHubb's services.";
 
@@ -318,6 +319,7 @@ export default function FaqPageClient({ categories, breadcrumbs }: Props) {
                     href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackWhatsApp("faq_page")}
                     className="px-8 py-3.5 rounded-full border border-white/20 text-white hover:bg-white/10 font-medium text-sm transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Image src="/whatsapp.png" alt="WhatsApp icon" width={16} height={16} unoptimized className="w-4 h-4" />

@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import Link from "next/link";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
+import { trackAction } from "@/lib/ga";
 
 const cityData: Record<string, { label: string; rentIndex: number }> = {
   mumbai: { label: "Mumbai", rentIndex: 1.0 },
@@ -256,6 +257,7 @@ export default function SalaryAdvisorClient() {
                 </p>
                 <Link
                   href="/projects/ongoing/bangalore"
+                  onClick={() => trackAction("calculator_cta_click", "engagement", "salary_advisor")}
                   className="inline-block bg-navy text-white px-4 py-2 rounded-lg text-[10px] hover:bg-navy/90 font-medium transition-colors"
                 >
                   Browse Properties →

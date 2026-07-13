@@ -14,6 +14,7 @@ import { generatePageGraph } from "@/lib/structuredData";
 import PropertyCard from "@/components/property/PropertyCard";
 import HeroBackgroundSlideshow from "@/components/property/HeroBackgroundSlideshow";
 import EnquiryPopup from "@/components/property/EnquiryPopup";
+import TrackedLink from "@/components/lead/TrackedLink";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
@@ -338,15 +339,17 @@ export default async function PropertyDetailPage({ params }: { params: Params })
               <div className="bg-[#00274D] border border-gold/30 rounded-3xl p-6 text-center relative overflow-hidden shadow-lg">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-2xl pointer-events-none" />
                 <p className="text-white/60 text-xs font-light mb-3 relative z-10">Have questions? Call us directly</p>
-                <a
+                <TrackedLink
                   href={`tel:${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`}
+                  kind="call"
+                  context={`property/${p.slug}`}
                   className="flex items-center justify-center gap-2.5 text-gold hover:text-gold/90 font-heading text-lg font-normal transition-colors relative z-10"
                 >
                   <Phone className="w-5 h-5 text-gold" />
                   {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
                     ? `+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`
                     : "+91 99801 89914"}
-                </a>
+                </TrackedLink>
               </div>
             </div>
           </div>

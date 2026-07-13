@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Phone, ArrowRight, MessageCircle } from "lucide-react";
 import { company } from "@/data/company";
-import { trackLead, trackWhatsApp } from "@/lib/ga";
+import { trackLead, trackWhatsApp, trackCall } from "@/lib/ga";
 import { submitLead } from "@/lib/leads";
 
 export default function ContactCTA() {
@@ -25,7 +25,7 @@ export default function ContactCTA() {
 
       if (res.success) {
         setSubmitted(true);
-        trackLead("homepage_cta");
+        trackLead("homepage_cta", phone);
       } else {
         console.error("Submission failed");
       }
@@ -63,7 +63,7 @@ export default function ContactCTA() {
               <div className="flex flex-wrap items-center gap-4 pt-6 mt-8 border-t border-white/10">
                 <a
                   href={`tel:${company.phone}`}
-                  onClick={trackCall}
+                  onClick={() => trackCall("homepage_cta")}
                   className="inline-flex items-center gap-2 text-white/80 hover:text-gold transition-colors text-sm font-medium border border-white/10 px-4 py-2.5 rounded-xl bg-white/5"
                 >
                   <Phone className="w-4 h-4 text-gold" />
@@ -73,7 +73,7 @@ export default function ContactCTA() {
                   href={`https://wa.me/${company.whatsapp}?text=Hi, I found your website and I'm interested in properties in Bangalore`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={trackWhatsApp}
+                  onClick={() => trackWhatsApp("homepage_cta")}
                   className="inline-flex items-center gap-2 bg-[#25D366] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-[#20bd5a] transition-all hover:scale-105 shadow-md"
                 >
                   <MessageCircle className="w-4 h-4 fill-current" />
@@ -148,10 +148,4 @@ export default function ContactCTA() {
       </div>
     </section>
   );
-}
-
-function trackCall() {
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", "phone_call_click", { event_category: "engagement" });
-  }
 }

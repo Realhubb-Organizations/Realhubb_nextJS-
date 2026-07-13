@@ -1,3 +1,5 @@
+import Clarity from "@microsoft/clarity";
+
 export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-RXW691N6BH";
 
 declare global {
@@ -21,14 +23,47 @@ export function trackEvent(action: string, category: string, label?: string, val
   });
 }
 
-export function trackLead(sourcePage: string) {
+// Fires both GA and Clarity for one-off engagement actions (chat widget, search, CTA clicks, etc.)
+export function trackAction(action: string, category: string, label?: string) {
+  trackEvent(action, category, label);
+  clarityEvent(action, label ? { [`${action}_label`]: label } : undefined);
+}
+
+/**
+ * Fires a Clarity custom event + tag, guarded so it's a no-op when the
+ * Clarity project ID isn't configured (e.g. local dev without the env var).
+ */
+function clarityEvent(name: string, tags?: Record<string, string>) {
+  if (typeof window === "undefined" || !process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID) return;
+  Clarity.event(name);
+  if (tags) {
+    Object.entries(tags).forEach(([key, value]) => Clarity.setTag(key, value));
+  }
+}
+
+// Fired on every successful lead form submission (contact, popup, enquiry, etc.)
+export function trackLead(sourcePage: string, phone?: string) {
   trackEvent("generate_lead", "lead", sourcePage);
+  clarityEvent("generate_lead", { lead_source: sourcePage });
+  if (typeof window === "undefined" || !process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID) return;
+  if (phone) Clarity.identify(phone);
+  Clarity.upgrade("lead_submitted");
 }
 
-export function trackWhatsApp() {
-  trackEvent("whatsapp_click", "engagement");
+// Fired on every WhatsApp click-to-chat link
+export function trackWhatsApp(context?: string) {
+  trackEvent("whatsapp_click", "engagement", context);
+  clarityEvent("whatsapp_click", context ? { whatsapp_context: context } : undefined);
 }
 
-export function trackCall() {
-  trackEvent("phone_call_click", "engagement");
+// Fired on every tel: phone call link
+export function trackCall(context?: string) {
+  trackEvent("phone_call_click", "engagement", context);
+  clarityEvent("phone_call_click", context ? { call_context: context } : undefined);
+}
+
+// Fired on every mailto: email link
+export function trackEmail(context?: string) {
+  trackEvent("email_click", "engagement", context);
+  clarityEvent("email_click", context ? { email_context: context } : undefined);
 }

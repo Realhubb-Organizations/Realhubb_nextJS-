@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { company } from "@/data/company";
-import { trackWhatsApp } from "@/lib/ga";
+import { trackWhatsApp, trackCall } from "@/lib/ga";
 
 const WHATSAPP_MESSAGE = "Hi, I found your website and I'm interested in properties.";
 
@@ -44,6 +44,13 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+    setDropdown(null);
+  }
 
   // Close timer — gives cursor 150 ms to travel from button into the dropdown
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -73,11 +80,6 @@ export default function Header() {
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
-
-  useEffect(() => {
-    setOpen(false);
-    setDropdown(null);
-  }, [pathname]);
 
   return (
     <header
@@ -177,6 +179,7 @@ export default function Header() {
         <div className="hidden lg:flex items-center gap-3">
           <a
             href={`tel:${company.phone}`}
+            onClick={() => trackCall("header")}
             className="flex items-center gap-2 text-white/80 hover:text-gold text-sm transition-colors"
           >
             <Phone className="w-4 h-4" />
@@ -186,7 +189,7 @@ export default function Header() {
             href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={trackWhatsApp}
+            onClick={() => trackWhatsApp("header")}
             aria-label="Chat on WhatsApp"
             className="flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
           >
@@ -234,6 +237,7 @@ export default function Header() {
           ))}
           <a
             href={`tel:${company.phone}`}
+            onClick={() => trackCall("header_mobile")}
             className="mt-3 flex items-center gap-2 text-gold text-sm"
           >
             <Phone className="w-4 h-4" />
@@ -243,7 +247,7 @@ export default function Header() {
             href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={trackWhatsApp}
+            onClick={() => trackWhatsApp("header_mobile")}
             className="mt-2 flex items-center gap-2 text-white/80 text-sm hover:text-gold transition-colors"
           >
             <Image src="/whatsapp.png" alt="WhatsApp icon" width={20} height={20} unoptimized className="w-4 h-4" />

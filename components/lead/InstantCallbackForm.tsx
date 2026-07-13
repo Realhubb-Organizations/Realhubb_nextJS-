@@ -28,7 +28,7 @@ export default function InstantCallbackForm({ city }: Props) {
 
       if (res.success) {
         setSubmitted(true);
-        trackLead(city ? `location/${city}` : "generic");
+        trackLead(city ? `location/${city}` : "generic", phone);
       } else {
         console.error("Submission failed");
       }

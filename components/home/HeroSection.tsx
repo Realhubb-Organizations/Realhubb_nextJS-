@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MapPin, Search, ChevronDown } from "lucide-react";
 import CountingNumber from "@/components/ui/counting_text";
+import { trackAction } from "@/lib/ga";
 
 const VIDEO_SRC =
   "https://ik.imagekit.io/o72k8hn7h/realhubb%20/269354_large.mp4";
@@ -60,6 +61,7 @@ export default function HeroSection() {
   // Retrieve user reduced motion preference and check device type on mount to avoid Next.js hydration mismatches
   useEffect(() => {
     if (typeof window !== "undefined") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration-safe read of browser-only APIs
       setIsMobile(window.innerWidth < 1024);
       setPrefersReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     }
@@ -117,6 +119,7 @@ export default function HeroSection() {
     if (budget) params.set("price", budget);
     if (searchQuery.trim()) params.set("q", searchQuery.trim());
     const qs = params.toString();
+    trackAction("property_search_submit", "engagement", city);
     router.push(`/projects/ongoing/${city.toLowerCase()}${qs ? `?${qs}` : ""}`);
   };
 
@@ -195,7 +198,7 @@ export default function HeroSection() {
             <h1 className="speakable-title text-[35px] md:text-[45px] xl:text-[56px] font-normal text-white leading-[1.08] tracking-tight">
               Find your <span className="text-[#D7A764]">Dream Home</span>
               <br />
-              in India's Fast-Growing Cities
+              in India&apos;s Fast-Growing Cities
             </h1>
 
             {/* Subtitle */}
@@ -211,6 +214,7 @@ export default function HeroSection() {
               <Link
                 href="/projects/ongoing"
                 id="hero-cta-explore"
+                onClick={() => trackAction("hero_cta_click", "engagement", "explore_properties")}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#D7A764] hover:bg-[#c4954a] text-[#00274D] font-normal text-sm transition-all duration-200 hover:scale-105 shadow-lg"
               >
                 Explore Properties
@@ -219,6 +223,7 @@ export default function HeroSection() {
               <Link
                 href="/contact-us"
                 id="hero-cta-talk"
+                onClick={() => trackAction("hero_cta_click", "engagement", "talk_to_expert")}
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/35 text-[#D7A764] font-normal text-sm hover:bg-white/10 transition-all duration-200 hover:scale-105"
               >
                 Talk to a Property Expert

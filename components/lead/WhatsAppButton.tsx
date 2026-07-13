@@ -7,19 +7,21 @@ interface Props {
   label?: string;
   message?: string;
   className?: string;
+  context?: string;
 }
 
 export default function WhatsAppButton({
   label = "WhatsApp Us",
   message = "Hi, I found your website and I'm interested in properties.",
   className,
+  context = "whatsapp_button",
 }: Props) {
   return (
     <a
       href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent(message)}`}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={trackWhatsApp}
+      onClick={() => trackWhatsApp(context)}
       className={
         className ??
         "flex items-center justify-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-xl text-sm hover:bg-[#20bd5a] transition-colors"
