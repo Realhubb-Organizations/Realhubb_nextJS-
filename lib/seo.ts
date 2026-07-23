@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 const SITE_NAME = "RealHubb";
 const PUBLISHER = "RealHubb Ventures Pvt. Ltd.";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.jpg`;

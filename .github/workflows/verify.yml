@@ -37,6 +37,6 @@ jobs:
       - name: Verify Next.js Build
         run: npm run build
         env:
-          NEXT_PUBLIC_SITE_URL: https://www.realhubb.in
+          NEXT_PUBLIC_SITE_URL: https://realhubb.in
           # Provide dummy env vars if needed during build
           FIREBASE_PROJECT_ID: realhubb-8daf5

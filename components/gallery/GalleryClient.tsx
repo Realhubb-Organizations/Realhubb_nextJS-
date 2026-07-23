@@ -41,13 +41,21 @@ export default function GalleryClient() {
             >
               <X className="w-4 h-4 text-navy" />
             </button>
-            <div className="relative w-full h-[50vh] sm:h-[60vh] bg-slate-900">
+            <div className="relative w-full h-[50vh] sm:h-[60vh] bg-slate-900 overflow-hidden">
+              <Image
+                src={lightbox.image}
+                alt=""
+                aria-hidden="true"
+                fill
+                unoptimized
+                className="object-cover blur-2xl scale-110 opacity-50"
+              />
               <Image
                 src={lightbox.image}
                 alt={lightbox.title}
                 fill
                 unoptimized
-                className="object-contain"
+                className="relative object-contain"
               />
             </div>
             <div className="p-5">
@@ -143,10 +151,18 @@ export default function GalleryClient() {
                       <div className="relative overflow-hidden bg-slate-100 aspect-[4/3]">
                         <Image
                           src={post.image}
+                          alt=""
+                          aria-hidden="true"
+                          fill
+                          unoptimized
+                          className="object-cover blur-2xl scale-110 opacity-50"
+                        />
+                        <Image
+                          src={post.image}
                           alt={post.title}
                           fill
                           unoptimized
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="relative object-contain group-hover:scale-105 transition-transform duration-500"
                           priority={index < 3}
                         />
                         {/* Category badge */}

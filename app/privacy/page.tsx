@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { company } from "@/data/company";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 export const metadata: Metadata = buildMetadata({
   title: "Privacy Policy | RealHubb",
   description: "RealHubb Ventures privacy policy — how we collect, use, and protect your personal information.",
@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       <h1 className="font-heading text-3xl text-navy font-normal mb-8">Privacy Policy</h1>
       <div className="prose prose-sm text-gray-600 space-y-6">
         <p><strong className="text-navy font-normal">Last updated:</strong> June 2026</p>
-        <p>{company.name} ("{company.shortName}", "we", "our") is committed to protecting your personal information. This policy explains how we collect, use, and protect data when you use our website at {company.website}.</p>
+        <p>{company.name} (&quot;{company.shortName}&quot;, &quot;we&quot;, &quot;our&quot;) is committed to protecting your personal information. This policy explains how we collect, use, and protect data when you use our website at {company.website}.</p>
         <h2 className="font-heading text-xl text-navy font-normal mt-6">Information We Collect</h2>
         <p>We collect information you provide — name, phone, email — when you submit enquiry forms, contact us, or subscribe to notifications. We also collect browsing data via Google Analytics 4.</p>
         <h2 className="font-heading text-xl text-navy font-normal mt-6">How We Use Your Information</h2>

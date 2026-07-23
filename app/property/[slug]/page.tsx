@@ -21,7 +21,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 type Params = Promise<{ slug: string }>;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;

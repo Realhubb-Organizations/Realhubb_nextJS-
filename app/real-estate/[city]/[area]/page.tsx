@@ -18,7 +18,7 @@ import FaqAccordion from "@/components/faq/FaqAccordion";
 
 type Params = Promise<{ city: string; area: string }>;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 const cityLabels: Record<string, string> = {
   bangalore: "Bangalore",
   hyderabad: "Hyderabad",

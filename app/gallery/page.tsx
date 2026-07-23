@@ -5,7 +5,7 @@ import GalleryClient from "@/components/gallery/GalleryClient";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import FaqSection from "@/components/faq/FaqSection";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
   title: "Gallery | RealHubb Events, Properties & Team | RealHubb",

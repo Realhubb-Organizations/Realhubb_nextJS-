@@ -4,7 +4,7 @@ import { locations } from "@/data/locations";
 
 export const dynamic = "force-static";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [firePropertySlugs, fireBlogSlugs, fireDevSlugs] = await Promise.allSettled([

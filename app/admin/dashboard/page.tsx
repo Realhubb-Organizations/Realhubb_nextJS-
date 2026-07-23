@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -9,7 +9,7 @@ import {
   LogOut, ArrowUpRight, ChevronRight, Menu, X,
   Eye, PenLine, Plus, RefreshCw, CheckCircle2,
   AlertTriangle, Zap, BarChart2, Globe, Search, Activity,
-  Bell, Loader2, CheckCircle, HelpCircle, Inbox,
+  HelpCircle, Inbox,
 } from "lucide-react";
 import PropertyManager from "@/admin/components/PropertyManager";
 import BlogManager from "@/admin/components/BlogManager";
@@ -22,8 +22,6 @@ import AnalyticsSection from "@/admin/components/AnalyticsSection";
 import {
   getProperties, getBlogPosts, getDevelopers, getTeamMembers,
 } from "@/lib/firestoreService";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 
 type Section = "overview" | "properties" | "blogs" | "developers" | "team" | "analytics" | "gallery" | "faqs" | "leads";
 
@@ -42,7 +40,8 @@ const NAV: { id: Section; label: string; desc: string; icon: React.ReactNode; ac
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [active, setActive] = useState<Section>("overview");
-  const [sideOpen, setSideOpen] = useState(true);
+  // Closed by default on small screens on initial load
+  const [sideOpen, setSideOpen] = useState(() => typeof window === "undefined" || window.innerWidth >= 1024);
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
@@ -50,12 +49,7 @@ export default function AdminDashboardPage() {
       if (!user) router.push("/admin/login");
       setChecking(false);
     });
-    
-    // Automatically close sidebar on small screens on initial load
-    if (typeof window !== "undefined" && window.innerWidth < 1024) {
-      setSideOpen(false);
-    }
-    
+
     return unsub;
   }, [router]);
 
@@ -210,13 +204,26 @@ export default function AdminDashboardPage() {
 // ── Overview Section ───────────────────────────────────────────────────────────
 interface OverviewProps { onNavigate: (s: Section) => void; }
 
+interface DashboardItem {
+  projectType?: string;
+  status?: string;
+  city?: string;
+  category?: string;
+  published?: boolean;
+  description?: string;
+  images?: unknown[];
+  logoUrl?: string;
+  logo?: string;
+  image?: string;
+  photo?: string;
+}
+
 function OverviewSection({ onNavigate }: OverviewProps) {
-  const [data, setData] = useState<any[][]>([[], [], [], []]);
+  const [data, setData] = useState<DashboardItem[][]>([[], [], [], []]);
   const [loading, setLoading] = useState(true);
   const [ts, setTs] = useState(new Date());
 
   const load = async () => {
-    setLoading(true);
     try {
       const result = await Promise.all([
         getProperties(), getBlogPosts(), getDevelopers(), getTeamMembers(),
@@ -231,24 +238,27 @@ function OverviewSection({ onNavigate }: OverviewProps) {
   };
 
   useEffect(() => {
+    // Mount-time data fetch; setState calls happen after the internal
+    // await, not synchronously in the effect body.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, []);
 
   const [props, posts, devs, team] = data;
 
-  const ongoing = props.filter((p: any) => (p.projectType || p.status) === "ongoing").length;
-  const upcoming = props.filter((p: any) => (p.projectType || p.status) === "upcoming").length;
-  const published = posts.filter((p: any) => p.published).length;
-  const drafts = posts.filter((p: any) => !p.published).length;
+  const ongoing = props.filter((p: DashboardItem) => (p.projectType || p.status) === "ongoing").length;
+  const upcoming = props.filter((p: DashboardItem) => (p.projectType || p.status) === "upcoming").length;
+  const published = posts.filter((p: DashboardItem) => p.published).length;
+  const drafts = posts.filter((p: DashboardItem) => !p.published).length;
 
   const cities = ["bangalore", "hyderabad", "chennai"];
   const cityCount = cities.map((c) => ({
     city: c.charAt(0).toUpperCase() + c.slice(1),
-    count: props.filter((p: any) => (p.city || "").toLowerCase() === c).length,
+    count: props.filter((p: DashboardItem) => (p.city || "").toLowerCase() === c).length,
   }));
 
   const catMap: Record<string, number> = {};
-  posts.forEach((p: any) => {
+  posts.forEach((p: DashboardItem) => {
     const c = p.category || "Other";
     catMap[c] = (catMap[c] || 0) + 1;
   });
@@ -261,7 +271,7 @@ function OverviewSection({ onNavigate }: OverviewProps) {
       (published > 5 ? 25 : published * 5) +
       (devs.length > 5 ? 20 : devs.length * 4) +
       (team.length > 3 ? 15 : team.length * 5) +
-      (props.filter((p: any) => p.description?.length > 50).length > 3 ? 20 : 10)
+      (props.filter((p: DashboardItem) => (p.description?.length ?? 0) > 50).length > 3 ? 20 : 10)
     )
   );
 
@@ -315,7 +325,7 @@ function OverviewSection({ onNavigate }: OverviewProps) {
           <ScoreRing score={loading ? 0 : seoScore} />
           <div className="mt-4 space-y-1.5 w-full">
             {[
-              { label: "Properties with descriptions", ok: props.filter((p: any) => p.description?.length > 50).length > 0 },
+              { label: "Properties with descriptions", ok: props.filter((p: DashboardItem) => (p.description?.length ?? 0) > 50).length > 0 },
               { label: "Published blog posts",          ok: published >= 5 },
               { label: "Developer profiles",            ok: devs.length >= 5 },
               { label: "Team members listed",           ok: team.length >= 3 },
@@ -415,11 +425,11 @@ function OverviewSection({ onNavigate }: OverviewProps) {
           </div>
           <div className="space-y-4">
             {[
-              { label: "Properties with images",       value: props.filter((p: any) => p.images?.length > 0).length,       total: props.length, color: "bg-sky-500"     },
-              { label: "Properties with descriptions", value: props.filter((p: any) => p.description?.length > 30).length,  total: props.length, color: "bg-indigo-500"  },
+              { label: "Properties with images",       value: props.filter((p: DashboardItem) => (p.images?.length ?? 0) > 0).length,       total: props.length, color: "bg-sky-500"     },
+              { label: "Properties with descriptions", value: props.filter((p: DashboardItem) => (p.description?.length ?? 0) > 30).length,  total: props.length, color: "bg-indigo-500"  },
               { label: "Blog posts published",         value: published,                                                      total: posts.length, color: "bg-emerald-500" },
-              { label: "Developers with logos",        value: devs.filter((d: any) => d.logoUrl || d.logo).length,           total: devs.length,  color: "bg-amber-500"   },
-              { label: "Team members with photos",     value: team.filter((m: any) => m.image || m.photo).length,           total: team.length,  color: "bg-rose-500"    },
+              { label: "Developers with logos",        value: devs.filter((d: DashboardItem) => d.logoUrl || d.logo).length,           total: devs.length,  color: "bg-amber-500"   },
+              { label: "Team members with photos",     value: team.filter((m: DashboardItem) => m.image || m.photo).length,           total: team.length,  color: "bg-rose-500"    },
             ].map((item) => {
               const pct = item.total > 0 ? Math.round((item.value / item.total) * 100) : 0;
               return (
@@ -479,7 +489,7 @@ function OverviewSection({ onNavigate }: OverviewProps) {
             {[
               { label: "Firebase Console",     href: "https://console.firebase.google.com" },
               { label: "Cloudinary Dashboard", href: "https://cloudinary.com/console"      },
-              { label: "View Live Site",        href: "https://www.realhubb.in"             },
+              { label: "View Live Site",        href: "https://realhubb.in"             },
             ].map((link) => (
               <a key={link.label} href={link.href} target="_blank" rel="noreferrer"
                 className="flex items-center justify-between text-xs text-slate-500 hover:text-indigo-600 hover:bg-slate-50 px-3 py-2 rounded-lg transition group">

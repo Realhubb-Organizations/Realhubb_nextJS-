@@ -151,7 +151,7 @@ export default function Footer() {
             "@context": "https://schema.org",
             "@type": "Organization",
             name: company.name,
-            url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in",
+            url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in",
             contactPoint: {
               "@type": "ContactPoint",
               telephone: company.phone,

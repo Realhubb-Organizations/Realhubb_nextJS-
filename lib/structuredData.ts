@@ -1,7 +1,7 @@
 import { companyInfo } from "@/data/company";
 import { ensureISOString } from "@/lib/seo";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export function organizationSchema() {
   return {

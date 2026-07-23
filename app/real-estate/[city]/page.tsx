@@ -12,7 +12,7 @@ import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 
 type Params = Promise<{ city: string }>;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 const cityLabels: Record<string, string> = {
   bangalore: "Bangalore",
   hyderabad: "Hyderabad",
@@ -147,7 +147,7 @@ export default async function CityHubPage({ params }: { params: Params }) {
                   <>
                     <li className="flex items-start gap-3 text-sm text-gray-500 font-light hover:text-gold transition-colors duration-200">
                       <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
-                      <span>India's IT capital with 2 million+ tech professionals driving housing demand</span>
+                      <span>India&apos;s IT capital with 2 million+ tech professionals driving housing demand</span>
                     </li>
                     <li className="flex items-start gap-3 text-sm text-gray-500 font-light hover:text-gold transition-colors duration-200">
                       <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
@@ -163,7 +163,7 @@ export default async function CityHubPage({ params }: { params: Params }) {
                     </li>
                     <li className="flex items-start gap-3 text-sm text-gray-500 font-light hover:text-gold transition-colors duration-200">
                       <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
-                      <span>RERA Karnataka strictly enforced — one of India's safest markets</span>
+                      <span>RERA Karnataka strictly enforced — one of India&apos;s safest markets</span>
                     </li>
                   </>
                 )}
@@ -183,7 +183,7 @@ export default async function CityHubPage({ params }: { params: Params }) {
                     </li>
                     <li className="flex items-start gap-3 text-sm text-gray-500 font-light hover:text-gold transition-colors duration-200">
                       <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
-                      <span>HITEC City's global tech hub status guaranteeing employment stability</span>
+                      <span>HITEC City&apos;s global tech hub status guaranteeing employment stability</span>
                     </li>
                     <li className="flex items-start gap-3 text-sm text-gray-500 font-light hover:text-gold transition-colors duration-200">
                       <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />

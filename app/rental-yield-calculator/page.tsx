@@ -3,7 +3,7 @@ import { buildMetadata } from "@/lib/seo";
 import RentalYieldClient from "@/components/tools/RentalYieldClient";
 import RentalYieldFactualData from "@/components/tools/RentalYieldFactualData";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
   title: "Rental Yield Calculator | Invest in Bangalore, Hyderabad & Chennai",

@@ -16,7 +16,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-RXW691N6BH";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 const PUBLISHER = "RealHubb Ventures Pvt. Ltd.";
 
 export const metadata: Metadata = {

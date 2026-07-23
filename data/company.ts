@@ -8,7 +8,7 @@ export const company = {
   whatsapp: "919980189914",
   email: "info@realhubb.in",
   address: "REALHUBB VENTURES PVT. LTD., Ground Floor, 243, 9th Main Rd, HRBR Layout 1st Block, HRBR Layout, Kalyan Nagar, Bengaluru, Karnataka 560043",
-  website: "https://www.realhubb.in",
+  website: "https://realhubb.in",
   rera: "PRM/KA/RERA/1251/309/AG/180921/003226",
   established: "2009",
   stats: {

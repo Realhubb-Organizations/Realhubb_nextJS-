@@ -29,14 +29,14 @@ import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
   title: "About RealHubb Ventures | Real Estate Advisor Bangalore",
   description: "RealHubb Ventures is a trusted real estate partner. We help buyers find verified RERA properties in Bangalore, Hyderabad & Chennai with expert advisory.",
   keywords: "about RealHubb, RealHubb Ventures, real estate partner Bangalore, RERA approved properties",
   canonical: `${SITE_URL}/about`,
-  ogImage: "https://www.realhubb.in/og/about-realhubb.jpg",
+  ogImage: "https://realhubb.in/og/about-realhubb.jpg",
   ogType: "website",
 });
 

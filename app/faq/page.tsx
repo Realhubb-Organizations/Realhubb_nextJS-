@@ -15,7 +15,7 @@ import { segmentFaqs } from "@/app/buy/[segment]/page";
 
 export const revalidate = 3600;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
   title: "FAQ — Real Estate Buying Guide India | RealHubb",

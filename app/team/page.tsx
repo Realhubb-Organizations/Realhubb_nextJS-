@@ -10,7 +10,7 @@ import TrackedLink from "@/components/lead/TrackedLink";
 
 export const revalidate = 3600;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
   title: "Meet Our Team — Real Estate Advisors | RealHubb",

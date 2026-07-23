@@ -8,7 +8,7 @@ import WhatsAppButton from "@/components/lead/WhatsAppButton";
 import TrackedLink from "@/components/lead/TrackedLink";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 // 148 chars ✅
 export const metadata: Metadata = buildMetadata({

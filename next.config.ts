@@ -44,6 +44,15 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // Canonical host is the apex domain (realhubb.in, no www) — send any
+      // www traffic to it with a permanent redirect so Google never sees
+      // both hosts serving the same content.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.realhubb.in" }],
+        destination: "https://realhubb.in/:path*",
+        permanent: true,
+      },
       { source: "/projects", destination: "/projects/ongoing/bangalore", permanent: true },
       { source: "/ongoing-projects", destination: "/projects/ongoing/bangalore", permanent: true },
       { source: "/upcoming-projects", destination: "/projects/upcoming/bangalore", permanent: true },

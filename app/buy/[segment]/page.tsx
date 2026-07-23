@@ -9,7 +9,7 @@ import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 
 type Params = Promise<{ segment: string }>;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 const segmentConfig: Record<
   string,

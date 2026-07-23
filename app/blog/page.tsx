@@ -5,7 +5,7 @@ import BlogListingClient from "@/components/blog/BlogListingClient";
 import { faqSchema } from "@/lib/structuredData";
 import FaqSection from "@/components/faq/FaqSection";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
   title: "Real Estate Blog — Guides & Market Reports | RealHubb",
@@ -70,7 +70,7 @@ export default async function BlogPage() {
               Real Estate <span className="text-gold">Blog</span>
             </h1>
             <p className="text-white/60 text-sm md:text-base mt-4 max-w-xl font-light leading-relaxed animate-fadeIn">
-              Buying guides, market reports, investment tips and locality insights from RealHubb's real estate experts.
+              Buying guides, market reports, investment tips and locality insights from RealHubb&apos;s real estate experts.
             </p>
           </div>
         </div>

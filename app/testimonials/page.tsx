@@ -201,7 +201,7 @@ const TestimonialsPage = () => {
     const webPage = {
       name: "Customer Reviews & Testimonials | RealHubb Real Estate Bangalore, Hyderabad & Chennai",
       description: "Read verified Google reviews and testimonials from RealHubb customers across Bangalore, Hyderabad and Chennai. Real stories from home buyers, tenants and investors about their property journey with Realhubb Ventures Private Limited.",
-      url: "https://www.realhubb.in/testimonials",
+      url: "https://realhubb.in/testimonials",
       speakableSelectors: [".speakable-title", ".speakable-summary"],
     };
 
@@ -211,8 +211,8 @@ const TestimonialsPage = () => {
           title="Customer Reviews & Testimonials | RealHubb Real Estate"
           description="Read verified Google reviews & testimonials from RealHubb customers across Bangalore, Hyderabad & Chennai. Real home buyer and investor stories."
           keywords="RealHubb reviews, RealHubb testimonials, Google reviews Bangalore, trusted property consultant"
-          canonical="https://www.realhubb.in/testimonials"
-          image="https://www.realhubb.in/assets/realhubb%20trademark%20logo-DpR5IVGg.png"
+          canonical="https://realhubb.in/testimonials"
+          image="https://realhubb.in/assets/realhubb%20trademark%20logo-DpR5IVGg.png"
         />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema(webPage)) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsData) }} />
@@ -453,7 +453,7 @@ const TestimonialsPage = () => {
                   
                   {search && (
                     <span className="inline-flex items-center gap-1.5 bg-gold/5 text-gold border border-gold/20 px-3 py-1 rounded-full text-xs font-medium">
-                      Search: "{search}"
+                      Search: &quot;{search}&quot;
                       <button onClick={() => setSearch("")} className="hover:text-navy cursor-pointer flex items-center">
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -528,7 +528,7 @@ const TestimonialsPage = () => {
                 </div>
                 <h3 className="font-heading text-xl text-navy font-normal mb-2">No Reviews Found</h3>
                 <p className="text-gray-400 text-sm max-w-xs mx-auto mb-6">
-                  We couldn't find any verified client reviews matching your current selection.
+                  We couldn&apos;t find any verified client reviews matching your current selection.
                 </p>
                 <button
                   onClick={clearAllFilters}

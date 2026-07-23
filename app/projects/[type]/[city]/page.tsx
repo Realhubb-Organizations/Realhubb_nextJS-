@@ -11,7 +11,7 @@ import FaqSection from "@/components/faq/FaqSection";
 type Params = Promise<{ type: string; city: string }>;
 type SearchParams = Promise<{ type?: string; price?: string; q?: string }>;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 const cityLabels: Record<string, string> = {
   all: "All Cities",

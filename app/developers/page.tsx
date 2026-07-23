@@ -10,7 +10,7 @@ import FaqSection from "@/components/faq/FaqSection";
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.realhubb.in";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
 export const metadata: Metadata = buildMetadata({
   title: "Top Real Estate Developers in Bangalore | RealHubb",
