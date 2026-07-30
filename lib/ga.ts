@@ -4,19 +4,31 @@ export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G
 
 declare global {
   interface Window {
-    gtag: (...args: unknown[]) => void;
     dataLayer: unknown[];
   }
 }
 
-export function trackPageView(url: string) {
-  if (typeof window === "undefined" || !window.gtag) return;
-  window.gtag("config", GA_MEASUREMENT_ID, { page_path: url });
+// Every tracking call in this file pushes to dataLayer instead of calling
+// gtag directly. GTM (see app/layout.tsx) is the single place that decides
+// what happens with each event — GA4, Google Ads conversions, Meta Pixel,
+// etc. — so new destinations get added in the GTM UI, not in this codebase.
+function pushToDataLayer(payload: Record<string, unknown>) {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(payload);
+}
+
+// Fired on initial load AND on every client-side route change (see
+// ClientLayoutWrapper) — Next.js App Router navigations don't trigger a new
+// page load, so without this GTM's default "All Pages" trigger only ever
+// sees the very first URL of the session.
+export function trackPageView(path: string) {
+  pushToDataLayer({ event: "page_view", page_path: path });
 }
 
 export function trackEvent(action: string, category: string, label?: string, value?: number) {
-  if (typeof window === "undefined" || !window.gtag) return;
-  window.gtag("event", action, {
+  pushToDataLayer({
+    event: action,
     event_category: category,
     event_label: label,
     value,
