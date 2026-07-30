@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { buildMetadata } from "@/lib/seo";
 import { getAllProperties } from "@/lib/firestoreServerService";
 import { generatePageGraph } from "@/lib/structuredData";
@@ -10,7 +11,6 @@ import PageHeroImage from "@/components/ui/PageHeroImage";
 
 
 type Params = Promise<{ type: string; city: string }>;
-type SearchParams = Promise<{ type?: string; price?: string; q?: string }>;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
@@ -40,6 +40,17 @@ export async function generateMetadata({
 
 export const revalidate = 3600;
 
+// Without this, Next.js has no known path list for this dynamic segment
+// and falls back to full per-request SSR (marked "ƒ" in the build output)
+// instead of ISR — every visit re-fetched all properties from Firestore
+// synchronously before sending any HTML. Pre-building the real
+// type × city combinations lets the revalidate above actually take effect.
+export async function generateStaticParams() {
+  const types = ["ongoing", "upcoming"];
+  const cities = ["all", "bangalore", "hyderabad", "chennai"];
+  return types.flatMap((type) => cities.map((city) => ({ type, city })));
+}
+
 function getCityFaqs(cityLabel: string) {
   return [
     {
@@ -63,13 +74,10 @@ function getCityFaqs(cityLabel: string) {
 
 export default async function ProjectsCityPage({
   params,
-  searchParams,
 }: {
   params: Params;
-  searchParams: SearchParams;
 }) {
   const { type, city } = await params;
-  const sp = await searchParams;
 
   const allProps = await getAllProperties().catch(() => []);
 
@@ -138,14 +146,13 @@ export default async function ProjectsCityPage({
             </div>
           </div>
         </div>
-        <ProjectsClient
-          allProperties={allProps}
-          initialCity={city}
-          initialType={type as "ongoing" | "upcoming"}
-          initialFilterType={sp.type ?? ""}
-          initialPriceRange={sp.price ?? ""}
-          initialSearch={sp.q ?? ""}
-        />
+        <Suspense fallback={null}>
+          <ProjectsClient
+            allProperties={allProps}
+            initialCity={city}
+            initialType={type as "ongoing" | "upcoming"}
+          />
+        </Suspense>
 
         {/* FAQs */}
         <div className="page-padding py-24 max-w-4xl mx-auto">

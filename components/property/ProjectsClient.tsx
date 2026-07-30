@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Search, SlidersHorizontal, X, MessageCircle } from "lucide-react";
 import PropertyCard from "@/components/property/PropertyCard";
 import type { Property, PropertyType } from "@/types/property";
@@ -40,27 +40,25 @@ interface Props {
   allProperties: Property[];
   initialCity: string;
   initialType: "ongoing" | "upcoming";
-  initialFilterType?: string;
-  initialPriceRange?: string;
-  initialSearch?: string;
 }
 
 export default function ProjectsClient({
   allProperties,
   initialCity,
   initialType,
-  initialFilterType = "",
-  initialPriceRange = "",
-  initialSearch = "",
 }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
+  // Reading filters here (client-side) rather than as server searchParams
+  // keeps the page itself statically generated/ISR'd — accessing
+  // searchParams on the server forces full dynamic rendering on every
+  // request, which was the main cause of this route's 15s LCP.
+  const searchParams = useSearchParams();
 
   const [activeType, setActiveType] = useState(initialType);
   const [activeCity, setActiveCity] = useState(initialCity);
-  const [filterType, setFilterType] = useState(initialFilterType);
-  const [priceRange, setPriceRange] = useState(initialPriceRange);
-  const [search, setSearch] = useState(initialSearch);
+  const [filterType, setFilterType] = useState(searchParams.get("type") ?? "");
+  const [priceRange, setPriceRange] = useState(searchParams.get("price") ?? "");
+  const [search, setSearch] = useState(searchParams.get("q") ?? "");
   const [showFilters, setShowFilters] = useState(false);
 
   const navigateTo = useCallback(
