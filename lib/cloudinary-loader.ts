@@ -6,7 +6,17 @@ export default function cloudinaryLoader({ src, width, quality }: ImageLoaderPro
     return `${src}?w=${width}`;
   }
 
-  // External URLs (like postimg, unsplash, istock, ftcdn)
+  // Unsplash supports its own resize/quality query params — use them so
+  // next/image's responsive srcset actually requests a smaller file per
+  // breakpoint instead of the same multi-hundred-KB image every time.
+  if (src.includes("images.unsplash.com")) {
+    const url = new URL(src);
+    url.searchParams.set("w", String(width));
+    url.searchParams.set("q", String(quality ?? 60));
+    return url.toString();
+  }
+
+  // Other external URLs (istockphoto, ftcdn, postimg, etc.)
   // Serve directly to prevent Cloudinary Fetch blocks (400 Bad Request) on restricted accounts
   if (src.startsWith("http") && !src.includes("res.cloudinary.com")) {
     return src;

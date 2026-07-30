@@ -4,6 +4,7 @@ import { getAllBlogPosts } from "@/lib/firestoreServerService";
 import BlogListingClient from "@/components/blog/BlogListingClient";
 import { faqSchema } from "@/lib/structuredData";
 import FaqSection from "@/components/faq/FaqSection";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
@@ -50,10 +51,10 @@ export default async function BlogPage() {
         <div className="bg-navy pt-20 pb-28 md:pt-24 md:pb-36 page-padding relative overflow-hidden">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80"
               alt="Real Estate Insights"
-              className="w-full h-full object-cover opacity-40 filter brightness-95"
+              className="object-cover opacity-40 brightness-95"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy/75 via-navy/55 to-navy/20" />
           </div>

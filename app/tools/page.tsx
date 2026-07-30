@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Calculator, DollarSign, Percent, TrendingUp, Briefcase, ChevronRight, ArrowRight, Search, X } from "lucide-react";
+import { Calculator, DollarSign, Percent, TrendingUp, Briefcase, ChevronRight, ArrowRight, Search, X, type LucideIcon } from "lucide-react";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import SEO from "@/components/seo/SEO";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 const buyerTools = [
   {
@@ -63,7 +64,7 @@ function ToolCard({
   name: string;
   description: string;
   href: string;
-  icon: any;
+  icon: LucideIcon;
   tags: string[];
 }) {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -164,10 +165,10 @@ export default function ToolsHubPage() {
         <section className="relative bg-navy pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden text-white">
           {/* Background image & gradient overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
               alt="Luxury Real Estate"
-              className="w-full h-full object-cover opacity-55 filter brightness-95"
+              className="object-cover opacity-55 brightness-95"
             />
             {/* Smooth linear gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/55 to-navy" />
@@ -286,7 +287,7 @@ export default function ToolsHubPage() {
                   </div>
                   <h3 className="text-xl font-heading text-navy font-normal mb-2">No tools match your query</h3>
                   <p className="text-gray-400 text-sm max-w-xs mx-auto mb-6">
-                    We couldn't find any calculators matching "{searchQuery}". Try using different terms or browse all categories.
+                    We couldn&apos;t find any calculators matching &quot;{searchQuery}&quot;. Try using different terms or browse all categories.
                   </p>
                   <button
                     onClick={() => {

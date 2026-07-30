@@ -5,6 +5,7 @@ import { generatePageGraph } from "@/lib/structuredData";
 import ProjectsClient from "@/components/property/ProjectsClient";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import FaqSection from "@/components/faq/FaqSection";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 
 
@@ -102,10 +103,10 @@ export default async function ProjectsCityPage({
         <div className="bg-navy pt-20 pb-28 md:pt-24 md:pb-36 page-padding relative overflow-hidden">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80"
               alt={`${city} Real Estate Projects Banner`}
-              className="w-full h-full object-cover opacity-40"
+              className="object-cover opacity-40"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy/75 via-navy/55 to-navy/20" />
           </div>

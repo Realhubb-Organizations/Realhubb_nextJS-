@@ -6,6 +6,7 @@ import SEO from "@/components/seo/SEO";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import { reviewSchema, webPageSchema } from "@/lib/structuredData";
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 import { cn } from "@/lib/utils";
 import {
   Star, Quote, CheckCircle, MapPin, Home, Users, TrendingUp, ThumbsUp, Building2,
@@ -223,10 +224,10 @@ const TestimonialsPage = () => {
           <section className="bg-navy pt-32 pb-28 md:pt-36 md:pb-36 page-padding relative overflow-hidden text-white">
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
-              <img
+              <PageHeroImage
                 src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80"
                 alt="Testimonials"
-                className="w-full h-full object-cover opacity-35"
+                className="object-cover opacity-35"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/60 to-navy/20" />
             </div>

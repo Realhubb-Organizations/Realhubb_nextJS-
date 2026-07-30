@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import SEO from "@/components/seo/SEO";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 const quickLinks = [
   { name: "EMI Calculator", href: "/emi-calculator" },
@@ -86,10 +87,10 @@ const CurrencyConverter = () => {
         <section className="bg-navy pt-28 pb-36 md:pt-32 md:pb-44 page-padding relative overflow-hidden text-white">
           {/* Background image & gradient overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
               alt="Luxury Real Estate"
-              className="w-full h-full object-cover opacity-55 filter brightness-95"
+              className="object-cover opacity-55 brightness-95"
             />
             {/* Smooth linear gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/55 to-navy" />

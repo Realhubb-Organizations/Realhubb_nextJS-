@@ -7,6 +7,7 @@ import ContactForm from "@/components/contact/ContactForm";
 import WhatsAppButton from "@/components/lead/WhatsAppButton";
 import TrackedLink from "@/components/lead/TrackedLink";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
@@ -55,10 +56,10 @@ export default function ContactPage() {
         <div className="bg-navy relative overflow-hidden py-16 page-padding">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
               alt="Contact RealHubb"
-              className="w-full h-full object-cover opacity-35 filter brightness-95"
+              className="object-cover opacity-35 brightness-95"
             />
             {/* Smooth linear top-to-bottom gradient overlay to maintain readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/55 to-navy" />

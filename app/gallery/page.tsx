@@ -4,6 +4,7 @@ import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
 import GalleryClient from "@/components/gallery/GalleryClient";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import FaqSection from "@/components/faq/FaqSection";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
@@ -56,10 +57,10 @@ export default function GalleryPage() {
         <section className="bg-navy py-16 md:py-20 page-padding relative overflow-hidden text-white">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80"
               alt="RealHubb Gallery Showcase"
-              className="w-full h-full object-cover opacity-45 filter brightness-95"
+              className="object-cover opacity-45 brightness-95"
             />
             {/* Subtle linear navy-dominant gradient to maintain readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />

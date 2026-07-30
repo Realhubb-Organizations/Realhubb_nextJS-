@@ -13,6 +13,7 @@ import { getPropertiesByCityAndLocation } from "@/lib/firestoreServerService";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import { properties as staticProperties } from "@/data/properties";
 import PropertyCard from "@/components/property/PropertyCard";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 import FaqAccordion from "@/components/faq/FaqAccordion";
 
@@ -74,10 +75,10 @@ export default async function AreaPage({ params }: { params: Params }) {
         <div className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80"
               alt={loc.area}
-              className="w-full h-full object-cover opacity-40 filter brightness-95"
+              className="object-cover opacity-40 brightness-95"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
           </div>

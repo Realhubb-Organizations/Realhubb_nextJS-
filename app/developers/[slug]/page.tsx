@@ -10,6 +10,7 @@ import {
 } from "@/lib/firestoreServerService";
 import { breadcrumbSchema, builderSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
@@ -78,10 +79,10 @@ export default async function DeveloperDetailPage({ params }: { params: Params }
         <div className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"
               alt={dev.name}
-              className="w-full h-full object-cover opacity-35 filter brightness-95"
+              className="object-cover opacity-35 brightness-95"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
           </div>

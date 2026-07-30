@@ -6,6 +6,7 @@ import { getAllProperties } from "@/lib/firestoreServerService";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 type Params = Promise<{ segment: string }>;
 
@@ -131,10 +132,10 @@ export default async function BuySegmentPage({ params }: { params: Params }) {
         <div className="bg-navy pt-20 pb-24 md:pt-24 md:pb-28 page-padding relative overflow-hidden text-white">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src={bgImage}
               alt={label}
-              className="w-full h-full object-cover opacity-40 filter brightness-95"
+              className="object-cover opacity-40 brightness-95"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
           </div>

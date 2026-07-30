@@ -14,6 +14,7 @@ import TrackedLink from "@/components/lead/TrackedLink";
 import {
   DollarSign, TrendingUp, GraduationCap, CalendarDays, Award, Coffee, Heart, MapPin,
 } from "lucide-react";
+import PageHeroImage from "@/components/ui/PageHeroImage";
 
 export const revalidate = 3600;
 
@@ -71,10 +72,10 @@ export default async function CareerPage() {
         <section className="relative pt-32 pb-24 bg-navy overflow-hidden text-white">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <img
+            <PageHeroImage
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80"
               alt="Join Our Growing Team"
-              className="w-full h-full object-cover opacity-45 filter brightness-95"
+              className="object-cover opacity-45 brightness-95"
             />
             {/* Smooth linear top-to-bottom gradient overlay to maintain readability for centered text */}
             <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/55 to-navy" />

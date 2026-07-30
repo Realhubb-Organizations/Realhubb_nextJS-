@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface Props {
   images: string[];
@@ -29,10 +30,17 @@ export default function HeroBackgroundSlideshow({ images, propertyName }: Props)
             i === index ? "opacity-65" : "opacity-0"
           }`}
         >
-          <img
+          {/* Only the first slide loads eagerly (it's the LCP candidate on
+              first paint) — the rest lazy-load so a 10-photo gallery doesn't
+              compete for bandwidth with the visible image. */}
+          <Image
             src={src}
             alt={propertyName ? `${propertyName} slideshow image ${i + 1}` : "Property background gallery view"}
-            className="w-full h-full object-cover filter brightness-95"
+            fill
+            sizes="100vw"
+            quality={55}
+            className="object-cover brightness-95"
+            {...(i === 0 ? { priority: true } : { loading: "lazy" as const })}
           />
         </div>
       ))}
