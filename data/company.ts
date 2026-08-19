@@ -176,7 +176,7 @@ export const companyInfo = {
     },
     {
       name: "Jayant Prakash",
-      designation: "Customer Experience Manager",
+      designation: "Co-founder & CSO (EAST)",
       image: "https://i.postimg.cc/QdVWKY4R/Gemini-Generated-Image-xfvmddxfvmddxfvm.png",
       bio: "With over a decade of experience in real estate, Mr. Jayant Prakash co-founded Realhubb in 2023 with a vision to simplify the home-buying experience. As a strategic and financial leader, he has been instrumental in expanding the company’s presence across major cities like Bangalore, Pune, Hyderabad, and Gurgaon. Known for his analytical mindset and leadership, Mr. Prakash combines business acumen with a passion for growth, travel, and endurance sports—driving Realhubb’s continued success in the real estate market.",
       linkedin: "https://www.linkedin.com/company/102738045/admin/dashboard/",

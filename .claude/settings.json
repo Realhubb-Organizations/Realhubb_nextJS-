@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git check-ignore *)",
+      "Bash(git fetch *)",
+      "mcp__claude_ai_Vercel__list_deployments",
+      "Bash(grep -A2 \"projects/\\\\[type\\\\]/\\\\[city\\\\]\")",
+      "Bash(grep -A10 \"projects/\\\\[type\\\\]/\\\\[city\\\\]\")"
+    ]
+  }
+}
