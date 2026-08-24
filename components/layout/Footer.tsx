@@ -1,11 +1,29 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
-import { company } from "@/data/company";
+import { company, getReraForState, RERA_STATE_COOKIE } from "@/data/company";
 import { trackCall, trackEmail } from "@/lib/ga";
+
+// The rera-state cookie (set by proxy.ts from IP geolocation) never changes
+// mid-session, so this store never notifies — it only needs to swap in the
+// client's cookie-derived value once, past the server-rendered default.
+const noSubscribe = () => () => {};
+function readReraSnapshot() {
+  const match = document.cookie.match(
+    new RegExp(`(?:^|; )${RERA_STATE_COOKIE}=([^;]+)`)
+  );
+  return getReraForState(match ? decodeURIComponent(match[1]) : null);
+}
+function getServerSnapshot() {
+  return company.rera;
+}
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const rera = useSyncExternalStore(noSubscribe, readReraSnapshot, getServerSnapshot);
 
   return (
     <footer className="bg-navy text-white">
@@ -135,7 +153,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10 page-padding py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
         <p>
-          © {year} {company.name}. All rights reserved. RERA: {company.rera}
+          © {year} {company.name}. All rights reserved. RERA: {rera}
         </p>
         <div className="flex gap-4">
           <Link href="/privacy" className="hover:text-gold transition-colors">Privacy Policy</Link>

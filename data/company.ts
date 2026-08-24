@@ -9,7 +9,7 @@ export const company = {
   email: "info@realhubb.in",
   address: "REALHUBB VENTURES PVT. LTD., Ground Floor, 243, 9th Main Rd, HRBR Layout 1st Block, HRBR Layout, Kalyan Nagar, Bengaluru, Karnataka 560043",
   website: "https://realhubb.in",
-  rera: "PRM/KA/RERA/1251/309/AG/180921/003226",
+  rera: "PRM/KA/RERA/1251/309/AG/240926/005147",
   established: "2009",
   stats: {
     properties: "1000+",
@@ -28,6 +28,31 @@ export const company = {
   advisors: ["Sanjeev Ranjan Singh", "Srikanth Baddila"],
   ga4Id: "G-RXW691N6BH",
 };
+
+// Agent RERA registration number, keyed by the visitor's Indian state.
+// Karnataka is the fallback for every state not listed here.
+export const reraByState = {
+  KA: "PRM/KA/RERA/1251/309/AG/240926/005147",
+  TG: "A28200003967",
+  TN: "TN/Agent/0122/2025",
+} as const;
+
+export type ReraState = keyof typeof reraByState;
+
+export const defaultReraState: ReraState = "KA";
+
+// Name of the cookie proxy.ts sets from the visitor's IP geolocation so the
+// footer can pick the right RERA number client-side without forcing every
+// page into dynamic (non-ISR) rendering.
+export const RERA_STATE_COOKIE = "rera-state";
+
+export function isReraState(value: string | null | undefined): value is ReraState {
+  return !!value && value in reraByState;
+}
+
+export function getReraForState(state: string | null | undefined): string {
+  return isReraState(state) ? reraByState[state] : reraByState[defaultReraState];
+}
 
 export const cities = [
   { name: "Bangalore", slug: "bangalore", image: "/cities/bangalore.jpg" },
