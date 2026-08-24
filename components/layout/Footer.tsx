@@ -149,10 +149,11 @@ export default function Footer() {
             <Link href="/terms" className="hover:text-gold transition-colors">Terms of Service</Link>
           </div>
         </div>
-        <p className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1">
-          {reraByCity.map(({ city, rera }) => (
+        <p className="flex flex-wrap justify-center md:justify-start gap-x-2 gap-y-1">
+          {reraByCity.map(({ city, rera }, index) => (
             <span key={city}>
               {city} RERA: {rera}
+              {index < reraByCity.length - 1 && <span className="ml-2">|</span>}
             </span>
           ))}
         </p>
