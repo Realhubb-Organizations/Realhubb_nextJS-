@@ -1,29 +1,19 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
-import { company, getReraForState, RERA_STATE_COOKIE } from "@/data/company";
+import { company, reraByState } from "@/data/company";
 import { trackCall, trackEmail } from "@/lib/ga";
 
-// The rera-state cookie (set by proxy.ts from IP geolocation) never changes
-// mid-session, so this store never notifies — it only needs to swap in the
-// client's cookie-derived value once, past the server-rendered default.
-const noSubscribe = () => () => {};
-function readReraSnapshot() {
-  const match = document.cookie.match(
-    new RegExp(`(?:^|; )${RERA_STATE_COOKIE}=([^;]+)`)
-  );
-  return getReraForState(match ? decodeURIComponent(match[1]) : null);
-}
-function getServerSnapshot() {
-  return company.rera;
-}
+const reraByCity = [
+  { city: "Bangalore", rera: reraByState.KA },
+  { city: "Hyderabad", rera: reraByState.TG },
+  { city: "Chennai", rera: reraByState.TN },
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const rera = useSyncExternalStore(noSubscribe, readReraSnapshot, getServerSnapshot);
 
   return (
     <footer className="bg-navy text-white">
@@ -151,14 +141,21 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10 page-padding py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
-        <p>
-          © {year} {company.name}. All rights reserved. RERA: {rera}
-        </p>
-        <div className="flex gap-4">
-          <Link href="/privacy" className="hover:text-gold transition-colors">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-gold transition-colors">Terms of Service</Link>
+      <div className="border-t border-white/10 page-padding py-5 flex flex-col gap-3 text-xs text-white/40">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {year} {company.name}. All rights reserved.</p>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-gold transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gold transition-colors">Terms of Service</Link>
+          </div>
         </div>
+        <p className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1">
+          {reraByCity.map(({ city, rera }) => (
+            <span key={city}>
+              {city} RERA: {rera}
+            </span>
+          ))}
+        </p>
       </div>
 
       {/* Organization JSON-LD reinforcement in footer */}
