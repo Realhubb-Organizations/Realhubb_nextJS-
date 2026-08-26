@@ -18,7 +18,7 @@ import {
   User,
   Calendar
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import CommentSection from "./CommentSection";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 import { companyInfo } from "@/data/company";
@@ -260,7 +260,7 @@ export default function BlogReaderWrapper({
               </span>
               <span className="text-white/30">·</span>
               <span className="text-white/50 text-xs flex items-center gap-1">
-                <Calendar className="h-3 w-3" /> {post.publishedAt}
+                <Calendar className="h-3 w-3" /> {formatDate(post.publishedAt)}
               </span>
             </div>
             <h1 className="speakable-title font-heading text-3xl md:text-4xl text-white font-normal leading-tight">
@@ -352,7 +352,7 @@ export default function BlogReaderWrapper({
                   </span>
                   <span>•</span>
                   <span className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5 text-gold/80" /> {post.publishedAt}
+                    <Calendar className="h-3.5 w-3.5 text-gold/80" /> {formatDate(post.publishedAt)}
                   </span>
                   <span>•</span>
                   <span className="flex items-center gap-1.5">

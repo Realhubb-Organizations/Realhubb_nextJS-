@@ -30,3 +30,14 @@ export function truncate(str: string, maxLen: number): string {
   if (str.length <= maxLen) return str;
   return str.slice(0, maxLen - 1) + "…";
 }
+
+// Blog posts store publishedAt inconsistently — sometimes a plain
+// "YYYY-MM-DD" date, sometimes a full ISO timestamp — and both were being
+// rendered raw, showing "2026-07-29T00:00:00.000Z" straight in the UI for
+// the latter. Normalize either shape into a readable date everywhere.
+export function formatDate(value: string): string {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+}

@@ -74,11 +74,13 @@ export default async function TeamPage() {
                   <h2 className="font-heading text-navy text-xl font-normal">{m.name}</h2>
                   <p className="section-overline text-gold mt-1 mb-3">{m.role}</p>
                   <p className="text-gray-500 text-sm leading-relaxed mb-4">{m.bio}</p>
-                  <div className="space-y-1.5 text-xs text-gray-400">
-                    <p><span className="text-navy/60">Specialises in:</span> {m.specialisation}</p>
-                    <p><span className="text-navy/60">Experience:</span> {m.experience}</p>
-                    <p><span className="text-navy/60">Languages:</span> {(m.languages ?? []).join(", ")}</p>
-                  </div>
+                  {(m.specialisation || m.experience || (m.languages ?? []).length > 0) && (
+                    <div className="space-y-1.5 text-xs text-gray-400">
+                      {m.specialisation && <p><span className="text-navy/60">Specialises in:</span> {m.specialisation}</p>}
+                      {m.experience && <p><span className="text-navy/60">Experience:</span> {m.experience}</p>}
+                      {(m.languages ?? []).length > 0 && <p><span className="text-navy/60">Languages:</span> {m.languages.join(", ")}</p>}
+                    </div>
+                  )}
                   {(m.achievements ?? []).length > 0 && (
                     <div className="mt-4 flex flex-wrap gap-2">
                       {m.achievements.map((a) => (

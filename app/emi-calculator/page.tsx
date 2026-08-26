@@ -158,9 +158,10 @@ const EMICalculatorPage = () => {
                     </div>
                   </div>
 
-                  {/* Manual inputs */}
-                  <div className="grid grid-cols-3 gap-3 pt-4 border-t border-gray-100">
-                    <div>
+                  {/* Manual inputs — Amount gets its own row on small screens
+                      since a 7-9 digit rupee amount doesn't fit a 3-up grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4 border-t border-gray-100">
+                    <div className="col-span-2 sm:col-span-1">
                       <label className="block text-[10px] text-gray-500 mb-1">Amount (₹)</label>
                       <input
                         type="number"

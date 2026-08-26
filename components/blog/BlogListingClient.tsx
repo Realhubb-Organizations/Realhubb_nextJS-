@@ -7,7 +7,7 @@ import type { BlogPost } from "@/types/blog";
 import { imagePresets } from "@/lib/cloudinary";
 import { RevealGrid, RevealCard } from "@/components/ui/RevealGrid";
 import { Search, ChevronDown, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 
 interface Props {
   posts: BlogPost[];
@@ -184,7 +184,7 @@ export default function BlogListingClient({ posts }: Props) {
 
                       <div className="p-4 flex-grow">
                         <div className="flex items-center gap-1.5 text-xs text-gray-400 mb-2">
-                          <span>{post.publishedAt}</span>
+                          <span>{formatDate(post.publishedAt)}</span>
                           <span>·</span>
                           <span>{post.readTime}</span>
                         </div>

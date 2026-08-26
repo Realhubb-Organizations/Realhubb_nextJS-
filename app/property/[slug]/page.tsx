@@ -105,18 +105,16 @@ export default async function PropertyDetailPage({ params }: { params: Params })
     ...customFaqs,
   ];
 
-  // Fallback and normalization for map embed URLs
-  let mapEmbedUrl = p.mapEmbedUrl;
-  if (mapEmbedUrl && !mapEmbedUrl.includes("/embed") && !mapEmbedUrl.includes("embed?pb=")) {
-    if (p.name.toLowerCase().includes("harmony")) {
-      mapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.7523956637843!2d77.63552137594411!3d12.892838390772714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15f07a70b4ef%3A0xa27a1092cbf233da!2sHeart+of+Harmony+by+CKPC!5e0!3m2!1sen!2sin!4v1718712000000!5m2!1sen!2sin";
-    } else {
-      mapEmbedUrl = "";
-    }
-  }
-  if (!mapEmbedUrl && p.name.toLowerCase().includes("harmony")) {
-    mapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.7523956637843!2d77.63552137594411!3d12.892838390772714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15f07a70b4ef%3A0xa27a1092cbf233da!2sHeart+of+Harmony+by+CKPC!5e0!3m2!1sen!2sin!4v1718712000000!5m2!1sen!2sin";
-  }
+  // Use the stored embed URL only if it's actually a valid Google Maps
+  // embed link (a plain maps.google.com share/place link gets refused by
+  // Google when loaded in an iframe, rendering as a blank box). Otherwise
+  // fall back to a text-query embed built from the property's own
+  // name/location/city — no API key required, works for every property
+  // instead of only the one that previously had a hand-coded coordinate.
+  const mapEmbedUrl =
+    p.mapEmbedUrl && p.mapEmbedUrl.includes("/maps/embed")
+      ? p.mapEmbedUrl
+      : `https://www.google.com/maps?q=${encodeURIComponent(`${p.name}, ${p.location}, ${p.city}`)}&output=embed`;
 
   const hasGuidePage = p.location ? !!getLocationBySlug(p.city, p.location.toLowerCase().replace(/\s+/g, "-")) : false;
 
