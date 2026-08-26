@@ -152,7 +152,7 @@ export default async function DevelopersPage() {
         </div>
 
         {/* FAQs */}
-        <div className="page-padding pb-24 max-w-4xl mx-auto">
+        <div className="page-padding pb-24 max-w-7xl mx-auto">
           <FaqSection title="Developer Partner FAQs" icon="🏢" items={developerFaqs} />
         </div>
       </div>

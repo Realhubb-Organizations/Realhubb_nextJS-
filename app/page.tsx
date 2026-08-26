@@ -97,7 +97,7 @@ function BlogPreviewSkeleton() {
 function HomeFaqsSkeleton() {
   return (
     <div className="py-20 bg-cream">
-      <div className="page-padding max-w-4xl mx-auto">
+      <div className="page-padding max-w-7xl mx-auto">
         <div className="h-10 bg-gray-200 rounded-lg w-1/3 mx-auto mb-10 animate-pulse" />
         <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-gray-100">
           <div className="space-y-4 animate-pulse">

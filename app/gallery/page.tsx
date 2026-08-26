@@ -87,7 +87,7 @@ export default function GalleryPage() {
         <GalleryClient />
 
         {/* FAQs */}
-        <div className="page-padding py-24 max-w-4xl mx-auto">
+        <div className="page-padding py-24 max-w-7xl mx-auto">
           <FaqSection title="Media Gallery FAQs" icon="🖼️" items={galleryFaqs} />
         </div>
       </div>

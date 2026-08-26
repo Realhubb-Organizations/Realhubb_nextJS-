@@ -7,7 +7,7 @@ export default function HomeSEOContent() {
       <div className="absolute top-0 left-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="page-padding max-w-5xl mx-auto relative z-10">
+      <div className="page-padding max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-3">
             Real Estate Advisory
@@ -24,8 +24,8 @@ export default function HomeSEOContent() {
               Navigating Bangalore, Hyderabad & Chennai Property Markets
             </h3>
             <p>
-              Buying a home is one of the most significant financial and emotional milestones in a person's life. 
-              At RealHubb Ventures, we simplify this journey. Operating in India's leading tech corridors—Bangalore, 
+              Buying a home is one of the most significant financial and emotional milestones in a person&apos;s life. 
+              At RealHubb Ventures, we simplify this journey. Operating in India&apos;s leading tech corridors—Bangalore, 
               Hyderabad, and Chennai—we connect home buyers with verified residential apartments, luxury villas, 
               and premium plots.
             </p>
@@ -40,7 +40,7 @@ export default function HomeSEOContent() {
             </h3>
             <p>
               Traditional property hunting often involves heavy brokerage fees and hidden charges that inflate 
-              your purchase price. RealHubb operates on a **zero brokerage** policy for buyers. Our consultation, 
+              your purchase price. RealHubb operates on a <strong className="text-navy font-normal">zero brokerage</strong> policy for buyers. Our consultation,
               accompanied site visits, loan assistance, and legal document coordination are 100% free of charge 
               to you. We partner directly with reputed developers to bring you builder-direct pricing and exclusive 
               inventory.
@@ -55,7 +55,7 @@ export default function HomeSEOContent() {
               With over 17 years of experience in the real estate sector, our co-founders Sanjeev Ranjan Singh 
               and Srikanth Baddila have established a benchmark of trust and reliability. Every project listed 
               on RealHubb undergoes rigorous verification against the official RERA database. We check land titles, 
-              escrow accounts, building plan approvals, and delivery timelines so you don't face possession delays.
+              escrow accounts, building plan approvals, and delivery timelines so you don&apos;t face possession delays.
             </p>
             <p>
               In addition to property search, we provide end-to-end transaction support. This includes helping you 
@@ -82,10 +82,10 @@ export default function HomeSEOContent() {
           
           <div className="space-y-6">
             <h4 className="font-heading text-lg text-navy font-normal">
-              1. Bangalore's Top High-Growth Localities
+              1. Bangalore&apos;s Top High-Growth Localities
             </h4>
             <p>
-              Bangalore's real estate market is heavily driven by its thriving technology sector. Whitefield remains 
+              Bangalore&apos;s real estate market is heavily driven by its thriving technology sector. Whitefield remains 
               the crown jewel of Bangalore East, attracting thousands of IT professionals annually. The presence of 
               large IT parks like International Tech Park Bangalore (ITPB) and Vydehi, combined with the seamlessly 
               functioning Namma Metro Purple Line extension, has kept demand robust. Homebuyers can find options ranging 
@@ -96,7 +96,7 @@ export default function HomeSEOContent() {
               Further south, Sarjapur Road has evolved into a premier residential hub. Its proximity to Outer Ring Road (ORR) 
               tech parks, HSR Layout, and Electronic City makes it highly desirable for families. The area boasts excellent 
               educational institutions, making it a hotspot for double-income families seeking 3BHK premium residences. 
-              Meanwhile, North Bangalore, particularly Hebbal and Devanahalli, represents the future of Bangalore's expansion. 
+              Meanwhile, North Bangalore, particularly Hebbal and Devanahalli, represents the future of Bangalore&apos;s expansion. 
               Driven by the Kempegowda International Airport corridor, upcoming business parks, and excellent connectivity 
               via the National Highway (NH-44), Hebbal is experiencing high demand for luxury high-rises, while Devanahalli 
               is preferred for premium villa plots and gated communities.
@@ -105,17 +105,17 @@ export default function HomeSEOContent() {
 
           <div className="space-y-6">
             <h4 className="font-heading text-lg text-navy font-normal">
-              2. Hyderabad's High-Rise IT Corridors
+              2. Hyderabad&apos;s High-Rise IT Corridors
             </h4>
             <p>
-              Hyderabad's real estate market is characterized by spectacular high-rise developments, planned infrastructure, 
+              Hyderabad&apos;s real estate market is characterized by spectacular high-rise developments, planned infrastructure, 
               and spacious layouts. The western zone, comprising Gachibowli, Kokapet, and Kondapur, forms the epicenter 
               of this growth. Gachibowli, a major financial and tech district, offers direct access to international IT giants, 
               rendering it exceptionally convenient for walk-to-work lifestyles. The locality features highly developed retail 
               and social infrastructure, catering to corporate executives.
             </p>
             <p>
-              Kokapet, designated as the "Golden Mile," has emerged as Hyderabad's most premium luxury destination. Characterized 
+              Kokapet, designated as the &quot;Golden Mile,&quot; has emerged as Hyderabad&apos;s most premium luxury destination. Characterized 
               by skyscrapers exceeding 40 to 50 floors, Kokapet offers panoramic lake views, state-of-the-art clubhouses, and 
               gated communities with advanced security systems. The Outer Ring Road (ORR) provides excellent connectivity from 
               Kokapet to the airport and other parts of the city. Kondapur and neighboring Tellapur are highly favored by buyers 
@@ -125,17 +125,17 @@ export default function HomeSEOContent() {
 
           <div className="space-y-6">
             <h4 className="font-heading text-lg text-navy font-normal">
-              3. Chennai's IT Expressways and Coastal Localities
+              3. Chennai&apos;s IT Expressways and Coastal Localities
             </h4>
             <p>
-              Chennai's property market blends commercial dynamism with traditional living. Old Mahabalipuram Road (OMR), 
+              Chennai&apos;s property market blends commercial dynamism with traditional living. Old Mahabalipuram Road (OMR), 
               often termed the IT Corridor, is the primary destination for professionals working in Tidel Park and surrounding 
               IT SEZs. Localities like Sholinganallur and Karapakkam on OMR offer high-rise apartment complexes with modern 
               recreational spaces, sewage treatment plants, and backup power facilities. These apartments offer solid rental 
               demand and stable asset appreciation.
             </p>
             <p>
-              East Coast Road (ECR), running parallel to OMR, is the city's premier leisure and luxury corridor. Buyers seeking 
+              East Coast Road (ECR), running parallel to OMR, is the city&apos;s premier leisure and luxury corridor. Buyers seeking 
               beachfront villas, independent bungalows, and serene environments choose ECR for its clean air, scenic beauty, 
               and proximity to top-tier resorts. Connecting roads like Medavakkam and Pallikaranai provide excellent mid-segment 
               housing options, linking the IT expressway to suburban railway stations and the international airport, making them 
@@ -144,10 +144,10 @@ export default function HomeSEOContent() {
           </div>
         </div>
 
-        {/* Homebuyer's Checklist */}
+        {/* Homebuyer&apos;s Checklist */}
         <div className="space-y-8 text-sm md:text-[15px] text-gray-500 font-light leading-relaxed mb-16">
           <h3 className="font-heading text-2xl text-navy font-normal border-b border-gray-100 pb-3">
-            The Essential Indian Homebuyer's Checklist
+            The Essential Indian Homebuyer&apos;s Checklist
           </h3>
           <p>
             Buying a home requires careful legal, financial, and physical due diligence. Below is the checklist 
@@ -158,7 +158,7 @@ export default function HomeSEOContent() {
             <li>
               <strong className="text-navy font-normal">RERA Verification:</strong> Never buy a property that does not 
               have a valid RERA registration number from the respective state authority (RERA Karnataka, TS RERA, or TN RERA). 
-              Verify the developer's registered documents, approved layout plan, quarterly progress reports, and expected 
+              Verify the developer&apos;s registered documents, approved layout plan, quarterly progress reports, and expected 
               possession date on the official RERA portal.
             </li>
             <li>
@@ -239,7 +239,7 @@ export default function HomeSEOContent() {
             These include GST (5% for under-construction properties, 0% for ready-to-move properties with an OC), Stamp 
             Duty and Registration Charges (typically 5% to 7% of the property value, depending on the state), advance 
             maintenance fees, electricity/water deposit charges, and clubhouse membership fees. Our expert advisors 
-            help you structure these costs so you don't face unexpected financial stress.
+            help you structure these costs so you don&apos;t face unexpected financial stress.
           </p>
         </div>
 

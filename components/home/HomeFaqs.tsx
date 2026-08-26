@@ -15,7 +15,7 @@ export default function HomeFaqs({ faqs }: Props) {
 
   return (
     <section className="py-20 bg-cream border-t border-gray-100">
-      <div className="page-padding max-w-4xl mx-auto">
+      <div className="page-padding max-w-7xl mx-auto">
         <FadeInOnScroll direction="up">
           <p className="text-gold text-[10px] tracking-[0.28em] uppercase font-normal mb-3 text-center">
             FAQ

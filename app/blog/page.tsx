@@ -78,7 +78,7 @@ export default async function BlogPage() {
         <BlogListingClient posts={posts} />
 
         {/* FAQs */}
-        <div className="page-padding py-24 max-w-4xl mx-auto">
+        <div className="page-padding py-24 max-w-7xl mx-auto">
           <FaqSection title="Real Estate Insights FAQs" icon="✍️" items={blogFaqs} />
         </div>
       </div>

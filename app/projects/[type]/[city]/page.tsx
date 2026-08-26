@@ -155,7 +155,7 @@ export default async function ProjectsCityPage({
         </Suspense>
 
         {/* FAQs */}
-        <div className="page-padding py-24 max-w-4xl mx-auto">
+        <div className="page-padding py-24 max-w-7xl mx-auto">
           <FaqSection title={`${typeLabel} Projects FAQs`} icon="🏠" items={getCityFaqs(cityLabel)} />
         </div>
       </div>
