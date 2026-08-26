@@ -168,7 +168,7 @@ export default function BlogListingClient({ posts }: Props) {
                             alt={post.title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-navy/5 to-navy/15">
@@ -211,7 +211,7 @@ export default function BlogListingClient({ posts }: Props) {
               <div className="text-4xl mb-4">🔍</div>
               <h3 className="font-heading text-xl text-navy font-normal mb-2">No Articles Found</h3>
               <p className="text-gray-400 text-sm max-w-xs mx-auto mb-6">
-                We couldn't find any articles matching your search or category selection.
+                We couldn&apos;t find any articles matching your search or category selection.
               </p>
               <button
                 type="button"

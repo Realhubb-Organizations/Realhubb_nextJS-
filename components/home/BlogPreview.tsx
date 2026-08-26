@@ -36,13 +36,14 @@ export default function BlogPreview({ posts }: Props) {
                 href={`/blog/${post.slug}`}
                 className="group block bg-cream rounded-2xl overflow-hidden hover:shadow-lg transition-shadow h-full"
               >
-                <div className="relative h-48 bg-navy/10">
+                <div className="relative h-52 bg-navy/5">
                   {post.coverImage ? (
                     <Image
                       src={imagePresets.blogCover(post.coverImage)}
                       alt={post.title}
                       fill
-                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain p-2"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center bg-navy/5">
