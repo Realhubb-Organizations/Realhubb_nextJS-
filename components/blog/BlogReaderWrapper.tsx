@@ -385,10 +385,12 @@ export default function BlogReaderWrapper({
                       <button
                         key={h.id}
                         onClick={() => scrollToHeading(h.id)}
-                        className="block text-left text-xs hover:text-gold transition-colors py-1 cursor-pointer font-light line-clamp-1"
+                        className="block text-left text-xs hover:text-gold transition-colors py-1 cursor-pointer font-light"
                       >
-                        <span className="text-gold font-mono pr-2">{index + 1}.</span>
-                        {h.text}
+                        <span className="block line-clamp-1">
+                          <span className="text-gold font-mono pr-2">{index + 1}.</span>
+                          {h.text}
+                        </span>
                       </button>
                     ))}
                   </div>
