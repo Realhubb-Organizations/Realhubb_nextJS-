@@ -4,6 +4,9 @@ import type { Property } from "@/types/property";
 import type { BlogPost } from "@/types/blog";
 import type { Developer } from "@/types/developer";
 import type { TeamMember } from "@/types/team";
+import { cached } from "@/lib/serverCache";
+
+const MIN = 60 * 1000;
 
 /**
  * Recursively convert Firestore Timestamp instances (and any other class instances
@@ -50,80 +53,74 @@ function docToPlain(docId: string, data: Record<string, unknown>): Record<string
 }
 
 // ── Properties ───────────────────────────────────────────────────────────────
+// getAllProperties is the single source of truth — every other "view" of
+// properties (featured, by city, slugs) derives from this same cached read
+// instead of issuing its own separate Firestore query. A separate query per
+// view was costing a full extra read set for each one; deriving in memory
+// costs zero extra reads once the base list is warm.
 
 export async function getAllProperties(): Promise<Property[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("properties").get();
-    const list = snap.docs.map((d) => normalizeProperty(docToPlain(d.id, d.data())));
-    return list.sort((a, b) => {
-      const timeA = a.createdAt?.seconds ?? 0;
-      const timeB = b.createdAt?.seconds ?? 0;
-      return timeB - timeA;
-    });
-  } catch (error) {
-    console.error("Error in getAllProperties:", error);
-    return [];
-  }
+  return cached(
+    "properties:all",
+    async () => {
+      try {
+        const db = getAdminDb();
+        const snap = await db.collection("properties").get();
+        const list = snap.docs.map((d) => normalizeProperty(docToPlain(d.id, d.data())));
+        return list.sort((a, b) => {
+          const timeA = a.createdAt?.seconds ?? 0;
+          const timeB = b.createdAt?.seconds ?? 0;
+          return timeB - timeA;
+        });
+      } catch (error) {
+        console.error("Error in getAllProperties:", error);
+        return [] as Property[];
+      }
+    },
+    5 * MIN
+  );
 }
 
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("properties").where("slug", "==", slug).limit(1).get();
-    if (snap.empty) return null;
-    const doc = snap.docs[0];
-    return normalizeProperty(docToPlain(doc.id, doc.data()));
-  } catch (error) {
-    console.error("Error in getPropertyBySlug:", error);
-    return null;
-  }
+  return cached(
+    `properties:slug:${slug}`,
+    async () => {
+      try {
+        const db = getAdminDb();
+        const snap = await db.collection("properties").where("slug", "==", slug).limit(1).get();
+        if (snap.empty) return null;
+        const doc = snap.docs[0];
+        return normalizeProperty(docToPlain(doc.id, doc.data()));
+      } catch (error) {
+        console.error("Error in getPropertyBySlug:", error);
+        return null;
+      }
+    },
+    5 * MIN
+  );
 }
 
 export async function getFeaturedProperties(): Promise<Property[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db
-      .collection("properties")
-      .where("featured", "==", true)
-      .limit(8)
-      .get();
-    return snap.docs.map((d) => normalizeProperty(docToPlain(d.id, d.data())));
-  } catch (error) {
-    console.error("Error in getFeaturedProperties:", error);
-    return [];
-  }
+  const all = await getAllProperties();
+  return all.filter((p) => p.featured).slice(0, 8);
 }
 
 export async function getPropertiesByCity(city: string): Promise<Property[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("properties").where("city", "==", city).get();
-    return snap.docs.map((d) => normalizeProperty(docToPlain(d.id, d.data())));
-  } catch (error) {
-    console.error("Error in getPropertiesByCity:", error);
-    return [];
-  }
+  const all = await getAllProperties();
+  return all.filter((p) => p.city === city);
 }
 
 export async function getPropertiesByCityAndLocation(
   city: string,
   location: string
 ): Promise<Property[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("properties").where("city", "==", city).get();
-    const all = snap.docs.map((d) => normalizeProperty(docToPlain(d.id, d.data())));
-    const slug = location.toLowerCase();
-    return all.filter(
-      (p) =>
-        p.location.toLowerCase().replace(/\s+/g, "-") === slug ||
-        p.location.toLowerCase().includes(slug.replace(/-/g, " "))
-    );
-  } catch (error) {
-    console.error("Error in getPropertiesByCityAndLocation:", error);
-    return [];
-  }
+  const all = await getPropertiesByCity(city);
+  const slug = location.toLowerCase();
+  return all.filter(
+    (p) =>
+      p.location.toLowerCase().replace(/\s+/g, "-") === slug ||
+      p.location.toLowerCase().includes(slug.replace(/-/g, " "))
+  );
 }
 
 // ── Blog Posts ────────────────────────────────────────────────────────────────
@@ -148,50 +145,45 @@ function normalizeBlogPost(raw: Record<string, unknown>): BlogPost {
 }
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db
-      .collection("blogPosts")
-      .orderBy("publishedAt", "desc")
-      .get();
-    const all = snap.docs.map((d) => normalizeBlogPost(docToPlain(d.id, d.data())));
-    return all.filter((post) => post.published);
-  } catch (error) {
-    console.error("Error fetching blog posts from Firestore:", error);
-    return [];
-  }
+  return cached(
+    "blogs:all",
+    async () => {
+      try {
+        const db = getAdminDb();
+        const snap = await db.collection("blogPosts").orderBy("publishedAt", "desc").get();
+        const all = snap.docs.map((d) => normalizeBlogPost(docToPlain(d.id, d.data())));
+        return all.filter((post) => post.published);
+      } catch (error) {
+        console.error("Error fetching blog posts from Firestore:", error);
+        return [] as BlogPost[];
+      }
+    },
+    5 * MIN
+  );
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  try {
-    const db = getAdminDb();
-    const snap = await db
-      .collection("blogPosts")
-      .where("slug", "==", slug)
-      .limit(1)
-      .get();
-    if (snap.empty) return null;
-    const post = normalizeBlogPost(docToPlain(snap.docs[0].id, snap.docs[0].data()));
-    return post.published ? post : null;
-  } catch (error) {
-    console.error(`Error fetching blog post by slug (${slug}) from Firestore:`, error);
-    return null;
-  }
+  return cached(
+    `blogs:slug:${slug}`,
+    async () => {
+      try {
+        const db = getAdminDb();
+        const snap = await db.collection("blogPosts").where("slug", "==", slug).limit(1).get();
+        if (snap.empty) return null;
+        const post = normalizeBlogPost(docToPlain(snap.docs[0].id, snap.docs[0].data()));
+        return post.published ? post : null;
+      } catch (error) {
+        console.error(`Error fetching blog post by slug (${slug}) from Firestore:`, error);
+        return null;
+      }
+    },
+    5 * MIN
+  );
 }
 
 export async function getLatestBlogPosts(limit = 3): Promise<BlogPost[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db
-      .collection("blogPosts")
-      .orderBy("publishedAt", "desc")
-      .get();
-    const all = snap.docs.map((d) => normalizeBlogPost(docToPlain(d.id, d.data())));
-    return all.filter((post) => post.published).slice(0, limit);
-  } catch (error) {
-    console.error("Error fetching latest blog posts from Firestore:", error);
-    return [];
-  }
+  const all = await getAllBlogPosts();
+  return all.slice(0, limit);
 }
 
 // ── Developers ────────────────────────────────────────────────────────────────
@@ -210,32 +202,26 @@ function normalizeDeveloper(raw: Record<string, unknown>): Developer {
   };
 }
 
-
 export async function getAllDevelopers(): Promise<Developer[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("developers").get();
-    return snap.docs.map((d) => normalizeDeveloper(docToPlain(d.id, d.data())));
-  } catch (error) {
-    console.error("Error in getAllDevelopers:", error);
-    return [];
-  }
+  return cached(
+    "developers:all",
+    async () => {
+      try {
+        const db = getAdminDb();
+        const snap = await db.collection("developers").get();
+        return snap.docs.map((d) => normalizeDeveloper(docToPlain(d.id, d.data())));
+      } catch (error) {
+        console.error("Error in getAllDevelopers:", error);
+        return [] as Developer[];
+      }
+    },
+    10 * MIN
+  );
 }
 
 export async function getDeveloperBySlug(slug: string): Promise<Developer | null> {
-  try {
-    const db = getAdminDb();
-    const snap = await db
-      .collection("developers")
-      .where("slug", "==", slug)
-      .limit(1)
-      .get();
-    if (snap.empty) return null;
-    return normalizeDeveloper(docToPlain(snap.docs[0].id, snap.docs[0].data()));
-  } catch (error) {
-    console.error("Error in getDeveloperBySlug:", error);
-    return null;
-  }
+  const all = await getAllDevelopers();
+  return all.find((d) => d.slug === slug) ?? null;
 }
 
 // ── Team ──────────────────────────────────────────────────────────────────────
@@ -261,60 +247,47 @@ function normalizeTeamMember(raw: Record<string, unknown>): TeamMember {
 }
 
 export async function getAllTeamMembers(): Promise<TeamMember[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("team").get();
-    const members = snap.docs.map((d) => normalizeTeamMember(docToPlain(d.id, d.data())));
-    return members.sort((a, b) => {
-      const orderA = a.order ?? 99;
-      const orderB = b.order ?? 99;
-      if (orderA !== orderB) return orderA - orderB;
-      return a.name.localeCompare(b.name);
-    });
-  } catch (error) {
-    console.error("Error in getAllTeamMembers:", error);
-    return [];
-  }
+  return cached(
+    "team:all",
+    async () => {
+      try {
+        const db = getAdminDb();
+        const snap = await db.collection("team").get();
+        const members = snap.docs.map((d) => normalizeTeamMember(docToPlain(d.id, d.data())));
+        return members.sort((a, b) => {
+          const orderA = a.order ?? 99;
+          const orderB = b.order ?? 99;
+          if (orderA !== orderB) return orderA - orderB;
+          return a.name.localeCompare(b.name);
+        });
+      } catch (error) {
+        console.error("Error in getAllTeamMembers:", error);
+        return [] as TeamMember[];
+      }
+    },
+    10 * MIN
+  );
 }
 
-
 // ── Slugs for generateStaticParams ───────────────────────────────────────────
+// Derived from the already-cached full lists above rather than separate
+// `.select("slug")` queries — Firestore bills a read per matched document
+// regardless of field projection, so a "slug-only" query costs the same as
+// fetching the full docs. Deriving from the cached list costs nothing extra.
 
 export async function getAllPropertySlugs(): Promise<string[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("properties").select("slug").get();
-    return snap.docs.map((d) => d.data().slug as string).filter(Boolean);
-  } catch (error) {
-    console.error("Error in getAllPropertySlugs:", error);
-    return [];
-  }
+  const all = await getAllProperties();
+  return all.map((p) => p.slug).filter(Boolean);
 }
 
 export async function getAllBlogSlugs(): Promise<string[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db
-      .collection("blogPosts")
-      .where("published", "==", true)
-      .select("slug")
-      .get();
-    return snap.docs.map((d) => d.data().slug as string).filter(Boolean);
-  } catch (error) {
-    console.error("Error in getAllBlogSlugs:", error);
-    return [];
-  }
+  const all = await getAllBlogPosts();
+  return all.map((p) => p.slug).filter(Boolean);
 }
 
 export async function getAllDeveloperSlugs(): Promise<string[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("developers").select("slug").get();
-    return snap.docs.map((d) => d.data().slug as string).filter(Boolean);
-  } catch (error) {
-    console.error("Error in getAllDeveloperSlugs:", error);
-    return [];
-  }
+  const all = await getAllDevelopers();
+  return all.map((d) => d.slug).filter(Boolean);
 }
 
 // ── FAQs ─────────────────────────────────────────────────────────────────────
@@ -322,48 +295,36 @@ export async function getAllDeveloperSlugs(): Promise<string[]> {
 import type { AdminFaq } from "@/admin/types/faq";
 
 export async function getPublishedFaqs(): Promise<AdminFaq[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("faqs").get();
-    const all = snap.docs.map((d) => docToPlain(d.id, d.data()) as unknown as AdminFaq);
-    return all
-      .filter((f) => f.published === true)
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  } catch (e) {
-    console.error("Error fetching FAQs:", e);
-    return [];
-  }
+  return cached(
+    "faqs:all",
+    async () => {
+      try {
+        const db = getAdminDb();
+        const snap = await db.collection("faqs").get();
+        const all = snap.docs.map((d) => docToPlain(d.id, d.data()) as unknown as AdminFaq);
+        return all
+          .filter((f) => f.published === true)
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+      } catch (e) {
+        console.error("Error fetching FAQs:", e);
+        return [] as AdminFaq[];
+      }
+    },
+    10 * MIN
+  );
 }
 
 export async function getPublishedFaqsByPage(
   page: "home" | "about" | "services" | "buying" | "career"
 ): Promise<AdminFaq[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("faqs").get();
-    const all = snap.docs.map((d) => docToPlain(d.id, d.data()) as unknown as AdminFaq);
-    return all
-      .filter((f) => f.published === true && f.page === page)
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  } catch (e) {
-    console.error(`Error fetching FAQs for page ${page}:`, e);
-    return [];
-  }
+  const all = await getPublishedFaqs();
+  return all.filter((f) => f.page === page);
 }
 
 export async function getPublishedFaqsByReference(
   page: "property" | "blog",
   referenceId: string
 ): Promise<AdminFaq[]> {
-  try {
-    const db = getAdminDb();
-    const snap = await db.collection("faqs").get();
-    const all = snap.docs.map((d) => docToPlain(d.id, d.data()) as unknown as AdminFaq);
-    return all
-      .filter((f) => f.published === true && f.page === page && f.referenceId === referenceId)
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  } catch (e) {
-    console.error(`Error fetching FAQs for page ${page} reference ${referenceId}:`, e);
-    return [];
-  }
+  const all = await getPublishedFaqs();
+  return all.filter((f) => f.page === page && f.referenceId === referenceId);
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
 import { getAllBlogPosts } from "@/lib/firestoreServerService";
+import { blogPosts as staticBlogPosts } from "@/data/blog";
 import BlogListingClient from "@/components/blog/BlogListingClient";
 import { faqSchema } from "@/lib/structuredData";
 import FaqSection from "@/components/faq/FaqSection";
@@ -38,7 +39,11 @@ export const blogFaqs = [
 ];
 
 export default async function BlogPage() {
-  const posts = await getAllBlogPosts().catch(() => []);
+  // getAllBlogPosts() already resolves to [] rather than throwing on a
+  // Firestore failure — fall back to the bundled static posts so a Firestore
+  // outage never shows "0 articles found" to a real visitor.
+  const fetched = await getAllBlogPosts().catch(() => []);
+  const posts = fetched.length > 0 ? fetched : staticBlogPosts.filter((p) => p.published);
 
   return (
     <>

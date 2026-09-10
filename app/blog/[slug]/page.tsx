@@ -9,6 +9,7 @@ import {
 } from "@/lib/firestoreServerService";
 import { generatePageGraph } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
+import { blogPosts as staticBlogPosts } from "@/data/blog";
 
 import BlogReaderWrapper from "@/components/blog/BlogReaderWrapper";
 import BlogMarkdown from "@/components/blog/BlogMarkdown";
@@ -18,9 +19,19 @@ type Params = Promise<{ slug: string }>;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
+// Same reasoning as the property detail page: getBlogPostBySlug returns
+// null both for a genuine 404 and for a failed Firestore read. Falling
+// back to the bundled static posts only rescues the second case.
+async function getBlogPostBySlugWithFallback(slug: string) {
+  const post = await getBlogPostBySlug(slug);
+  if (post) return post;
+  const fallback = staticBlogPosts.find((p) => p.slug === slug && p.published);
+  return fallback ?? null;
+}
+
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const post = await getBlogPostBySlugWithFallback(slug);
   if (!post) return { title: "Post Not Found" };
   return blogMetadata({
     title: post.title,
@@ -44,7 +55,7 @@ export const revalidate = 3600;
 
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const post = await getBlogPostBySlugWithFallback(slug);
   if (!post || !post.published) notFound();
 
   const related = await getLatestBlogPosts(3).catch(() => []);

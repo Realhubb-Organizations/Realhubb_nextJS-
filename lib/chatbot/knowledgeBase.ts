@@ -2,6 +2,7 @@ import { getAllProperties, getAllBlogPosts, getPublishedFaqs } from "@/lib/fires
 import { generalFaq, propertyFaq, careerFaq } from "@/data/faqData";
 import { locations } from "@/data/locations";
 import type { FaqItem } from "@/types/seo";
+import { cached } from "@/lib/serverCache";
 
 export type KnowledgeDocType = "faq" | "property" | "blog" | "location";
 
@@ -50,15 +51,14 @@ function faqToDoc(id: string, item: FaqItem, url?: string): KnowledgeDoc {
   };
 }
 
-let cache: { docs: KnowledgeDoc[]; builtAt: number } | null = null;
-const CACHE_TTL_MS = 10 * 60 * 1000; // rebuild at most every 10 minutes
-
-/** Builds (or returns the cached) in-memory knowledge corpus. Server-only — never bundled to the client. */
-export async function getKnowledgeBase(): Promise<KnowledgeDoc[]> {
-  if (cache && Date.now() - cache.builtAt < CACHE_TTL_MS) {
-    return cache.docs;
-  }
-
+// 30 min — the underlying getAllProperties/getAllBlogPosts/getPublishedFaqs
+// calls below are themselves cached (5-10 min, see lib/serverCache.ts), so
+// this outer TTL mainly saves re-running the tokenize/normalize work on
+// every chat message. Routed through the shared `cached()` helper instead
+// of a bespoke cache so concurrent requests during a cold rebuild share one
+// build instead of each re-running it (this is exactly the kind of burst
+// that was contributing to the Firestore quota being exceeded).
+async function buildKnowledgeBase(): Promise<KnowledgeDoc[]> {
   const docs: KnowledgeDoc[] = [];
 
   // Static + admin-managed FAQs
@@ -121,8 +121,12 @@ export async function getKnowledgeBase(): Promise<KnowledgeDoc[]> {
     console.error("[chatbot] Failed to load blog posts:", e);
   }
 
-  cache = { docs, builtAt: Date.now() };
   return docs;
+}
+
+/** Builds (or returns the cached) in-memory knowledge corpus. Server-only — never bundled to the client. */
+export async function getKnowledgeBase(): Promise<KnowledgeDoc[]> {
+  return cached("chatbot:knowledge-base", buildKnowledgeBase, 30 * 60 * 1000);
 }
 
 export interface ScoredDoc {

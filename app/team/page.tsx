@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import { getAllTeamMembers } from "@/lib/firestoreServerService";
+import { teamMembers as staticTeamMembers } from "@/data/team";
 import { company } from "@/data/company";
 import { personSchema, breadcrumbSchema } from "@/lib/structuredData";
 
@@ -23,7 +24,8 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function TeamPage() {
-  const team = await getAllTeamMembers().catch(() => []);
+  const fetchedTeam = await getAllTeamMembers().catch(() => []);
+  const team = fetchedTeam.length > 0 ? fetchedTeam : staticTeamMembers;
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },

@@ -11,6 +11,8 @@ import {
 import { breadcrumbSchema, builderSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
 import PageHeroImage from "@/components/ui/PageHeroImage";
+import { developers as staticDevelopers } from "@/data/developers";
+import { properties as staticProperties } from "@/data/properties";
 
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
@@ -18,9 +20,18 @@ import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 type Params = Promise<{ slug: string }>;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
+// getDeveloperBySlug resolves to null both for a genuine 404 and for a
+// failed Firestore read — fall back to the bundled static developers so a
+// transient failure never false-404s a real developer profile page.
+async function getDeveloperBySlugWithFallback(slug: string) {
+  const dev = await getDeveloperBySlug(slug).catch(() => null);
+  if (dev) return dev;
+  return staticDevelopers.find((d) => d.slug === slug) ?? null;
+}
+
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const dev = await getDeveloperBySlug(slug).catch(() => null);
+  const dev = await getDeveloperBySlugWithFallback(slug);
   if (!dev) return { title: "Developer Not Found" };
   return developerMetadata(dev.name, dev.slug);
 }
@@ -34,10 +45,11 @@ export const revalidate = 3600;
 
 export default async function DeveloperDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const dev = await getDeveloperBySlug(slug).catch(() => null);
+  const dev = await getDeveloperBySlugWithFallback(slug);
   if (!dev) notFound();
 
-  const allProps = await getAllProperties().catch(() => []);
+  const fetchedProps = await getAllProperties().catch(() => []);
+  const allProps = fetchedProps.length > 0 ? fetchedProps : staticProperties;
   const devProps = allProps.filter((p) =>
     p.developer.toLowerCase().includes(dev.name.toLowerCase().split(" ")[0])
   );

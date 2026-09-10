@@ -44,7 +44,16 @@ export default async function AreaPage({ params }: { params: Params }) {
 
   const cityLabel = cityLabels[city] ?? city;
 
-  const areaProps = await getPropertiesByCityAndLocation(city, area).catch(() => []);
+  const fetchedAreaProps = await getPropertiesByCityAndLocation(city, area).catch(() => []);
+  const areaProps =
+    fetchedAreaProps.length > 0
+      ? fetchedAreaProps
+      : staticProperties.filter(
+          (p) =>
+            p.city === city &&
+            (p.location.toLowerCase().replace(/\s+/g, "-") === area ||
+              p.location.toLowerCase().includes(area.replace(/-/g, " ")))
+        );
 
   const nearbyLocations = getLocationsByCity(city).filter((l) => l.areaSlug !== area).slice(0, 5);
 

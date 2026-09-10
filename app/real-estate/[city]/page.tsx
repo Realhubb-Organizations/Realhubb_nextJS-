@@ -4,7 +4,7 @@ import { MapPin } from "lucide-react";
 import { locationMetadata } from "@/lib/seo";
 import { breadcrumbSchema, localBusinessSchema, itemListSchema } from "@/lib/structuredData";
 import { getLocationsByCity } from "@/data/locations";
-import { getPropertiesByCity, getAllProperties } from "@/lib/firestoreServerService";
+import { getPropertiesByCity } from "@/lib/firestoreServerService";
 import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import { properties as staticProperties } from "@/data/properties";
 import PropertyCard from "@/components/property/PropertyCard";
@@ -36,7 +36,11 @@ export default async function CityHubPage({ params }: { params: Params }) {
   const cityLabel = cityLabels[city] ?? city;
   const areaLocations = getLocationsByCity(city);
 
-  const cityProps = await getPropertiesByCity(city).catch(() => []);
+  const fetchedCityProps = await getPropertiesByCity(city).catch(() => []);
+  const cityProps =
+    fetchedCityProps.length > 0
+      ? fetchedCityProps
+      : staticProperties.filter((p) => p.city === city);
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },

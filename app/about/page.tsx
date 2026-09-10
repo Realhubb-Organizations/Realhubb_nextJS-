@@ -18,6 +18,7 @@ import {
   Rocket,
 } from "lucide-react";
 import { getAllTeamMembers, getPublishedFaqsByPage } from "@/lib/firestoreServerService";
+import { teamMembers as staticTeamMembers } from "@/data/team";
 import TeamCard from "@/components/team/TeamCard";
 import TrackedLink from "@/components/lead/TrackedLink";
 import CountingNumber from "@/components/ui/counting_text";
@@ -42,7 +43,8 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function AboutPage() {
-  const team = await getAllTeamMembers().catch(() => []);
+  const fetchedTeam = await getAllTeamMembers().catch(() => []);
+  const team = fetchedTeam.length > 0 ? fetchedTeam : staticTeamMembers;
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },

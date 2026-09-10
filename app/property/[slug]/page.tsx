@@ -10,6 +10,7 @@ import {
   getPublishedFaqsByReference,
 } from "@/lib/firestoreServerService";
 import { getLocationBySlug } from "@/data/locations";
+import { properties as staticProperties } from "@/data/properties";
 import { generatePageGraph } from "@/lib/structuredData";
 import PropertyCard from "@/components/property/PropertyCard";
 import HeroBackgroundSlideshow from "@/components/property/HeroBackgroundSlideshow";
@@ -23,9 +24,21 @@ type Params = Promise<{ slug: string }>;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
+// getPropertyBySlug resolves to null both when the property genuinely
+// doesn't exist AND when the Firestore read itself failed — this fallback
+// only matters for the second case (a transient failure on a slug that was
+// never cached in this server's lifetime, e.g. right after a deploy). If
+// it's a real 404, the static file won't have it either and notFound()
+// still fires correctly.
+async function getPropertyBySlugWithFallback(slug: string) {
+  const p = await getPropertyBySlug(slug);
+  if (p) return p;
+  return staticProperties.find((sp) => sp.slug === slug) ?? null;
+}
+
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const p = await getPropertyBySlug(slug);
+  const p = await getPropertyBySlugWithFallback(slug);
   if (!p) return { title: "Property Not Found" };
   return propertyMetadata({
     name: p.name,
@@ -53,7 +66,7 @@ export const revalidate = 3600;
 export default async function PropertyDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
 
-  const p = await getPropertyBySlug(slug);
+  const p = await getPropertyBySlugWithFallback(slug);
 
   if (!p) notFound();
 

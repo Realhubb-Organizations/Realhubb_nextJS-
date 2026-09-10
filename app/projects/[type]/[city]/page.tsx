@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { buildMetadata } from "@/lib/seo";
 import { getAllProperties } from "@/lib/firestoreServerService";
+import { properties as staticProperties } from "@/data/properties";
 import { generatePageGraph } from "@/lib/structuredData";
 import ProjectsClient from "@/components/property/ProjectsClient";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
@@ -79,7 +80,13 @@ export default async function ProjectsCityPage({
 }) {
   const { type, city } = await params;
 
-  const allProps = await getAllProperties().catch(() => []);
+  // getAllProperties() already resolves to [] rather than throwing on a
+  // Firestore failure — fall back to the bundled static properties so a
+  // Firestore outage never shows "No Matching Properties Found" to a real
+  // visitor (this page has generateStaticParams + revalidate=3600, so an
+  // empty result here would otherwise get cached and served for up to an hour).
+  const fetchedProps = await getAllProperties().catch(() => []);
+  const allProps = fetchedProps.length > 0 ? fetchedProps : staticProperties;
 
   const cityLabel = cityLabels[city] ?? city;
   const typeLabel = type === "upcoming" ? "Upcoming" : "Ongoing";

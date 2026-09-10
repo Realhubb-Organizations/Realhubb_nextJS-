@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { buildMetadata } from "@/lib/seo";
 import { getAllDevelopers } from "@/lib/firestoreServerService";
+import { developers as staticDevelopers } from "@/data/developers";
 import { breadcrumbSchema, faqSchema } from "@/lib/structuredData";
 import { imagePresets } from "@/lib/cloudinary";
 import FaqSection from "@/components/faq/FaqSection";
@@ -43,7 +44,8 @@ export const developerFaqs = [
 ];
 
 export default async function DevelopersPage() {
-  const devs = await getAllDevelopers().catch(() => []);
+  const fetchedDevs = await getAllDevelopers().catch(() => []);
+  const devs = fetchedDevs.length > 0 ? fetchedDevs : staticDevelopers;
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
