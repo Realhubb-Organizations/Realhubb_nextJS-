@@ -214,11 +214,11 @@ export const companyInfo = {
       linkedin: "https://www.linkedin.com/in/rakesh-k-singh-005205ba/",
     },
     {
-      name: "Gautham Karanam",
-      designation: "Director",
-      image: "https://i.postimg.cc/QxwYZ7Cj/gautham-sir-suit-removebg-preview.png",
-      bio: "Gautham Karanam brings over 15 years of experience in real estate advisory, enterprise sales, and portfolio strategy, helping buyers and investors make confident property decisions. He has worked across residential, plotted, and investment segments with leading developers in Hyderabad, Bangalore, and South India. Having guided clients through transactions, he specialises in need assessment, due-diligence insights, and long-term planning. His B2B experience at Naukri.com, Monster.com, and SBI Life enables a clear, data-focused approach.",
-      linkedin: "https://www.linkedin.com/in/gautham-karanam-58938015/",
+      name: "Jayaraj Yelumala",
+      designation: "Director(Hyderabad)",
+      image: "https://i.postimg.cc/c1mwtdC5/jayaraj.png",
+      bio: "With 10 years of experience in real estate, I bring extensive expertise in sales, rentals, and leasing, backed by a strong understanding of client needs and market dynamics. My professional journey includes working with **Property Pistol Realty Pvt. Ltd., Dtwelve Spaces Pvt. Ltd. (Stanza Living), and 360 Realtors**, along with early freelance experience. I am committed to delivering personalized property solutions, building lasting client relationships, and creating value through every real estate transaction.",
+      linkedin: "https://www.linkedin.com/in/jayarajyelumala/",
     },
   ],
 };
