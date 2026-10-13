@@ -157,9 +157,9 @@ export default function ClientPropertiesPage() {
           <ol className="text-sm space-y-2 ml-4 list-decimal text-muted-foreground">
             <li>Add properties in the <Link href="/admin/dashboard" className="underline text-primary">Admin Dashboard</Link></li>
             <li>Fill in all required fields (name, location, price, images)</li>
-            <li>Click "Save" to store in Firestore</li>
+            <li>Click &quot;Save&quot; to store in Firestore</li>
             <li>Return to this page - properties should load automatically</li>
-            <li>Click "View" to see the property detail page</li>
+            <li>Click &quot;View&quot; to see the property detail page</li>
           </ol>
         </div>
       </div>

@@ -8,7 +8,7 @@ export default function NotFoundPage() {
         <p className="font-heading text-8xl text-white/10 font-normal">404</p>
         <h1 className="font-heading text-3xl text-white font-normal mt-4 mb-3">Page Not Found</h1>
         <p className="text-white/60 text-base mb-8">
-          The page you're looking for doesn't exist or has been moved.
+          The page you&apos;re looking for doesn&apos;t exist or has been moved.
           Let us help you find the right property.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

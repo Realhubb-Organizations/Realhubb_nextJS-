@@ -60,6 +60,7 @@ export default function FaqManager() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time data fetch
     load();
   }, []);
 
@@ -107,7 +108,7 @@ export default function FaqManager() {
 
       await load();
       closeForm();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[FaqManager] save error:", err);
       showToast("Save failed — check console for details", false);
     } finally {

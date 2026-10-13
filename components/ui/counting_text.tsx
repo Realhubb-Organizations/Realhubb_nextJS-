@@ -27,6 +27,7 @@ export default function CountingNumber({
 
   useEffect(() => {
     if (skipAnimation) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- resyncs when skipAnimation flips true post-mount (e.g. isMobile resolving client-side)
       setDisplayValue(number);
       setHasAnimated(true);
       return;

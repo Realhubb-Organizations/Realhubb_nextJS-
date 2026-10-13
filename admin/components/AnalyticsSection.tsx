@@ -8,7 +8,7 @@ import {
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const PROPERTY_ID    = "properties/529852769";
-const MEASUREMENT_ID = (import.meta as any).env?.VITE_GA_MEASUREMENT_ID || "G-HPYW6VG3WR";
+const MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-HPYW6VG3WR";
 const GA4_BASE       = "https://analytics.google.com/analytics/web";
 const POLL_MS        = 30_000;
 
@@ -72,6 +72,7 @@ function useRealtimeData() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time data fetch
     fetchData();
     timerRef.current = setInterval(fetchData, POLL_MS);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
@@ -104,7 +105,7 @@ function useGAMetrics() {
 
       if (json.topPages?.length) {
         const max = json.topPages[0].views || 1;
-        setTopPages(json.topPages.map((p: any) => ({
+        setTopPages(json.topPages.map((p: { path: string; views: number }) => ({
           path:  p.path,
           views: p.views,
           pct:   Math.round((p.views / max) * 100),
@@ -122,7 +123,7 @@ function useGAMetrics() {
           desktop: "bg-indigo-500",
           tablet:  "bg-violet-500",
         };
-        setDevices(json.devices.map((d: any) => ({
+        setDevices(json.devices.map((d: { label: string; pct: number }) => ({
           label: d.label,
           pct:   d.pct,
           icon:  icons[d.label.toLowerCase()]  || <Monitor className="h-3.5 w-3.5" />,
@@ -154,7 +155,10 @@ function useGAMetrics() {
     }
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time data fetch
+    load();
+  }, [load]);
   return { loading, metrics, topPages, devices, ts, reload: load };
 }
 
@@ -164,6 +168,7 @@ function RealtimePanel() {
   const [tick, setTick] = useState(POLL_MS / 1000);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- resets the countdown timer when polling interval restarts
     setTick(POLL_MS / 1000);
     const id = setInterval(
       () => setTick(t => (t <= 1 ? POLL_MS / 1000 : t - 1)),

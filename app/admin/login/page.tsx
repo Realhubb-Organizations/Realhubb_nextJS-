@@ -25,15 +25,16 @@ export default function AdminLoginPage() {
       // Set a session cookie so proxy.ts allows /admin access
       document.cookie = "realhubb-admin-session=1; path=/; max-age=86400; SameSite=Strict";
       router.push("/admin/dashboard");
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code;
       const msg =
-        err.code === "auth/user-not-found" || err.code === "auth/invalid-credential"
+        code === "auth/user-not-found" || code === "auth/invalid-credential"
           ? "No account found with these credentials."
-          : err.code === "auth/wrong-password"
+          : code === "auth/wrong-password"
           ? "Incorrect password."
-          : err.code === "auth/invalid-email"
+          : code === "auth/invalid-email"
           ? "Invalid email address."
-          : err.code === "auth/too-many-requests"
+          : code === "auth/too-many-requests"
           ? "Too many attempts. Try again later."
           : "Login failed. Check your credentials.";
       setError(msg);

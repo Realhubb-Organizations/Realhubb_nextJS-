@@ -13,8 +13,8 @@ export function useTeamMembers() {
         setLoading(true);
         const data = await getTeamMembers();
         setMembers(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load team members');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load team members');
       } finally {
         setLoading(false);
       }

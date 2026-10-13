@@ -78,9 +78,10 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
         .filter((f) => f.page === page && f.referenceId === referenceId)
         .sort((a, b) => a.order - b.order);
       setFaqs(filtered);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to load inline FAQs:", err);
-      if (err.code === "permission-denied" || err.message?.includes("permission")) {
+      const e = err as { code?: string; message?: string };
+      if (e.code === "permission-denied" || e.message?.includes("permission")) {
         setError("permission-denied");
       } else {
         setError("Failed to load FAQs");
@@ -92,6 +93,7 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
 
   useEffect(() => {
     if (referenceId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- param-driven data fetch
       loadFaqs();
     }
   }, [page, referenceId]);
@@ -161,9 +163,10 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
 
       await loadFaqs();
       handleCloseForm();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to save inline FAQ:", err);
-      if (err.code === "permission-denied" || err.message?.includes("permission")) {
+      const e = err as { code?: string; message?: string };
+      if (e.code === "permission-denied" || e.message?.includes("permission")) {
         setError("permission-denied");
       } else {
         setError("Failed to save FAQ");
@@ -184,9 +187,10 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
       await revalidateParent();
 
       await loadFaqs();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to delete FAQ:", err);
-      if (err.code === "permission-denied" || err.message?.includes("permission")) {
+      const e = err as { code?: string; message?: string };
+      if (e.code === "permission-denied" || e.message?.includes("permission")) {
         setError("permission-denied");
       } else {
         setError("Failed to delete FAQ");
@@ -203,9 +207,10 @@ export default function InlineFaqManager({ page, referenceId }: InlineFaqManager
       await revalidateParent();
 
       await loadFaqs();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to toggle publish status:", err);
-      if (err.code === "permission-denied" || err.message?.includes("permission")) {
+      const e = err as { code?: string; message?: string };
+      if (e.code === "permission-denied" || e.message?.includes("permission")) {
         setError("permission-denied");
       } else {
         setError("Failed to update status");

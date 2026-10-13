@@ -45,7 +45,7 @@ export default function ServingCities() {
           <p className="text-gray-600 text-sm max-w-3xl mx-auto mt-4 leading-relaxed">
             RealHubb is a trusted real estate platform helping home buyers, investors, and tenants
             find verified RERA-approved properties in Bangalore, Hyderabad, and Chennai. Browse residential
-            apartments, premium villas, and plotted developments across India's fastest-growing real estate
+            apartments, premium villas, and plotted developments across India&apos;s fastest-growing real estate
             markets. Each city listing is handpicked, legally verified, and backed by expert advisory — making
             your property search transparent and reliable.
           </p>

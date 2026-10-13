@@ -13,8 +13,8 @@ export function useBlogPosts() {
         setLoading(true);
         const data = await getBlogPosts();
         setPosts(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load blog posts');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load blog posts');
       } finally {
         setLoading(false);
       }

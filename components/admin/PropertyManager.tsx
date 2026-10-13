@@ -26,7 +26,10 @@ export default function PropertyManager() {
     finally { setLoading(false); }
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time data fetch
+    load();
+  }, []);
 
   async function handleSave() {
     if (!editing) return;

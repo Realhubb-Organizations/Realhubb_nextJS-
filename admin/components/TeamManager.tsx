@@ -27,22 +27,23 @@ export default function TeamManager() {
   // Search filter state
   const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    loadMembers();
-  }, []);
-
   const loadMembers = async () => {
     try {
       setLoading(true);
       const data = await getTeamMembers();
       setMembers(data);
       setError('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to load team members');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load team members');
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time data fetch
+    loadMembers();
+  }, []);
 
   const handleSave = async () => {
     if (!editing) return;
@@ -76,8 +77,8 @@ export default function TeamManager() {
       }
 
       setEditing(null);
-    } catch (err: any) {
-      setError(err.message || 'Failed to save team member');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to save team member');
     } finally {
       setSaving(false);
     }
@@ -93,8 +94,8 @@ export default function TeamManager() {
 
       // Trigger background revalidation instantly
       await triggerRevalidate(['/about', '/team']);
-    } catch (err: any) {
-      setError(err.message || 'Failed to delete team member');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to delete team member');
     }
   };
 

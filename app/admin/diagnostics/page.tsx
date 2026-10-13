@@ -80,11 +80,11 @@ export default function AdminDiagnosticsPage() {
             message: `✓ ${snapshot.size} documents found`,
             details: { documentCount: snapshot.size },
           });
-        } catch (error: any) {
+        } catch (error: unknown) {
           newResults.push({
             name: `📚 ${collName}`,
             status: 'error',
-            message: `✗ ${error.message}`,
+            message: `✗ ${error instanceof Error ? error.message : String(error)}`,
           });
         }
       }
@@ -188,10 +188,10 @@ export default function AdminDiagnosticsPage() {
           <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4 space-y-2">
             <h3 className="font-normal text-sm flex items-center gap-2">
               <AlertCircle className="h-4 w-4" />
-              What to check if data isn't showing:
+              What to check if data isn&apos;t showing:
             </h3>
             <ul className="text-sm text-muted-foreground space-y-1 ml-6 list-disc">
-              <li>Ensure you're logged in (check Authentication section above)</li>
+              <li>Ensure you&apos;re logged in (check Authentication section above)</li>
               <li>Verify Firebase Admin credentials are set in `.env.local`</li>
               <li>Restart dev server after adding environment variables</li>
               <li>Check that collections exist in Firestore Console</li>

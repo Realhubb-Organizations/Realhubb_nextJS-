@@ -13,8 +13,8 @@ export function useDevelopers() {
         setLoading(true);
         const data = await getDevelopers();
         setDevelopers(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load developers');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load developers');
       } finally {
         setLoading(false);
       }

@@ -54,7 +54,7 @@ export default function TestimonialsStrip() {
                   ))}
                 </div>
                 <p className="text-white/70 text-sm leading-relaxed mb-4 italic flex-1">
-                  "{t.text}"
+                  &quot;{t.text}&quot;
                 </p>
                 <div>
                   <p className="text-white text-sm font-normal">{t.name}</p>

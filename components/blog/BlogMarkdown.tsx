@@ -21,7 +21,7 @@ function parseMarkdown(md: string): string {
     let cleaned = md.replace(/<([a-z1-6]+)([^>]*)>/gi, (match, tagName, attrs) => {
       const lowerTag = tagName.toLowerCase();
       if (["h1", "h2", "h3", "h4", "h5", "h6", "p", "div", "span", "a", "ul", "ol", "li", "strong", "em", "b", "i"].includes(lowerTag)) {
-        let cleanAttrs = attrs
+        const cleanAttrs = attrs
           .replace(/\s+style\s*=\s*["'][^"']*["']/gi, "")
           .replace(/\s+dir\s*=\s*["'][^"']*["']/gi, "");
         return `<${tagName}${cleanAttrs}>`;
@@ -59,7 +59,7 @@ function parseMarkdown(md: string): string {
   cleaned = cleaned.replace(/<([a-z1-6]+)([^>]*)>/gi, (match, tagName, attrs) => {
     const lowerTag = tagName.toLowerCase();
     if (["h1", "h2", "h3", "h4", "h5", "h6", "p", "div", "span", "a", "ul", "ol", "li", "strong", "em", "b", "i"].includes(lowerTag)) {
-      let cleanAttrs = attrs
+      const cleanAttrs = attrs
         .replace(/\s+style\s*=\s*["'][^"']*["']/gi, "")
         .replace(/\s+dir\s*=\s*["'][^"']*["']/gi, "");
       return `<${tagName}${cleanAttrs}>`;

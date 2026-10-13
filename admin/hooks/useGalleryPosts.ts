@@ -13,8 +13,8 @@ export function useGalleryPosts() {
         setLoading(true);
         const data = await getGalleryPosts();
         setPosts(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load gallery posts');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load gallery posts');
       } finally {
         setLoading(false);
       }

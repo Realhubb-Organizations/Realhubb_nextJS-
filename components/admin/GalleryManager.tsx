@@ -41,7 +41,10 @@ export default function GalleryManager() {
     finally { setLoading(false); }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time data fetch
+    load();
+  }, []);
 
   const openNew = () => { setEditing(null); setForm(EMPTY); setShowForm(true); };
   const openEdit = (p: AdminGalleryPost) => {
@@ -68,12 +71,13 @@ export default function GalleryManager() {
       }
       await load();
       closeForm();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[GalleryManager] save error:", err);
-      const msg = err?.code === "permission-denied"
+      const e = err as { code?: string; message?: string };
+      const msg = e?.code === "permission-denied"
         ? "Permission denied — check Firestore rules for 'gallery' collection"
-        : err?.message
-          ? `Save failed: ${err.message}`
+        : e?.message
+          ? `Save failed: ${e.message}`
           : "Save failed — check console for details";
       showToast(msg, false);
     } finally { setSaving(false); }
