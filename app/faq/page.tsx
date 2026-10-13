@@ -7,11 +7,15 @@ import {
 } from "@/lib/firestoreServerService";
 import { faqSchema, breadcrumbSchema, webPageSchema } from "@/lib/structuredData";
 import FaqPageClient from "@/components/faq/FaqPageClient";
-import { generalFaq, propertyFaq, careerFaq } from "@/data/faqData";
-import { galleryFaqs } from "@/app/gallery/page";
-import { blogFaqs } from "@/app/blog/page";
-import { developerFaqs } from "@/app/developers/page";
-import { segmentFaqs } from "@/app/buy/[segment]/page";
+import {
+  generalFaq,
+  propertyFaq,
+  careerFaq,
+  galleryFaqs,
+  blogFaqs,
+  developerFaqs,
+  segmentFaqs,
+} from "@/data/faqData";
 
 export const revalidate = 3600;
 

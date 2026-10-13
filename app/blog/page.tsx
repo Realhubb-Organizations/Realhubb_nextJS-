@@ -6,6 +6,7 @@ import BlogListingClient from "@/components/blog/BlogListingClient";
 import { faqSchema } from "@/lib/structuredData";
 import FaqSection from "@/components/faq/FaqSection";
 import PageHeroImage from "@/components/ui/PageHeroImage";
+import { blogFaqs } from "@/data/faqData";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
@@ -18,25 +19,6 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export const revalidate = 3600;
-
-export const blogFaqs = [
-  {
-    question: "What topics does the RealHubb Blog cover?",
-    answer: "Our blog covers a wide range of real estate topics including home buying guides, legal and documentation advice (such as RERA guidelines, stamp duty, khata transfer), home loan eligibility tips, investment market reports, interior design ideas, and locality/neighborhood analysis across Bangalore, Hyderabad, and Chennai."
-  },
-  {
-    question: "How often is the blog updated?",
-    answer: "We publish new articles weekly, featuring the latest market trends, policy updates, and property investment advice written by our in-house real estate specialists and market researchers."
-  },
-  {
-    question: "Can I subscribe to get real estate alerts?",
-    answer: "Yes, you can subscribe to our newsletter through the enquiry forms on the website. Subscribing will give you access to our weekly blog digest, hot deals on RERA-approved projects, and special pricing updates."
-  },
-  {
-    question: "Is the advice on the RealHubb Blog legally binding?",
-    answer: "The content on our blog is for informational and educational purposes. While we strive to present accurate and verified information, real estate laws and rates vary by region, so we recommend consulting with our designated property experts before concluding a purchase."
-  }
-];
 
 export default async function BlogPage() {
   // getAllBlogPosts() already resolves to [] rather than throwing on a

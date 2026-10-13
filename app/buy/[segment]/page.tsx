@@ -8,6 +8,7 @@ import BreadcrumbNav from "@/components/seo/BreadcrumbNav";
 import PropertyCard from "@/components/property/PropertyCard";
 import InstantCallbackForm from "@/components/lead/InstantCallbackForm";
 import PageHeroImage from "@/components/ui/PageHeroImage";
+import { segmentFaqs } from "@/data/faqData";
 
 type Params = Promise<{ segment: string }>;
 
@@ -55,16 +56,6 @@ const segmentConfig: Record<
     intro:
       "Browse RERA-approved residential and commercial plots for sale in Bangalore. From affordable BDA sites in North Bangalore to premium layouts in Sarjapur Road and Devanahalli — find the right land investment.",
   },
-};
-
-export const segmentFaqs: Record<string, { question: string; answer: string }[]> = {
-  "2bhk-flats-bangalore": [
-    { question: "What is the price range for 2BHK flats in Bangalore?", answer: "2BHK flats in Bangalore range from ₹40 Lakh (Electronic City, Yelahanka) to ₹1.5 Crore (Koramangala, HSR Layout, Indiranagar). The average price for a 1,200 sq.ft 2BHK is ₹75–85 Lakh." },
-    { question: "Which area is best for buying a 2BHK in Bangalore?", answer: "For investment: Electronic City and Yelahanka offer highest rental yields (4–5%). For end-use near IT parks: Whitefield and Sarjapur Road. For premium lifestyle: Koramangala and HSR Layout." },
-    { question: "What is the registration charge for a 2BHK flat in Bangalore?", answer: "In Karnataka, stamp duty is 5% and registration charge is 1% of the property value. For a ₹75 Lakh flat, total registration cost is approximately ₹4.5 Lakh." },
-    { question: "Is it better to buy a ready-to-move or under-construction 2BHK?", answer: "Ready-to-move offers immediate possession and no GST. Under-construction is 15–25% cheaper but carries delivery risk. For first-time buyers, RealHubb recommends ready-to-move from reputed developers." },
-    { question: "How can RealHubb help me buy a 2BHK in Bangalore?", answer: "RealHubb provides free property search, site visits, RERA verification, home loan assistance, and negotiation support — all at zero brokerage to buyers." },
-  ],
 };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {

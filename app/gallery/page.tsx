@@ -5,6 +5,7 @@ import GalleryClient from "@/components/gallery/GalleryClient";
 import { FadeInOnScroll } from "@/components/FadeInOnScroll";
 import FaqSection from "@/components/faq/FaqSection";
 import PageHeroImage from "@/components/ui/PageHeroImage";
+import { galleryFaqs } from "@/data/faqData";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://realhubb.in";
 
@@ -16,25 +17,6 @@ export const metadata: Metadata = buildMetadata({
   canonical: `${SITE_URL}/gallery`,
   ogImage: `${SITE_URL}/og/gallery.jpg`,
 });
-
-export const galleryFaqs = [
-  {
-    question: "What is shown in the RealHubb media gallery?",
-    answer: "The RealHubb media gallery showcases visual highlights from our team milestones, builder launch events, property site visits, client handovers, awards ceremonies, and community outreach programs."
-  },
-  {
-    question: "Are the property photos and videos in the gallery authentic?",
-    answer: "Yes, all photos, drone videos, and walk-through renderings of properties in our showcase are captured directly from actual project sites or obtained as official media from authorized developers."
-  },
-  {
-    question: "Can I request a personalized video or photos of a specific property?",
-    answer: "Yes! If you are interested in a specific project, you can contact our advisory team on WhatsApp or submit a request form. We will arrange a live virtual site tour or send you the latest actual construction photos and video walk-throughs."
-  },
-  {
-    question: "Who owns the media copyrights in the gallery?",
-    answer: "All original media is copyrighted by RealHubb Ventures Pvt. Ltd. and our developer partners. You may view and share the links for personal research, but commercial republishing requires official written consent from our media relations department."
-  }
-];
 
 export default function GalleryPage() {
   const breadcrumbs = [

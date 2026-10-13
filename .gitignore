@@ -43,3 +43,7 @@ next-env.d.ts
 # scratch directory for temporary developer files
 /scratch
 .scratch-audit/
+
+# Build output
+.next/
+out/
